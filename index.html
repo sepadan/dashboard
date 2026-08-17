@@ -817,7 +817,7 @@ function drawLine(node, cfg){
   const m = {t:14, r:narrow?10:16, b:narrow?38:34, l:narrow?36:46};
   const iw = W-m.l-m.r, ih = H-m.t-m.b;
   const cols = cfg.series.map(s=>cssVar(s.varName));
-  const all = cfg.series.flatMap(s=>s.values);
+  const all = cfg.series.flatMap(s=>s.values).filter(v=> v!=null && isFinite(v));
   const ticks = niceTicks(cfg.yMin!=null?cfg.yMin:Math.min(...all), cfg.yMax!=null?cfg.yMax:Math.max(...all), 4);
   const lo = ticks[0], hi = ticks[ticks.length-1];
   const n = cfg.labels.length;
@@ -837,14 +837,21 @@ function drawLine(node, cfg){
 
   let paths='', dots='', labels='';
   cfg.series.forEach((s,si)=>{
-    const d = s.values.map((v,i)=> `${i?'L':'M'}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+    let mula = true;
+    const d = s.values.map((v,i)=>{
+      if(v==null || !isFinite(v)){ mula = true; return ''; }
+      const seg = `${mula?'M':'L'}${X(i).toFixed(1)},${Y(v).toFixed(1)}`;
+      mula = false; return seg;
+    }).filter(Boolean).join(' ');
     paths += `<path d="${d}" fill="none" stroke="${cols[si]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
     s.values.forEach((v,i)=>{
+      if(v==null || !isFinite(v)) return;
       dots += `<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="4" fill="${cols[si]}" stroke="${cssVar('--surface')}" stroke-width="2"/>`;
     });
-    // label terus pada hujung siri
-    const li = s.values.length-1;
-    labels += `<text x="${(X(li)-6).toFixed(1)}" y="${(Y(s.values[li])-11).toFixed(1)}" text-anchor="end" font-size="11.5" font-weight="600" fill="${cssVar('--ink2')}" style="font-variant-numeric:tabular-nums">${esc(cfg.fmt(s.values[li]))}</text>`;
+    let li = -1;
+    for(let i=s.values.length-1;i>=0;i--){ const v=s.values[i]; if(v!=null && isFinite(v)){ li=i; break; } }
+    if(li>=0)
+      labels += `<text x="${(X(li)-6).toFixed(1)}" y="${(Y(s.values[li])-11).toFixed(1)}" text-anchor="end" font-size="11.5" font-weight="600" fill="${cssVar('--ink2')}" style="font-variant-numeric:tabular-nums">${esc(cfg.fmt(s.values[li]))}</text>`;
   });
 
   let hits='';
@@ -861,7 +868,10 @@ function drawLine(node, cfg){
     const i = +t.dataset.i;
     ch.setAttribute('x1', X(i)); ch.setAttribute('x2', X(i)); ch.setAttribute('opacity','1');
     let html = `<div class="t">${esc(cfg.labels[i])}</div>`;
-    cfg.series.forEach((s,si)=> html += tipRow(cols[si], s.name, cfg.fmt(s.values[i])));
+    cfg.series.forEach((s,si)=>{
+      const v = s.values[i];
+      html += tipRow(cols[si], s.name, (v==null || !isFinite(v)) ? '—' : cfg.fmt(v));
+    });
     showTip(html, e.clientX, e.clientY);
   });
   const off = ()=>{ ch.setAttribute('opacity','0'); hideTip(); };
@@ -951,8 +961,18 @@ function addCard(parent, spec){
   REG.push(item);
   return item;
 }
+function adaData_(spec, cfg){
+  if(spec.type==='table') return (cfg.tableRows()||[]).length > 0;
+  if(spec.type==='barh' || spec.type==='dot') return (cfg.items||[]).length > 0;
+  return (cfg.labels||[]).length > 0 && (cfg.series||[]).some(s=>(s.values||[]).length);
+}
 function paintCard(item){
   const cfg = item.spec.cfg();
+  if(!adaData_(item.spec, cfg)){
+    item.lg.innerHTML = ''; item.tbl.hidden = true; item.chart.hidden = false;
+    item.chart.innerHTML = '<div class="empty">Tiada data untuk sesi ini.<br>Isi data dalam sumber, kemudian kemas kini <b>data.json</b>.</div>';
+    return;
+  }
   if(item.showTable){
     item.chart.hidden = true; item.lg.hidden = true;
     item.tbl.hidden = false; item.tbl.innerHTML = tableHTML(cfg);
@@ -1141,15 +1161,19 @@ function secKoku(sec){
 /* ============================ CONFIG CARTA ============================ */
 function cfgKehadiranBulanan(){
   const rows = tail(S().kehadiran?.bulanan || []);
-  const series = [
-    {name:'Murid', varName:'--s1', values: rows.map(r=>r.murid)},
-    {name:'Guru',  varName:'--s2', values: rows.map(r=>r.guru)}
-  ];
-  const lows = rows.flatMap(r=>[r.murid,r.guru]);
+  const adaGuru = rows.some(r=> typeof r.guru === 'number' && isFinite(r.guru));
+  const series = [{name:'Murid', varName:'--s1', values: rows.map(r=>r.murid)}];
+  if(adaGuru) series.push({name:'Guru', varName:'--s2',
+    values: rows.map(r=> (typeof r.guru==='number' && isFinite(r.guru)) ? r.guru : null)});
+  const lows = rows.flatMap(r=> adaGuru ? [r.murid, r.guru] : [r.murid])
+                   .filter(v=> typeof v === 'number' && isFinite(v));
   return {labels: rows.map(r=>r.bulan), series, fmt: fmtPct, tickFmt: v=>v+'%',
-    yMin: Math.max(0, Math.floor((Math.min(...lows)-1.5)/2)*2), yMax: 100, height: 260,
-    tableHead:['Bulan','Murid (%)','Guru (%)'],
-    tableRows: ()=> rows.map(r=>[r.bulan, nf1.format(r.murid), nf1.format(r.guru)])};
+    yMin: lows.length ? Math.max(0, Math.floor((Math.min(...lows)-1.5)/2)*2) : 80,
+    yMax: 100, height: 260,
+    tableHead: adaGuru ? ['Bulan','Murid (%)','Guru (%)'] : ['Bulan','Murid (%)'],
+    tableRows: ()=> rows.map(r=> adaGuru
+      ? [r.bulan, nf1.format(r.murid), nf1.format(r.guru)]
+      : [r.bulan, nf1.format(r.murid)])};
 }
 function cfgTrendGps(){
   const rows = S().akademik?.trend_gps || [];
