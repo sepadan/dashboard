@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-08-20"
+    "dikemaskini": "2026-08-21"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -127,9 +127,21 @@
         ]
       },
       "akademik": {
-        "gps": 4.15,
-        "peratus_lulus": 86.8,
+        "gps": 3.54,
+        "peratus_lulus": 90.7,
         "mata_pelajaran": [
+          {
+            "mp": "Bahasa Arab",
+            "gpmp": 2.04,
+            "peratus_a": 51.9,
+            "peratus_lulus": 96.3
+          },
+          {
+            "mp": "Pendidikan Islam",
+            "gpmp": 2.43,
+            "peratus_a": 33.3,
+            "peratus_lulus": 100
+          },
           {
             "mp": "Bahasa Inggeris",
             "gpmp": 3.92,
@@ -152,40 +164,52 @@
           {
             "penilaian": "PS 3",
             "penilaian_penuh": "PENTAKSIRAN SUMATIF 3",
-            "gps": 4.15
+            "gps": 3.54
           }
         ],
         "pbd_tahap": [
           {
             "tahap": "TP1",
-            "bilangan": 65
+            "bilangan": 67
           },
           {
             "tahap": "TP2",
-            "bilangan": 35
+            "bilangan": 42
           },
           {
             "tahap": "TP3",
-            "bilangan": 40
+            "bilangan": 50
           },
           {
             "tahap": "TP4",
-            "bilangan": 19
+            "bilangan": 25
           },
           {
             "tahap": "TP5",
-            "bilangan": 6
+            "bilangan": 10
           },
           {
             "tahap": "TP6",
-            "bilangan": 2
+            "bilangan": 4
           }
         ],
         "ikut_kelas": [
           {
+            "kelas": "1 BIJAK",
+            "gps": 2.04,
+            "peratus_lulus": 96.3,
+            "murid": 28
+          },
+          {
+            "kelas": "2 BIJAK",
+            "gps": 1.52,
+            "peratus_lulus": 100,
+            "murid": 23
+          },
+          {
             "kelas": "4 BIJAK",
-            "gps": 4.61,
-            "peratus_lulus": 74.2,
+            "gps": 4.11,
+            "peratus_lulus": 82.8,
             "murid": 32
           },
           {
@@ -368,9 +392,21 @@
           {
             "peperiksaan": "PENTAKSIRAN SUMATIF 3",
             "penilaian": "PS 3",
-            "gps": 4.15,
-            "peratus_lulus": 86.8,
+            "gps": 3.54,
+            "peratus_lulus": 90.7,
             "mata_pelajaran": [
+              {
+                "mp": "Bahasa Arab",
+                "gpmp": 2.04,
+                "peratus_a": 51.9,
+                "peratus_lulus": 96.3
+              },
+              {
+                "mp": "Pendidikan Islam",
+                "gpmp": 2.43,
+                "peratus_a": 33.3,
+                "peratus_lulus": 100
+              },
               {
                 "mp": "Bahasa Inggeris",
                 "gpmp": 3.92,
@@ -387,34 +423,46 @@
             "pbd_tahap": [
               {
                 "tahap": "TP1",
-                "bilangan": 65
+                "bilangan": 67
               },
               {
                 "tahap": "TP2",
-                "bilangan": 35
+                "bilangan": 42
               },
               {
                 "tahap": "TP3",
-                "bilangan": 40
+                "bilangan": 50
               },
               {
                 "tahap": "TP4",
-                "bilangan": 19
+                "bilangan": 25
               },
               {
                 "tahap": "TP5",
-                "bilangan": 6
+                "bilangan": 10
               },
               {
                 "tahap": "TP6",
-                "bilangan": 2
+                "bilangan": 4
               }
             ],
             "ikut_kelas": [
               {
+                "kelas": "1 BIJAK",
+                "gps": 2.04,
+                "peratus_lulus": 96.3,
+                "murid": 28
+              },
+              {
+                "kelas": "2 BIJAK",
+                "gps": 1.52,
+                "peratus_lulus": 100,
+                "murid": 23
+              },
+              {
                 "kelas": "4 BIJAK",
-                "gps": 4.61,
-                "peratus_lulus": 74.2,
+                "gps": 4.11,
+                "peratus_lulus": 82.8,
                 "murid": 32
               },
               {
