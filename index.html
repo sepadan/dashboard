@@ -149,6 +149,9 @@
   .card > header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:2px}
   .card h2{font-size:14.5px;font-weight:650;margin:0;letter-spacing:-.01em}
   .card .note{font-size:12px;color:var(--muted);margin:3px 0 12px;line-height:1.45}
+  .secnote{font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.45}
+  .pepbar{margin:0 0 12px}
+  .pepbar .field{display:inline-flex}
   .card .tgl{font-size:11.5px;padding:5px 12px;color:var(--ink2);box-shadow:none;flex:none}
 
   /* ================= TILE ================= */
@@ -470,6 +473,21 @@ const DATA_TERBINA = {
           {"tahap":"TP1","bilangan":18},{"tahap":"TP2","bilangan":42},
           {"tahap":"TP3","bilangan":96},{"tahap":"TP4","bilangan":128},
           {"tahap":"TP5","bilangan":102},{"tahap":"TP6","bilangan":43}
+        ],
+        "peperiksaan": "Pentaksiran Akhir Tahun",
+        "ikut_kelas": [
+          {"kelas":"1 Amanah","gps":2.18,"peratus_lulus":92.4,"murid":34},
+          {"kelas":"1 Bestari","gps":2.44,"peratus_lulus":88.1,"murid":33},
+          {"kelas":"2 Amanah","gps":2.09,"peratus_lulus":93.6,"murid":35},
+          {"kelas":"2 Bestari","gps":2.51,"peratus_lulus":86.9,"murid":34},
+          {"kelas":"3 Amanah","gps":2.22,"peratus_lulus":91.2,"murid":36},
+          {"kelas":"3 Bestari","gps":2.47,"peratus_lulus":87.4,"murid":35},
+          {"kelas":"4 Amanah","gps":2.27,"peratus_lulus":90.5,"murid":33},
+          {"kelas":"4 Bestari","gps":2.58,"peratus_lulus":85.3,"murid":32},
+          {"kelas":"5 Amanah","gps":2.14,"peratus_lulus":92.8,"murid":34},
+          {"kelas":"5 Bestari","gps":2.49,"peratus_lulus":87.0,"murid":33},
+          {"kelas":"6 Amanah","gps":2.05,"peratus_lulus":94.1,"murid":31},
+          {"kelas":"6 Bestari","gps":2.41,"peratus_lulus":88.6,"murid":30}
         ]
       },
       "kokurikulum": {
@@ -579,6 +597,21 @@ const DATA_TERBINA = {
           {"tahap":"TP1","bilangan":26},{"tahap":"TP2","bilangan":55},
           {"tahap":"TP3","bilangan":104},{"tahap":"TP4","bilangan":121},
           {"tahap":"TP5","bilangan":89},{"tahap":"TP6","bilangan":34}
+        ],
+        "peperiksaan": "Pentaksiran Akhir Tahun",
+        "ikut_kelas": [
+          {"kelas":"1 Amanah","gps":2.41,"peratus_lulus":89.2,"murid":33},
+          {"kelas":"1 Bestari","gps":2.67,"peratus_lulus":84.6,"murid":32},
+          {"kelas":"2 Amanah","gps":2.32,"peratus_lulus":90.4,"murid":34},
+          {"kelas":"2 Bestari","gps":2.74,"peratus_lulus":83.1,"murid":33},
+          {"kelas":"3 Amanah","gps":2.45,"peratus_lulus":88.0,"murid":35},
+          {"kelas":"3 Bestari","gps":2.70,"peratus_lulus":84.2,"murid":34},
+          {"kelas":"4 Amanah","gps":2.50,"peratus_lulus":87.3,"murid":32},
+          {"kelas":"4 Bestari","gps":2.81,"peratus_lulus":82.0,"murid":31},
+          {"kelas":"5 Amanah","gps":2.37,"peratus_lulus":89.7,"murid":33},
+          {"kelas":"5 Bestari","gps":2.72,"peratus_lulus":83.8,"murid":32},
+          {"kelas":"6 Amanah","gps":2.28,"peratus_lulus":91.0,"murid":30},
+          {"kelas":"6 Bestari","gps":2.64,"peratus_lulus":85.4,"murid":29}
         ]
       },
       "kokurikulum": {
@@ -638,7 +671,7 @@ const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(
 const sum = (a,f)=> a.reduce((t,x)=>t+(f?f(x):x),0);
 
 let DATA = DATA_TERBINA;
-let STATE = { sesi:null, tab:'ringkasan', density:'all' };
+let STATE = { sesi:null, tab:'ringkasan', density:'all', pep:null };
 const REG = [];              // pendaftaran carta untuk render semula
 
 function tail(arr){ return STATE.density==='all' ? arr : arr.slice(-parseInt(STATE.density,10)); }
@@ -1011,6 +1044,15 @@ const TABS = [
 ];
 
 function S(){ return DATA.sesi[STATE.sesi] || {}; }
+/* Blok akademik untuk peperiksaan yang dipilih (fallback: peperiksaan aktif). */
+function AK(){
+  const a = S().akademik || {};
+  if(STATE.pep && Array.isArray(a.peperiksaan_semua)){
+    const f = a.peperiksaan_semua.find(x=>x.peperiksaan===STATE.pep);
+    if(f) return Object.assign({}, a, f);
+  }
+  return a;
+}
 function HEM(){ const s = S(); return s.hem || s.sahsiah || {}; }
 function Sprev(){
   const keys = Object.keys(DATA.sesi).sort();
@@ -1086,15 +1128,46 @@ function secEnrolmen(sec){
 }
 
 function secAkademik(sec){
+  const a = S().akademik || {};
+  const senarai = (a.peperiksaan_semua || []).map(x=>x.peperiksaan);
+  if(senarai.length){
+    if(!senarai.includes(STATE.pep))
+      STATE.pep = senarai.includes(a.peperiksaan) ? a.peperiksaan : senarai[senarai.length-1];
+  } else STATE.pep = null;
+
+  const n = document.createElement('div'); n.className='secnote';
+  const nota = ()=>{
+    const t = STATE.pep || a.peperiksaan;
+    n.textContent = t
+      ? 'Sumber markah: SEMAK · Peperiksaan: ' + t +
+        (a.peperiksaan && t!==a.peperiksaan ? ' · peperiksaan aktif: ' + a.peperiksaan : '')
+      : '';
+  };
+
+  if(senarai.length > 1){
+    const bar = document.createElement('div'); bar.className='pepbar';
+    bar.innerHTML = `<label class="field"><span>Peperiksaan</span><select id="selPep">` +
+      senarai.map(x=>`<option value="${esc(x)}"${x===STATE.pep?' selected':''}>${esc(x)}</option>`).join('') +
+      `</select></label>`;
+    sec.appendChild(bar);
+    $('#selPep', bar).addEventListener('change', e=>{
+      STATE.pep = e.target.value; nota(); REG.forEach(paintCard);
+    });
+  }
+  nota(); sec.appendChild(n);
+
   const g = document.createElement('div'); g.className='grid'; sec.appendChild(g);
   addCard(g,{title:'GPMP mengikut mata pelajaran', col:'col-6', type:'barh',
     note:'Gred purata mata pelajaran. Nilai lebih rendah = lebih baik.', cfg: cfgGpmp});
   addCard(g,{title:'Peratus lulus mengikut mata pelajaran', col:'col-6', type:'barh',
     note:'Peratusan murid mencapai gred lulus.', cfg: cfgLulusMp});
+  addCard(g,{title:'GPS mengikut kelas', col:'col-12', type:'dot',
+    note:'Gred purata setiap kelas bagi peperiksaan ini. Kiri = lebih baik. Garis menegak = GPS sekolah.',
+    cfg: cfgGpsKelas});
   addCard(g,{title:'Trend GPS', col:'col-6', type:'line',
     note:'Gred purata sekolah merentas penilaian dalam sesi ini.', cfg: cfgTrendGps});
   addCard(g,{title:'Taburan tahap penguasaan (PBD)', col:'col-6', type:'column',
-    note:'Bilangan murid mengikut tahap penguasaan.', cfg: cfgPbd});
+    note:'Bilangan rekod murid × mata pelajaran mengikut tahap penguasaan.', cfg: cfgPbd});
 }
 
 function secKehadiran(sec){
@@ -1220,27 +1293,40 @@ function cfgProfil(){
   return {series:[], tableHead:['Perkara','Sesi '+STATE.sesi,'Sesi sebelum'], tableRows: ()=> baris};
 }
 function cfgGpmp(){
-  const rows = (S().akademik?.mata_pelajaran || []).slice().sort((a,b)=>a.gpmp-b.gpmp);
+  const rows = (AK().mata_pelajaran || []).slice().sort((a,b)=>a.gpmp-b.gpmp);
   return {items: rows.map(r=>({label:r.mp, values:[r.gpmp]})),
     series:[{name:'GPMP', varName:'--s1'}], fmt: fmtGp, rowH:30,
     tableHead:['Mata pelajaran','GPMP','% A','% Lulus'],
     tableRows: ()=> rows.map(r=>[r.mp, nf2.format(r.gpmp), nf1.format(r.peratus_a)+'%', nf1.format(r.peratus_lulus)+'%'])};
 }
 function cfgLulusMp(){
-  const rows = (S().akademik?.mata_pelajaran || []).slice().sort((a,b)=>b.peratus_lulus-a.peratus_lulus);
+  const rows = (AK().mata_pelajaran || []).slice().sort((a,b)=>b.peratus_lulus-a.peratus_lulus);
   return {items: rows.map(r=>({label:r.mp, values:[r.peratus_lulus]})),
     series:[{name:'Peratus lulus', varName:'--s3'}], fmt: fmtPct, rowH:30,
     tableHead:['Mata pelajaran','% Lulus','% A'],
     tableRows: ()=> rows.map(r=>[r.mp, nf1.format(r.peratus_lulus)+'%', nf1.format(r.peratus_a)+'%'])};
 }
 function cfgPbd(){
-  const rows = S().akademik?.pbd_tahap || [];
+  const rows = AK().pbd_tahap || [];
   const jum = sum(rows,r=>r.bilangan) || 1;
   return {labels: rows.map(r=>r.tahap),
     series:[{name:'Murid', varName:'--s1', values: rows.map(r=>r.bilangan)}],
     fmt: fmtInt, height: 250,
     tableHead:['Tahap','Murid','Peratus'],
     tableRows: ()=> rows.map(r=>[r.tahap, fmtInt(r.bilangan), nf1.format(r.bilangan/jum*100)+'%'])};
+}
+function cfgGpsKelas(){
+  const a = AK();
+  const rows = (a.ikut_kelas || []).slice().sort((x,y)=>x.gps-y.gps);
+  const vals = rows.map(r=>r.gps);
+  const gpsSek = a.gps || (vals.length ? sum(vals)/vals.length : 0);
+  return {items: rows.map(r=>({label:r.kelas, values:[r.gps]})),
+    series:[{name:'GPS', varName:'--s1'}], fmt: fmtGp, rowH:28,
+    dmin: vals.length ? Math.max(1, Math.floor((Math.min(...vals)-0.3)*10)/10) : 1,
+    dmax: vals.length ? Math.min(6, Math.ceil((Math.max(...vals)+0.3)*10)/10) : 6,
+    tickFmt: v=>nf1.format(v), ref:{value:gpsSek, label:'GPS sekolah'},
+    tableHead:['Kelas','GPS','% Lulus','Murid'],
+    tableRows: ()=> rows.map(r=>[r.kelas, nf2.format(r.gps), nf1.format(r.peratus_lulus||0)+'%', fmtInt(r.murid||0)])};
 }
 function cfgKehadiranKelas(){
   const rows = (S().kehadiran?.ikut_kelas || []).slice().sort((a,b)=>b.peratus-a.peratus);
