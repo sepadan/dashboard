@@ -149,9 +149,6 @@
   .card > header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:2px}
   .card h2{font-size:14.5px;font-weight:650;margin:0;letter-spacing:-.01em}
   .card .note{font-size:12px;color:var(--muted);margin:3px 0 12px;line-height:1.45}
-  .secnote{font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.45}
-  .pepbar{margin:0 0 12px}
-  .pepbar .field{display:inline-flex}
   .card .tgl{font-size:11.5px;padding:5px 12px;color:var(--ink2);box-shadow:none;flex:none}
 
   /* ================= TILE ================= */
@@ -264,29 +261,73 @@
   }
 
   /* ================= MOD TV ================= */
+  /* Paparan slaid: satu muka penuh, tiada skrol, tiada menu. Maklumat sahaja.
+     Setiap baris kad pada paparan biasa menjadi satu muka dalam mod TV. */
+  :root[data-tv],:root[data-tv] body{height:100%;overflow:hidden}
+  :root[data-tv] .wrap,
+  :root[data-tv] #tip,
+  :root[data-tv] #laporan{display:none!important}
+
+  #tvStage{display:none;position:fixed;inset:0;z-index:55;background:var(--bg);flex-direction:column;overflow:hidden}
+  :root[data-tv] #tvStage{display:flex}
+
+  #tvStage .tvatas{
+    display:flex;align-items:center;gap:16px;flex:none;
+    padding:13px 30px 12px;background:var(--surface);border-bottom:1px solid var(--border);
+  }
+  #tvStage .tvatas .crest{width:54px;height:54px;border-radius:16px;flex:none;
+    display:grid;place-items:center;background:var(--wash);border:1px solid var(--border);padding:5px;overflow:hidden}
+  #tvStage .tvatas .crest img{width:100%;height:100%;object-fit:contain;display:block}
+  #tvStage .tvnama{font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+  #tvStage .tvsub{font-size:12.5px;color:var(--muted);margin-top:3px}
+  #tvStage .tvtajuk{margin-left:auto;text-align:right;min-width:0}
+  #tvStage .tvtajuk b{display:block;font-size:23px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+  #tvStage .tvtajuk span{font-size:12.5px;color:var(--muted)}
+  #tvStage .tvjam{flex:none;text-align:right;font-size:13px;line-height:1.5;color:var(--ink2);
+    font-variant-numeric:tabular-nums;border-left:1px solid var(--border);padding-left:18px}
+  #tvStage .tvjam b{display:block;font-size:19px;font-weight:700;color:var(--ink)}
+
+  #tvStage .tvbadan{flex:1;min-height:0;position:relative;overflow:hidden}
+  #tvStage .tvslide{position:absolute;inset:0;display:none;padding:20px 28px 30px;
+    align-items:center;justify-content:center;overflow:hidden}
+  #tvStage .tvslide.aktif{display:flex}
+  #tvStage .tvisi{flex:none;transform-origin:center center;display:flex;flex-direction:column}
+  #tvStage .tvisi > .grid{flex:1;min-height:0;grid-auto-rows:1fr}
+  /* Semasa mengukur, kad dibiar pada tinggi semula jadinya. */
+  #tvStage .tvisi.mengukur > .grid{grid-auto-rows:auto}
+  #tvStage .tvisi > .tiles{flex:1;min-height:0;grid-auto-rows:1fr}
+  #tvStage .card{display:flex;flex-direction:column}
+  #tvStage .card .tblslot{flex:1;display:flex;min-height:0}
+  /* display:flex di atas mengatasi [hidden] — kembalikan secara eksplisit. */
+  #tvStage .card .tblslot[hidden]{display:none}
+  #tvStage .card .tblwrap{flex:1}
+  #tvStage .card .tblwrap table{height:100%}
+  #tvStage .tile{display:flex;flex-direction:column;justify-content:center;padding:20px 22px}
+  #tvStage .card:hover,#tvStage .tile:hover{transform:none;box-shadow:var(--shadow)}
+  #tvStage .card .tgl{display:none}
+  #tvStage .tblwrap{max-height:none;overflow:visible}
+  #tvStage .tiles{margin-bottom:0;gap:16px}
+  #tvStage .card h2{font-size:19px}
+  #tvStage .card .note{font-size:13.5px}
+  #tvStage .legend{font-size:14px}
+  #tvStage .tile .lab{font-size:14px}
+  #tvStage .tile .val{font-size:48px}
+  #tvStage .tile .delta{font-size:13.5px}
+  #tvStage table{font-size:15px}
+  #tvStage th,#tvStage td{padding:9px 11px}
+  #tvStage thead th{font-size:12.5px}
+
   #tvbar{display:none;position:fixed;top:0;left:0;right:0;height:4px;background:var(--border);z-index:60}
   #tvbar i{display:block;height:100%;width:0;background:var(--grad)}
-  #tvExit{position:fixed;bottom:18px;right:18px;z-index:61;opacity:.35}
-  #tvExit:hover{opacity:1}
   :root[data-tv] #tvbar{display:block}
-  :root[data-tv] .tools,
-  :root[data-tv] .filters,
-  :root[data-tv] footer.foot,
-  :root[data-tv] .card .tgl{display:none!important}
-  :root[data-tv] body{font-size:18px}
-  :root[data-tv] .wrap{max-width:none;padding:26px 34px 34px}
-  :root[data-tv] h1{font-size:28px}
-  :root[data-tv] .sub{font-size:15px}
-  :root[data-tv] .crest{width:72px;height:72px;border-radius:20px}
-  :root[data-tv] .tiles{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-  :root[data-tv] .tile .lab{font-size:14px}
-  :root[data-tv] .tile .val{font-size:46px}
-  :root[data-tv] .tile .delta{font-size:14px}
-  :root[data-tv] .card h2{font-size:20px}
-  :root[data-tv] .card .note{font-size:14px}
-  :root[data-tv] nav.tabs button{font-size:17px;padding:12px 22px}
-  :root[data-tv] .legend{font-size:14px}
-  :root[data-tv] #tip{display:none}
+
+  #tvKira{display:none;position:fixed;bottom:14px;left:26px;z-index:61;
+    font-size:12.5px;color:var(--muted);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+  :root[data-tv] #tvKira{display:block}
+
+  /* Butang keluar tersembunyi sehingga tetikus digerakkan — TV kekal bersih. */
+  #tvExit{position:fixed;bottom:14px;right:18px;z-index:61;opacity:0;pointer-events:none;transition:opacity .25s}
+  :root[data-tv].tvgerak #tvExit{opacity:.9;pointer-events:auto}
 
   /* ================= LAPORAN RINGKAS ================= */
   #laporan{display:none}
@@ -327,7 +368,7 @@
   @page{size:A4;margin:11mm}
   @media print{
     body{background:#fff}
-    .tools,.filters,nav.tabs,.card .tgl,#tvbar,#tvExit{display:none!important}
+    .tools,.filters,nav.tabs,.card .tgl,#tvbar,#tvExit,#tvKira,#tvStage{display:none!important}
     :root:not([data-mode="laporan"]) .sect{display:block!important;break-inside:avoid}
     .card,.tile{break-inside:avoid;border-color:#ccc;box-shadow:none}
     .wrap{max-width:none;padding:0}
@@ -383,7 +424,22 @@
 
 <div id="tip" role="status" aria-live="polite"></div>
 <div id="tvbar"><i></i></div>
-<button id="tvExit" type="button" hidden>Keluar Mod TV (Esc)</button>
+<div id="tvKira"></div>
+<button id="tvExit" type="button">Keluar Mod TV (Esc)</button>
+
+<!-- Pentas mod TV: dibina semasa Mod TV dihidupkan, kosong selain itu. -->
+<div id="tvStage" aria-hidden="true">
+  <div class="tvatas">
+    <div class="crest"><img id="tvCrest" alt=""></div>
+    <div>
+      <div class="tvnama" id="tvNama">SK Paya Redan</div>
+      <div class="tvsub" id="tvSub">Dashboard SePadan</div>
+    </div>
+    <div class="tvtajuk"><b id="tvTajuk"></b><span id="tvSubTajuk"></span></div>
+    <div class="tvjam"><b id="tvMasa"></b><span id="tvTarikh"></span></div>
+  </div>
+  <div class="tvbadan"></div>
+</div>
 
 <script>
 /* =====================================================================
@@ -473,21 +529,6 @@ const DATA_TERBINA = {
           {"tahap":"TP1","bilangan":18},{"tahap":"TP2","bilangan":42},
           {"tahap":"TP3","bilangan":96},{"tahap":"TP4","bilangan":128},
           {"tahap":"TP5","bilangan":102},{"tahap":"TP6","bilangan":43}
-        ],
-        "peperiksaan": "Pentaksiran Akhir Tahun",
-        "ikut_kelas": [
-          {"kelas":"1 Amanah","gps":2.18,"peratus_lulus":92.4,"murid":34},
-          {"kelas":"1 Bestari","gps":2.44,"peratus_lulus":88.1,"murid":33},
-          {"kelas":"2 Amanah","gps":2.09,"peratus_lulus":93.6,"murid":35},
-          {"kelas":"2 Bestari","gps":2.51,"peratus_lulus":86.9,"murid":34},
-          {"kelas":"3 Amanah","gps":2.22,"peratus_lulus":91.2,"murid":36},
-          {"kelas":"3 Bestari","gps":2.47,"peratus_lulus":87.4,"murid":35},
-          {"kelas":"4 Amanah","gps":2.27,"peratus_lulus":90.5,"murid":33},
-          {"kelas":"4 Bestari","gps":2.58,"peratus_lulus":85.3,"murid":32},
-          {"kelas":"5 Amanah","gps":2.14,"peratus_lulus":92.8,"murid":34},
-          {"kelas":"5 Bestari","gps":2.49,"peratus_lulus":87.0,"murid":33},
-          {"kelas":"6 Amanah","gps":2.05,"peratus_lulus":94.1,"murid":31},
-          {"kelas":"6 Bestari","gps":2.41,"peratus_lulus":88.6,"murid":30}
         ]
       },
       "kokurikulum": {
@@ -597,21 +638,6 @@ const DATA_TERBINA = {
           {"tahap":"TP1","bilangan":26},{"tahap":"TP2","bilangan":55},
           {"tahap":"TP3","bilangan":104},{"tahap":"TP4","bilangan":121},
           {"tahap":"TP5","bilangan":89},{"tahap":"TP6","bilangan":34}
-        ],
-        "peperiksaan": "Pentaksiran Akhir Tahun",
-        "ikut_kelas": [
-          {"kelas":"1 Amanah","gps":2.41,"peratus_lulus":89.2,"murid":33},
-          {"kelas":"1 Bestari","gps":2.67,"peratus_lulus":84.6,"murid":32},
-          {"kelas":"2 Amanah","gps":2.32,"peratus_lulus":90.4,"murid":34},
-          {"kelas":"2 Bestari","gps":2.74,"peratus_lulus":83.1,"murid":33},
-          {"kelas":"3 Amanah","gps":2.45,"peratus_lulus":88.0,"murid":35},
-          {"kelas":"3 Bestari","gps":2.70,"peratus_lulus":84.2,"murid":34},
-          {"kelas":"4 Amanah","gps":2.50,"peratus_lulus":87.3,"murid":32},
-          {"kelas":"4 Bestari","gps":2.81,"peratus_lulus":82.0,"murid":31},
-          {"kelas":"5 Amanah","gps":2.37,"peratus_lulus":89.7,"murid":33},
-          {"kelas":"5 Bestari","gps":2.72,"peratus_lulus":83.8,"murid":32},
-          {"kelas":"6 Amanah","gps":2.28,"peratus_lulus":91.0,"murid":30},
-          {"kelas":"6 Bestari","gps":2.64,"peratus_lulus":85.4,"murid":29}
         ]
       },
       "kokurikulum": {
@@ -671,8 +697,9 @@ const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(
 const sum = (a,f)=> a.reduce((t,x)=>t+(f?f(x):x),0);
 
 let DATA = DATA_TERBINA;
-let STATE = { sesi:null, tab:'ringkasan', density:'all', pep:null };
+let STATE = { sesi:null, tab:'ringkasan', density:'all' };
 const REG = [];              // pendaftaran carta untuk render semula
+let CARTA_SKALA = 1;         // pembesar tinggi carta (mod TV guna >1)
 
 function tail(arr){ return STATE.density==='all' ? arr : arr.slice(-parseInt(STATE.density,10)); }
 
@@ -726,7 +753,7 @@ function wrapLabel(s, max){
 function drawColumn(node, cfg){
   const W = Math.max(240, node.clientWidth);
   const narrow = W < 460;
-  const H = Math.round((cfg.height || 240) * (narrow ? 0.88 : 1));
+  const H = Math.round((cfg.height || 240) * (narrow ? 0.88 : 1) * CARTA_SKALA);
   const m = {t:12, r:narrow?6:10, b:narrow?40:34, l:narrow?34:44};
   const iw = W-m.l-m.r, ih = H-m.t-m.b;
   const cols = cfg.series.map(s=>cssVar(s.varName));
@@ -796,7 +823,7 @@ function drawBarH(node, cfg){
   const items = cfg.items;
   const W = Math.max(240, node.clientWidth);
   const narrow = W < 460;
-  const rowH = (cfg.rowH || 26) + (narrow ? 4 : 0), pad = 8;
+  const rowH = Math.round(((cfg.rowH || 26) + (narrow ? 4 : 0)) * CARTA_SKALA), pad = 8;
   const labW = narrow ? Math.max(66, Math.round(W*0.34)) : Math.min(160, Math.max(84, Math.round(W*0.28)));
   const m = {t:6, r:narrow?42:54, b:6, l:labW};
   const H = m.t+m.b+items.length*rowH;
@@ -846,7 +873,7 @@ function drawBarH(node, cfg){
 function drawLine(node, cfg){
   const W = Math.max(240, node.clientWidth);
   const narrow = W < 460;
-  const H = Math.round((cfg.height || 250) * (narrow ? 0.88 : 1));
+  const H = Math.round((cfg.height || 250) * (narrow ? 0.88 : 1) * CARTA_SKALA);
   const m = {t:14, r:narrow?10:16, b:narrow?38:34, l:narrow?36:46};
   const iw = W-m.l-m.r, ih = H-m.t-m.b;
   const cols = cfg.series.map(s=>cssVar(s.varName));
@@ -918,7 +945,7 @@ function drawDot(node, cfg){
   const items = cfg.items;
   const W = Math.max(240, node.clientWidth);
   const narrow = W < 460;
-  const rowH = (cfg.rowH || 26) + (narrow?2:0);
+  const rowH = Math.round(((cfg.rowH || 26) + (narrow?2:0)) * CARTA_SKALA);
   const labW = narrow ? Math.max(66, Math.round(W*0.32)) : Math.min(160, Math.max(84, Math.round(W*0.26)));
   const m = {t:6, r:narrow?44:56, b:28, l:labW};
   const H = m.t + m.b + items.length*rowH;
@@ -1044,15 +1071,6 @@ const TABS = [
 ];
 
 function S(){ return DATA.sesi[STATE.sesi] || {}; }
-/* Blok akademik untuk peperiksaan yang dipilih (fallback: peperiksaan aktif). */
-function AK(){
-  const a = S().akademik || {};
-  if(STATE.pep && Array.isArray(a.peperiksaan_semua)){
-    const f = a.peperiksaan_semua.find(x=>x.peperiksaan===STATE.pep);
-    if(f) return Object.assign({}, a, f);
-  }
-  return a;
-}
 function HEM(){ const s = S(); return s.hem || s.sahsiah || {}; }
 function Sprev(){
   const keys = Object.keys(DATA.sesi).sort();
@@ -1128,46 +1146,15 @@ function secEnrolmen(sec){
 }
 
 function secAkademik(sec){
-  const a = S().akademik || {};
-  const senarai = (a.peperiksaan_semua || []).map(x=>x.peperiksaan);
-  if(senarai.length){
-    if(!senarai.includes(STATE.pep))
-      STATE.pep = senarai.includes(a.peperiksaan) ? a.peperiksaan : senarai[senarai.length-1];
-  } else STATE.pep = null;
-
-  const n = document.createElement('div'); n.className='secnote';
-  const nota = ()=>{
-    const t = STATE.pep || a.peperiksaan;
-    n.textContent = t
-      ? 'Sumber markah: SEMAK · Peperiksaan: ' + t +
-        (a.peperiksaan && t!==a.peperiksaan ? ' · peperiksaan aktif: ' + a.peperiksaan : '')
-      : '';
-  };
-
-  if(senarai.length > 1){
-    const bar = document.createElement('div'); bar.className='pepbar';
-    bar.innerHTML = `<label class="field"><span>Peperiksaan</span><select id="selPep">` +
-      senarai.map(x=>`<option value="${esc(x)}"${x===STATE.pep?' selected':''}>${esc(x)}</option>`).join('') +
-      `</select></label>`;
-    sec.appendChild(bar);
-    $('#selPep', bar).addEventListener('change', e=>{
-      STATE.pep = e.target.value; nota(); REG.forEach(paintCard);
-    });
-  }
-  nota(); sec.appendChild(n);
-
   const g = document.createElement('div'); g.className='grid'; sec.appendChild(g);
   addCard(g,{title:'GPMP mengikut mata pelajaran', col:'col-6', type:'barh',
     note:'Gred purata mata pelajaran. Nilai lebih rendah = lebih baik.', cfg: cfgGpmp});
   addCard(g,{title:'Peratus lulus mengikut mata pelajaran', col:'col-6', type:'barh',
     note:'Peratusan murid mencapai gred lulus.', cfg: cfgLulusMp});
-  addCard(g,{title:'GPS mengikut kelas', col:'col-12', type:'dot',
-    note:'Gred purata setiap kelas bagi peperiksaan ini. Kiri = lebih baik. Garis menegak = GPS sekolah.',
-    cfg: cfgGpsKelas});
   addCard(g,{title:'Trend GPS', col:'col-6', type:'line',
     note:'Gred purata sekolah merentas penilaian dalam sesi ini.', cfg: cfgTrendGps});
   addCard(g,{title:'Taburan tahap penguasaan (PBD)', col:'col-6', type:'column',
-    note:'Bilangan rekod murid × mata pelajaran mengikut tahap penguasaan.', cfg: cfgPbd});
+    note:'Bilangan murid mengikut tahap penguasaan.', cfg: cfgPbd});
 }
 
 function secKehadiran(sec){
@@ -1293,40 +1280,27 @@ function cfgProfil(){
   return {series:[], tableHead:['Perkara','Sesi '+STATE.sesi,'Sesi sebelum'], tableRows: ()=> baris};
 }
 function cfgGpmp(){
-  const rows = (AK().mata_pelajaran || []).slice().sort((a,b)=>a.gpmp-b.gpmp);
+  const rows = (S().akademik?.mata_pelajaran || []).slice().sort((a,b)=>a.gpmp-b.gpmp);
   return {items: rows.map(r=>({label:r.mp, values:[r.gpmp]})),
     series:[{name:'GPMP', varName:'--s1'}], fmt: fmtGp, rowH:30,
     tableHead:['Mata pelajaran','GPMP','% A','% Lulus'],
     tableRows: ()=> rows.map(r=>[r.mp, nf2.format(r.gpmp), nf1.format(r.peratus_a)+'%', nf1.format(r.peratus_lulus)+'%'])};
 }
 function cfgLulusMp(){
-  const rows = (AK().mata_pelajaran || []).slice().sort((a,b)=>b.peratus_lulus-a.peratus_lulus);
+  const rows = (S().akademik?.mata_pelajaran || []).slice().sort((a,b)=>b.peratus_lulus-a.peratus_lulus);
   return {items: rows.map(r=>({label:r.mp, values:[r.peratus_lulus]})),
     series:[{name:'Peratus lulus', varName:'--s3'}], fmt: fmtPct, rowH:30,
     tableHead:['Mata pelajaran','% Lulus','% A'],
     tableRows: ()=> rows.map(r=>[r.mp, nf1.format(r.peratus_lulus)+'%', nf1.format(r.peratus_a)+'%'])};
 }
 function cfgPbd(){
-  const rows = AK().pbd_tahap || [];
+  const rows = S().akademik?.pbd_tahap || [];
   const jum = sum(rows,r=>r.bilangan) || 1;
   return {labels: rows.map(r=>r.tahap),
     series:[{name:'Murid', varName:'--s1', values: rows.map(r=>r.bilangan)}],
     fmt: fmtInt, height: 250,
     tableHead:['Tahap','Murid','Peratus'],
     tableRows: ()=> rows.map(r=>[r.tahap, fmtInt(r.bilangan), nf1.format(r.bilangan/jum*100)+'%'])};
-}
-function cfgGpsKelas(){
-  const a = AK();
-  const rows = (a.ikut_kelas || []).slice().sort((x,y)=>x.gps-y.gps);
-  const vals = rows.map(r=>r.gps);
-  const gpsSek = a.gps || (vals.length ? sum(vals)/vals.length : 0);
-  return {items: rows.map(r=>({label:r.kelas, values:[r.gps]})),
-    series:[{name:'GPS', varName:'--s1'}], fmt: fmtGp, rowH:28,
-    dmin: vals.length ? Math.max(1, Math.floor((Math.min(...vals)-0.3)*10)/10) : 1,
-    dmax: vals.length ? Math.min(6, Math.ceil((Math.max(...vals)+0.3)*10)/10) : 6,
-    tickFmt: v=>nf1.format(v), ref:{value:gpsSek, label:'GPS sekolah'},
-    tableHead:['Kelas','GPS','% Lulus','Murid'],
-    tableRows: ()=> rows.map(r=>[r.kelas, nf2.format(r.gps), nf1.format(r.peratus_lulus||0)+'%', fmtInt(r.murid||0)])};
 }
 function cfgKehadiranKelas(){
   const rows = (S().kehadiran?.ikut_kelas || []).slice().sort((a,b)=>b.peratus-a.peratus);
@@ -1470,7 +1444,22 @@ function tutupLaporan(){
 }
 
 /* ============================ MOD TV ============================ */
-let tvTimer = null, TV_SAAT = 20;
+/*
+   Mod TV memaparkan slaid. Setiap slaid memenuhi satu skrin penuh — tiada
+   skrol, tiada menu, tiada butang. Satu baris kad pada paparan biasa
+   (contoh: kad col-8 + kad col-4) menjadi satu slaid.
+
+   Kad DIPINDAHKAN dari seksyen asalnya ke pentas TV, dan komen kosong
+   ditinggalkan di tempatnya. Semasa keluar, setiap kad dipulangkan tepat
+   ke kedudukan asalnya. Tiada kad dibina semula, jadi tiada data hilang.
+*/
+let tvTimer = null, tvJamTimer = null, tvGerakTimer = null;
+let TV_SAAT = 18;
+let tvSlaid = [], tvIdx = 0, tvSimpan = [];
+const TV_LEBAR = 1240;                    // lebar logik satu slaid, dalam piksel
+const TV_TINGGI_CARTA = 1.35;             // carta dibesarkan supaya mengisi skrin TV
+const TV_ZOOM_OK = (typeof CSS !== 'undefined' && CSS.supports && CSS.supports('zoom','1.5'));
+
 function tvBarMula(){
   const bar = $('#tvbar').firstElementChild;
   bar.style.transition = 'none'; bar.style.width = '0%';
@@ -1478,40 +1467,212 @@ function tvBarMula(){
     bar.style.transition = `width ${TV_SAAT}s linear`; bar.style.width = '100%';
   });});
 }
-function tvSeterusnya(){
-  const i = TABS.findIndex(t=>t.id===STATE.tab);
-  const nx = TABS[(i+1) % TABS.length];
-  const btn = [...$('#tabs').querySelectorAll('button')][TABS.indexOf(nx)];
-  if(btn) btn.click();
+
+/* Lebar grid sesuatu kad, untuk mengumpulkan kad menjadi baris 12 lajur. */
+function tvLebarKad(el){
+  if(el.classList.contains('col-12')) return 12;
+  if(el.classList.contains('col-8'))  return 8;
+  if(el.classList.contains('col-4'))  return 4;
+  return 6;
+}
+
+function tvBinaSlaid(){
+  const badan = $('#tvStage .tvbadan');
+  badan.innerHTML = ''; tvSlaid = []; tvSimpan = [];
+
+  TABS.forEach(t=>{
+    const sec = document.getElementById('sect-'+t.id);
+    if(!sec) return;
+    const kumpulan = [];
+
+    const tiles = sec.querySelector(':scope > .tiles');
+    if(tiles && tiles.children.length) kumpulan.push({tajuk:t.nama, sub:'Angka utama', nod:[tiles], tiles:true});
+
+    const grid = sec.querySelector(':scope > .grid');
+    if(grid){
+      let baris = [], lebar = 0;
+      [...grid.children].forEach(kad=>{
+        const w = tvLebarKad(kad);
+        if(baris.length && lebar + w > 12){ kumpulan.push({tajuk:t.nama, nod:baris}); baris = []; lebar = 0; }
+        baris.push(kad); lebar += w;
+      });
+      if(baris.length) kumpulan.push({tajuk:t.nama, nod:baris});
+    }
+    kumpulan.forEach(k=> tvSlaid.push(k));
+  });
+
+  tvSlaid.forEach(sl=>{
+    const el  = document.createElement('div'); el.className = 'tvslide';
+    const isi = document.createElement('div'); isi.className = 'tvisi';
+    isi.style.width = TV_LEBAR + 'px';
+    let g = null;
+    sl.nod.forEach(n=>{
+      const ph = document.createComment('tv');
+      n.parentNode.replaceChild(ph, n);
+      tvSimpan.push({nod:n, ph:ph});
+      if(sl.tiles){ isi.appendChild(n); }
+      else {
+        if(!g){ g = document.createElement('div'); g.className = 'grid'; isi.appendChild(g); }
+        g.appendChild(n);
+      }
+    });
+    el.appendChild(isi); badan.appendChild(el);
+    sl.el = el; sl.isi = isi;
+    if(!sl.sub) sl.sub = sl.nod.map(n=>{
+      const h = n.querySelector('h2'); return h ? h.textContent : '';
+    }).filter(Boolean).join('  ·  ');
+  });
+}
+
+/*
+   Lukis kad dalam satu slaid, kemudian besarkan supaya mengisi skrin penuh.
+
+   Kaedahnya: slaid dilukis pada lebar logik tetap (TV_LEBAR), kemudian
+   seluruh slaid dibesarkan sehingga lebarnya sepadan dengan skrin. Ketinggian
+   logik yang tersedia menjadi bh/k. Ruang lebihan diagihkan kepada carta
+   dengan membesarkan CARTA_SKALA, jadi carta betul-betul mengisi skrin dan
+   bukan terapung kecil di tengah.
+*/
+function tvMuatSlaid(sl){
+  const isi = sl.isi;
+  isi.style.zoom = ''; isi.style.transform = ''; isi.style.height = 'auto';
+
+  const gaya = getComputedStyle(sl.el);
+  const bw = sl.el.clientWidth  - parseFloat(gaya.paddingLeft) - parseFloat(gaya.paddingRight);
+  const bh = sl.el.clientHeight - parseFloat(gaya.paddingTop)  - parseFloat(gaya.paddingBottom);
+  if(bw <= 0 || bh <= 0) return;
+
+  let k = Math.max(0.35, Math.min(2.4, bw / TV_LEBAR));
+  const Hlog = Math.floor(bh / k);            // ketinggian yang ada, dalam piksel logik
+
+  const kad = REG.filter(it=> sl.el.contains(it.col));
+  kad.forEach(it=> it.showTable = (it.spec.type === 'table'));  // TV sentiasa tunjuk carta
+
+  // Susunan tile: 6 tile -> 3 lajur (2 baris) · 4 tile -> 2 lajur (2 baris)
+  const tiles = isi.querySelector(':scope > .tiles');
+  if(tiles){
+    const n = tiles.children.length;
+    tiles.style.gridTemplateColumns = `repeat(${n <= 4 ? 2 : 3},1fr)`;
+  }
+
+  // Pas 1 — saiz asal, untuk mengukur tinggi carta dan tinggi selain carta.
+  // Kelas .mengukur mematikan grid-auto-rows:1fr supaya setiap kad menunjukkan
+  // tinggi semula jadinya, bukan tinggi kad tertinggi dalam baris itu.
+  isi.classList.add('mengukur');
+  CARTA_SKALA = 1;
+  kad.forEach(paintCard);
+  const ukur = kad.map(it=>{
+    const svg = it.chart.querySelector('svg');
+    // SVGElement tiada offsetHeight — mesti guna getBoundingClientRect().
+    const hs  = svg ? svg.getBoundingClientRect().height : 0;
+    return { it: it, hs: hs, lain: it.col.getBoundingClientRect().height - hs };
+  });
+  isi.classList.remove('mengukur');
+
+  // Pas 2 — setiap kad diberi faktornya sendiri supaya cartanya mengisi
+  // ketinggian slaid. Kad bersebelahan yang berlainan tinggi asalnya akan
+  // berakhir sama tinggi, tanpa ruang kosong di bawah.
+  ukur.forEach(u=>{
+    if(!(u.hs > 8)) return;                    // kad jadual / kad kosong
+    let f = (Hlog - u.lain) / u.hs;
+    f = Math.max(0.5, Math.min(3.6, f));
+    if(Math.abs(f - 1) > 0.03){ CARTA_SKALA = f; paintCard(u.it); }
+  });
+  CARTA_SKALA = 1;
+
+  // Regangkan bekas supaya jadual dan tile turut mengisi tinggi.
+  const h2 = isi.scrollHeight;
+  isi.style.height = Math.max(Hlog, h2) + 'px';
+
+  // Jaring keselamatan: kalau masih melimpah, kecilkan sedikit. Tiada skrol.
+  if(h2 > Hlog) k = Math.max(0.35, Math.min(k, bh / h2));
+
+  if(TV_ZOOM_OK) isi.style.zoom = k;          // zoom = teks kekal tajam
+  else           isi.style.transform = `scale(${k})`;
+}
+
+function tvTunjuk(i){
+  if(!tvSlaid.length) return;
+  tvIdx = ((i % tvSlaid.length) + tvSlaid.length) % tvSlaid.length;
+  tvSlaid.forEach((sl,j)=> sl.el.classList.toggle('aktif', j === tvIdx));
+  const sl = tvSlaid[tvIdx];
+  $('#tvTajuk').textContent = sl.tajuk || '';
+  $('#tvSubTajuk').textContent = sl.sub || '';
+  $('#tvKira').textContent = (tvIdx+1) + ' / ' + tvSlaid.length;
+  tvMuatSlaid(sl);
   tvBarMula();
 }
-function tvOn(){
-  document.documentElement.setAttribute('data-tv','');
-  $('#tvExit').hidden = false;
-  $('#btnTv').textContent = 'Keluar TV';
-  if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{});
-  tvBarMula();
+
+function tvJam(){
+  const d = new Date();
+  const hari = ['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'][d.getDay()];
+  const bln  = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogos','Sep','Okt','Nov','Dis'][d.getMonth()];
+  $('#tvMasa').textContent = String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+  $('#tvTarikh').textContent = `${hari}, ${d.getDate()} ${bln} ${d.getFullYear()}`;
+}
+
+function tvMula(){
   clearInterval(tvTimer);
-  tvTimer = setInterval(tvSeterusnya, TV_SAAT*1000);
-  setTimeout(()=> REG.forEach(paintCard), 60);
+  tvTimer = setInterval(()=> tvTunjuk(tvIdx + 1), TV_SAAT*1000);
 }
+
+function tvOn(){
+  const rt = document.documentElement;
+  rt.setAttribute('data-tv','');
+  $('#tvStage').setAttribute('aria-hidden','false');
+  $('#btnTv').textContent = 'Keluar TV';
+  const src = $('#crestImg').getAttribute('src');
+  if(src) $('#tvCrest').src = src;
+  $('#tvNama').textContent = $('#schoolName').textContent;
+  $('#tvSub').textContent  = $('#schoolSub').textContent;
+  if(rt.requestFullscreen) rt.requestFullscreen().catch(()=>{});
+  REG.forEach(it=> it._tvLama = it.showTable);   // ingat pilihan Carta/Jadual pengguna
+  tvBinaSlaid();
+  tvJam(); clearInterval(tvJamTimer); tvJamTimer = setInterval(tvJam, 20000);
+  requestAnimationFrame(()=> tvTunjuk(0));
+  tvMula();
+}
+
 function tvOff(){
-  clearInterval(tvTimer); tvTimer = null;
+  clearInterval(tvTimer);   tvTimer = null;
+  clearInterval(tvJamTimer); tvJamTimer = null;
+  tvSimpan.forEach(r=>{ if(r.ph.parentNode) r.ph.replaceWith(r.nod); });
+  tvSimpan = []; tvSlaid = []; tvIdx = 0;
+  REG.forEach(it=>{ if('_tvLama' in it){ it.showTable = it._tvLama; delete it._tvLama; } });
+  $('#tvStage .tvbadan').innerHTML = '';
+  $('#tvStage').setAttribute('aria-hidden','true');
   document.documentElement.removeAttribute('data-tv');
-  $('#tvExit').hidden = true;
+  document.documentElement.classList.remove('tvgerak');
   $('#btnTv').textContent = 'Mod TV';
   if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
   setTimeout(()=> REG.forEach(paintCard), 60);
 }
-function tvToggle(){ document.documentElement.hasAttribute('data-tv') ? tvOff() : tvOn(); }
+
+function tvAktif(){ return document.documentElement.hasAttribute('data-tv'); }
+function tvToggle(){ tvAktif() ? tvOff() : tvOn(); }
 
 addEventListener('keydown', e=>{
-  if(e.key !== 'Escape') return;
-  if(document.documentElement.hasAttribute('data-tv')) tvOff();
-  else if(document.documentElement.getAttribute('data-mode')==='laporan') tutupLaporan();
+  if(tvAktif()){
+    if(e.key === 'Escape'){ tvOff(); return; }
+    if(e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' '){ e.preventDefault(); tvTunjuk(tvIdx+1); tvMula(); return; }
+    if(e.key === 'ArrowLeft'  || e.key === 'PageUp'){ e.preventDefault(); tvTunjuk(tvIdx-1); tvMula(); return; }
+    return;
+  }
+  if(e.key === 'Escape' && document.documentElement.getAttribute('data-mode')==='laporan') tutupLaporan();
 });
+
+/* Butang keluar hanya muncul apabila tetikus digerakkan. */
+addEventListener('mousemove', ()=>{
+  if(!tvAktif()) return;
+  document.documentElement.classList.add('tvgerak');
+  clearTimeout(tvGerakTimer);
+  tvGerakTimer = setTimeout(()=> document.documentElement.classList.remove('tvgerak'), 2500);
+});
+
+addEventListener('resize', ()=>{ if(tvAktif() && tvSlaid[tvIdx]) tvMuatSlaid(tvSlaid[tvIdx]); });
 addEventListener('fullscreenchange', ()=>{
-  if(!document.fullscreenElement && document.documentElement.hasAttribute('data-tv')) tvOff();
+  if(!document.fullscreenElement && tvAktif()) tvOff();
+  else if(tvAktif() && tvSlaid[tvIdx]) setTimeout(()=> tvMuatSlaid(tvSlaid[tvIdx]), 120);
 });
 
 /* ============================ KAWALAN ============================ */
