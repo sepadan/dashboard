@@ -76,15 +76,27 @@ Jumlah murid **tidak** dimasukkan secara manual — ia dikira daripada `ikut_tah
 "akademik": {
   "gps": 2.31,
   "peratus_lulus": 89.6,
+  "peperiksaan": "PENTAKSIRAN SUMATIF 3",
   "mata_pelajaran": [
     {"mp":"Bahasa Melayu","gpmp":2.05,"peratus_a":26.4,"peratus_lulus":94.2}
   ],
-  "trend_gps": [ {"penilaian":"Ujian 1","gps":2.68} ],
-  "pbd_tahap": [ {"tahap":"TP1","bilangan":18} ]
+  "trend_gps": [ {"penilaian":"UPSA","penilaian_penuh":"UJIAN PERTENGAHAN SESI AKADEMIK","gps":2.68} ],
+  "peperiksaan_semua": [ {"peperiksaan":"UJIAN PERTENGAHAN SESI AKADEMIK","penilaian":"UPSA","gps":2.46,"peratus_lulus":96.9,"mata_pelajaran":[],"pbd_tahap":[],"ikut_kelas":[]} ],
+  "pbd_tahap": [ {"tahap":"TP1","bilangan":18} ],
+  "ikut_kelas": [ {"kelas":"4 BIJAK","gps":2.27,"peratus_lulus":90.5,"murid":32} ]
 }
 ```
 
 `gps` dan `gpmp` mengikut konvensyen biasa — **nilai lebih rendah = lebih baik**. Dashboard sudah mengambil kira ini pada penunjuk naik/turun.
+
+| Medan | Kegunaan |
+|---|---|
+| `peperiksaan` | Nama peperiksaan sumber. Dipaparkan sebagai nota di atas tab Akademik. Pilihan |
+| `trend_gps[].penilaian_penuh` | Nama penuh penilaian (nama pendek digunakan pada paksi carta). Pilihan |
+| `ikut_kelas` | Kad **GPS mengikut kelas**. `murid` = bilangan murid dalam kelas itu. Pilihan |
+| `peperiksaan_semua` | Senarai blok akademik penuh bagi **setiap** peperiksaan yang ada markah — `{peperiksaan, penilaian, gps, peratus_lulus, mata_pelajaran, pbd_tahap, ikut_kelas}`. Menghidupkan pemilih **Peperiksaan** dalam tab Akademik. Pilihan |
+
+**Blok ini dijana automatik daripada SEMAK** (Sistem Markah SK Paya Redan) — lihat `SAMBUNG-SEMAK.md`. Tab `dash_matapelajaran`, `dash_trend_gps` dan `dash_pbd` hanya digunakan sebagai sandaran apabila SEMAK tidak dapat dibaca.
 
 ### 2.5 `hem` (Hal Ehwal Murid)
 
