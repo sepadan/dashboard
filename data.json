@@ -47,7 +47,28 @@
             "perempuan": 9
           }
         ],
-        "ikut_kaum": [],
+        "ikut_kaum": [
+          {
+            "kaum": "Melayu",
+            "bilangan": 212
+          },
+          {
+            "kaum": "Orang Asli (Semenanjung)",
+            "bilangan": 8
+          },
+          {
+            "kaum": "Bugis",
+            "bilangan": 1
+          },
+          {
+            "kaum": "Indonesia",
+            "bilangan": 1
+          },
+          {
+            "kaum": "Cina",
+            "bilangan": 1
+          }
+        ],
         "guru": 22,
         "staf_sokongan": 2,
         "kelas": 9
@@ -128,365 +149,49 @@
       },
       "akademik": {
         "gps": 3.54,
-        "peratus_lulus": 90.7,
+        "peratus_lulus": 90.73,
         "mata_pelajaran": [
           {
-            "mp": "Bahasa Arab",
+            "mp": "B. ARAB",
             "gpmp": 2.04,
-            "peratus_a": 51.9,
+            "peratus_a": 51.85,
             "peratus_lulus": 96.3
           },
           {
-            "mp": "Pendidikan Islam",
+            "mp": "PEND. ISLAM",
             "gpmp": 2.43,
-            "peratus_a": 33.3,
+            "peratus_a": 33.33,
             "peratus_lulus": 100
           },
           {
-            "mp": "Bahasa Inggeris",
+            "mp": "B. INGGERIS",
             "gpmp": 3.92,
-            "peratus_a": 7,
-            "peratus_lulus": 87.3
+            "peratus_a": 7.04,
+            "peratus_lulus": 87.32
           },
           {
-            "mp": "Sains",
+            "mp": "SAINS",
             "gpmp": 4.32,
             "peratus_a": 0,
-            "peratus_lulus": 86.5
+            "peratus_lulus": 86.46
           }
         ],
         "trend_gps": [
           {
-            "penilaian": "UPSA",
-            "penilaian_penuh": "UJIAN PERTENGAHAN SESI AKADEMIK",
+            "penilaian": "UJIAN PERTENGAHAN SESI AKADEMIK",
             "gps": 2.75
           },
           {
-            "penilaian": "PS 3",
-            "penilaian_penuh": "PENTAKSIRAN SUMATIF 3",
+            "penilaian": "PENTAKSIRAN SUMATIF 3",
             "gps": 3.54
           }
         ],
-        "pbd_tahap": [
-          {
-            "tahap": "TP1",
-            "bilangan": 67
-          },
-          {
-            "tahap": "TP2",
-            "bilangan": 42
-          },
-          {
-            "tahap": "TP3",
-            "bilangan": 50
-          },
-          {
-            "tahap": "TP4",
-            "bilangan": 25
-          },
-          {
-            "tahap": "TP5",
-            "bilangan": 10
-          },
-          {
-            "tahap": "TP6",
-            "bilangan": 4
-          }
-        ],
-        "ikut_kelas": [
-          {
-            "kelas": "1 BIJAK",
-            "gps": 2.04,
-            "peratus_lulus": 96.3,
-            "murid": 28
-          },
-          {
-            "kelas": "2 BIJAK",
-            "gps": 1.52,
-            "peratus_lulus": 100,
-            "murid": 23
-          },
-          {
-            "kelas": "4 BIJAK",
-            "gps": 4.11,
-            "peratus_lulus": 82.8,
-            "murid": 32
-          },
-          {
-            "kelas": "5 BIJAK",
-            "gps": 3.24,
-            "peratus_lulus": 100,
-            "murid": 21
-          },
-          {
-            "kelas": "5 CERDIK",
-            "gps": 4.55,
-            "peratus_lulus": 92.1,
-            "murid": 19
-          },
-          {
-            "kelas": "6 BIJAK",
-            "gps": 3.92,
-            "peratus_lulus": 88,
-            "murid": 28
-          }
-        ],
-        "peperiksaan": "PENTAKSIRAN SUMATIF 3",
-        "peperiksaan_semua": [
-          {
-            "peperiksaan": "UJIAN PERTENGAHAN SESI AKADEMIK",
-            "penilaian": "UPSA",
-            "gps": 2.75,
-            "peratus_lulus": 95,
-            "mata_pelajaran": [
-              {
-                "mp": "Pendidikan Moral",
-                "gpmp": 1.5,
-                "peratus_a": 50,
-                "peratus_lulus": 100
-              },
-              {
-                "mp": "Muzik",
-                "gpmp": 1.66,
-                "peratus_a": 49.3,
-                "peratus_lulus": 100
-              },
-              {
-                "mp": "Pendidikan Jasmani & Kesihatan",
-                "gpmp": 2.15,
-                "peratus_a": 37.1,
-                "peratus_lulus": 99
-              },
-              {
-                "mp": "Pendidikan Seni Visual",
-                "gpmp": 2.33,
-                "peratus_a": 19.9,
-                "peratus_lulus": 100
-              },
-              {
-                "mp": "Bahasa Arab",
-                "gpmp": 2.48,
-                "peratus_a": 28.2,
-                "peratus_lulus": 96.5
-              },
-              {
-                "mp": "Pendidikan Islam",
-                "gpmp": 2.62,
-                "peratus_a": 21.8,
-                "peratus_lulus": 96
-              },
-              {
-                "mp": "Bahasa Melayu",
-                "gpmp": 2.71,
-                "peratus_a": 22.5,
-                "peratus_lulus": 96.1
-              },
-              {
-                "mp": "Reka Bentuk & Teknologi",
-                "gpmp": 2.71,
-                "peratus_a": 19,
-                "peratus_lulus": 100
-              },
-              {
-                "mp": "Sains",
-                "gpmp": 3.27,
-                "peratus_a": 19.7,
-                "peratus_lulus": 93.6
-              },
-              {
-                "mp": "Bahasa Inggeris",
-                "gpmp": 3.32,
-                "peratus_a": 18.1,
-                "peratus_lulus": 90.7
-              },
-              {
-                "mp": "Sejarah",
-                "gpmp": 3.54,
-                "peratus_a": 3.9,
-                "peratus_lulus": 98
-              },
-              {
-                "mp": "Matematik",
-                "gpmp": 3.86,
-                "peratus_a": 16.7,
-                "peratus_lulus": 78.8
-              }
-            ],
-            "pbd_tahap": [
-              {
-                "tahap": "TP1",
-                "bilangan": 684
-              },
-              {
-                "tahap": "TP2",
-                "bilangan": 796
-              },
-              {
-                "tahap": "TP3",
-                "bilangan": 1644
-              },
-              {
-                "tahap": "TP4",
-                "bilangan": 2544
-              },
-              {
-                "tahap": "TP5",
-                "bilangan": 2108
-              },
-              {
-                "tahap": "TP6",
-                "bilangan": 344
-              }
-            ],
-            "ikut_kelas": [
-              {
-                "kelas": "1 BIJAK",
-                "gps": 2.5,
-                "peratus_lulus": 96.7,
-                "murid": 29
-              },
-              {
-                "kelas": "2 BIJAK",
-                "gps": 1.86,
-                "peratus_lulus": 99,
-                "murid": 22
-              },
-              {
-                "kelas": "2 CERDIK",
-                "gps": 2.83,
-                "peratus_lulus": 97.5,
-                "murid": 23
-              },
-              {
-                "kelas": "3 BIJAK",
-                "gps": 2.41,
-                "peratus_lulus": 93.3,
-                "murid": 30
-              },
-              {
-                "kelas": "4 BIJAK",
-                "gps": 3.1,
-                "peratus_lulus": 92.6,
-                "murid": 33
-              },
-              {
-                "kelas": "5 BIJAK",
-                "gps": 2.38,
-                "peratus_lulus": 99.1,
-                "murid": 21
-              },
-              {
-                "kelas": "5 CERDIK",
-                "gps": 3.39,
-                "peratus_lulus": 92.5,
-                "murid": 20
-              },
-              {
-                "kelas": "6 BIJAK",
-                "gps": 3.17,
-                "peratus_lulus": 92.5,
-                "murid": 29
-              }
-            ]
-          },
-          {
-            "peperiksaan": "PENTAKSIRAN SUMATIF 3",
-            "penilaian": "PS 3",
-            "gps": 3.54,
-            "peratus_lulus": 90.7,
-            "mata_pelajaran": [
-              {
-                "mp": "Bahasa Arab",
-                "gpmp": 2.04,
-                "peratus_a": 51.9,
-                "peratus_lulus": 96.3
-              },
-              {
-                "mp": "Pendidikan Islam",
-                "gpmp": 2.43,
-                "peratus_a": 33.3,
-                "peratus_lulus": 100
-              },
-              {
-                "mp": "Bahasa Inggeris",
-                "gpmp": 3.92,
-                "peratus_a": 7,
-                "peratus_lulus": 87.3
-              },
-              {
-                "mp": "Sains",
-                "gpmp": 4.32,
-                "peratus_a": 0,
-                "peratus_lulus": 86.5
-              }
-            ],
-            "pbd_tahap": [
-              {
-                "tahap": "TP1",
-                "bilangan": 67
-              },
-              {
-                "tahap": "TP2",
-                "bilangan": 42
-              },
-              {
-                "tahap": "TP3",
-                "bilangan": 50
-              },
-              {
-                "tahap": "TP4",
-                "bilangan": 25
-              },
-              {
-                "tahap": "TP5",
-                "bilangan": 10
-              },
-              {
-                "tahap": "TP6",
-                "bilangan": 4
-              }
-            ],
-            "ikut_kelas": [
-              {
-                "kelas": "1 BIJAK",
-                "gps": 2.04,
-                "peratus_lulus": 96.3,
-                "murid": 28
-              },
-              {
-                "kelas": "2 BIJAK",
-                "gps": 1.52,
-                "peratus_lulus": 100,
-                "murid": 23
-              },
-              {
-                "kelas": "4 BIJAK",
-                "gps": 4.11,
-                "peratus_lulus": 82.8,
-                "murid": 32
-              },
-              {
-                "kelas": "5 BIJAK",
-                "gps": 3.24,
-                "peratus_lulus": 100,
-                "murid": 21
-              },
-              {
-                "kelas": "5 CERDIK",
-                "gps": 4.55,
-                "peratus_lulus": 92.1,
-                "murid": 19
-              },
-              {
-                "kelas": "6 BIJAK",
-                "gps": 3.92,
-                "peratus_lulus": 88,
-                "murid": 28
-              }
-            ]
-          }
-        ],
-        "sumber": "SEMAK"
+        "pbd_tahap": [],
+        "sumber_semak": {
+          "peperiksaan": "PENTAKSIRAN SUMATIF 3",
+          "murid": 146,
+          "rekod": 248
+        }
       },
       "hem": {
         "kepimpinan": [],
@@ -496,10 +201,27 @@
             "murid": 33
           }
         ],
-        "profil_murid": []
+        "profil_murid": [
+          {
+            "perkara": "Murid berkeperluan khas / OKU",
+            "bilangan": 1
+          },
+          {
+            "perkara": "Anak yatim / piatu",
+            "bilangan": 9
+          },
+          {
+            "perkara": "Keluarga B40 (drp 220 rekod pendapatan)",
+            "bilangan": 175
+          },
+          {
+            "perkara": "Bukan warganegara",
+            "bilangan": 0
+          }
+        ]
       },
       "kokurikulum": {
-        "peratus_penyertaan": 0,
+        "peratus_penyertaan": null,
         "ikut_bidang": [],
         "pencapaian": []
       }
