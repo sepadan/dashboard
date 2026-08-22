@@ -1047,6 +1047,17 @@ function paintCard(item){
 }
 
 /* ============================ TILE ============================ */
+/*
+   Medan kosong MESTI dipaparkan sebagai '—', bukan 0. Di skrin TV bilik guru,
+   "0.0%" terbaca sebagai pencapaian sifar sedangkan datanya cuma belum diisi.
+*/
+const TIADA_NILAI = '—';
+function adaNilai(v){ return v !== null && v !== undefined && v !== '' && isFinite(v); }
+function nilaiKpi(v, fmt, unit){
+  return adaNilai(v) ? { val: fmt(v), unit: unit || '' } : { val: TIADA_NILAI, unit: '' };
+}
+function bezaKpi(v, vp){ return (adaNilai(v) && adaNilai(vp)) ? v - vp : null; }
+
 function tile(parent, {lab, val, unit, delta, deltaLab, better}){
   const d = document.createElement('div'); d.className='tile';
   let dh = '';
@@ -1055,6 +1066,9 @@ function tile(parent, {lab, val, unit, delta, deltaLab, better}){
     const cls = delta===0 ? '' : (good?'up':'down');
     const arrow = delta===0 ? '→' : (delta>0?'↑':'↓');
     dh = `<div class="delta ${cls}">${arrow} ${esc(deltaLab)}</div>`;
+  } else if(deltaLab){
+    // Nota tanpa perbandingan — contohnya cap masa "dikemaskini 08:15".
+    dh = `<div class="delta">${esc(deltaLab)}</div>`;
   }
   d.innerHTML = `<div class="lab">${esc(lab)}</div><div class="val">${esc(val)}${unit?`<small>${esc(unit)}</small>`:''}</div>${dh}`;
   parent.appendChild(d);
@@ -1109,17 +1123,21 @@ function secRingkasan(sec){
     delta: gsp!=null ? gs-gsp : null,
     deltaLab: `nisbah murid:guru 1 : ${nf1.format(nisbah)}`, better:'up'});
   const kh = purataKehadiran(s,'murid'), khp = p?purataKehadiran(p,'murid'):null;
-  tile(tiles,{lab:'Purata kehadiran murid', val:nf1.format(kh||0), unit:'%',
-    delta: khp!=null?kh-khp:null, deltaLab: khp!=null?`${nf1.format(Math.abs(kh-khp))} mata`:'', better:'up'});
+  const kKh = nilaiKpi(kh, v=>nf1.format(v), '%');
+  tile(tiles,{lab:'Purata kehadiran murid', val:kKh.val, unit:kKh.unit,
+    delta: bezaKpi(kh,khp), deltaLab: bezaKpi(kh,khp)!=null?`${nf1.format(Math.abs(kh-khp))} mata`:'', better:'up'});
   const gps = s.akademik?.gps, gpsp = p?.akademik?.gps;
-  tile(tiles,{lab:'GPS (semakin rendah semakin baik)', val:fmtGp(gps||0),
-    delta: gpsp!=null?gps-gpsp:null, deltaLab: gpsp!=null?`${nf2.format(Math.abs(gps-gpsp))} mata`:'', better:'down'});
+  const kGps = nilaiKpi(gps, fmtGp, '');
+  tile(tiles,{lab:'GPS (semakin rendah semakin baik)', val:kGps.val,
+    delta: bezaKpi(gps,gpsp), deltaLab: bezaKpi(gps,gpsp)!=null?`${nf2.format(Math.abs(gps-gpsp))} mata`:'', better:'down'});
   const pl = s.akademik?.peratus_lulus, plp = p?.akademik?.peratus_lulus;
-  tile(tiles,{lab:'Peratus lulus', val:nf1.format(pl||0), unit:'%',
-    delta: plp!=null?pl-plp:null, deltaLab: plp!=null?`${nf1.format(Math.abs(pl-plp))} mata`:'', better:'up'});
+  const kPl = nilaiKpi(pl, v=>nf1.format(v), '%');
+  tile(tiles,{lab:'Peratus lulus', val:kPl.val, unit:kPl.unit,
+    delta: bezaKpi(pl,plp), deltaLab: bezaKpi(pl,plp)!=null?`${nf1.format(Math.abs(pl-plp))} mata`:'', better:'up'});
   const kk = s.kokurikulum?.peratus_penyertaan, kkp = p?.kokurikulum?.peratus_penyertaan;
-  tile(tiles,{lab:'Penyertaan kokurikulum', val:nf1.format(kk||0), unit:'%',
-    delta: kkp!=null?kk-kkp:null, deltaLab: kkp!=null?`${nf1.format(Math.abs(kk-kkp))} mata`:'', better:'up'});
+  const kKk = nilaiKpi(kk, v=>nf1.format(v), '%');
+  tile(tiles,{lab:'Penyertaan kokurikulum', val:kKk.val, unit:kKk.unit,
+    delta: bezaKpi(kk,kkp), deltaLab: bezaKpi(kk,kkp)!=null?`${nf1.format(Math.abs(kk-kkp))} mata`:'', better:'up'});
 
   const g = document.createElement('div'); g.className='grid'; sec.appendChild(g);
   addCard(g,{title:'Kehadiran bulanan', col:'col-8', type:'line',
@@ -1158,7 +1176,38 @@ function secAkademik(sec){
 }
 
 function secKehadiran(sec){
+  /*
+     Kehadiran hari ini. Bilangan sahaja — tiada nama murid.
+     data.json berada dalam repo awam; senarai nama kanak-kanak yang tidak
+     hadir tidak boleh disiarkan. Guru melihat namanya dalam Telegram dan
+     spreadsheet.
+  */
+  const hi = S().kehadiran?.hari_ini;
+  if(hi){
+    const tiles = document.createElement('div'); tiles.className='tiles'; sec.appendChild(tiles);
+    const jumlah = jumlahMurid(S());
+    tile(tiles,{lab:'Tidak hadir hari ini', val:fmtInt(hi.tidak_hadir),
+      delta:null, deltaLab: hi.dikemaskini ? `dikemaskini ${esc(hi.dikemaskini)}` : ''});
+    tile(tiles,{lab:'Hadir hari ini', val:fmtInt(hi.hadir)});
+    const kHi = nilaiKpi(hi.peratus, v=>nf1.format(v), '%');
+    tile(tiles,{lab:'Peratus kehadiran hari ini', val:kHi.val, unit:kHi.unit});
+    tile(tiles,{lab:'Sudah ditanda', val:fmtInt(hi.ditanda),
+      delta:null, deltaLab: jumlah ? `daripada ${fmtInt(jumlah)} murid` : ''});
+  } else {
+    const nota = document.createElement('div');
+    nota.className = 'card';
+    nota.innerHTML = '<header><div><h2>Kehadiran hari ini</h2></div></header>' +
+      '<div class="empty">Belum ditanda untuk hari ini.<br>' +
+      'Angka akan muncul sebaik guru menanda kehadiran melalui bot Telegram.</div>';
+    sec.appendChild(nota);
+  }
+
   const g = document.createElement('div'); g.className='grid'; sec.appendChild(g);
+  if(hi && (hi.ikut_kelas || []).length){
+    addCard(g,{title:'Ketidakhadiran hari ini mengikut kelas', col:'col-12', type:'barh',
+      note:'Bilangan murid tidak hadir hari ini. Kelas tanpa ketidakhadiran tidak disenaraikan.',
+      cfg: cfgTidakHadirHariIni});
+  }
   addCard(g,{title:'Kehadiran bulanan', col:'col-12', type:'line',
     note:'Peratus kehadiran purata murid dan guru mengikut bulan.', cfg: cfgKehadiranBulanan});
   addCard(g,{title:'Kehadiran mengikut kelas', col:'col-12', type:'dot',
@@ -1198,8 +1247,9 @@ function secKoku(sec){
   const tiles = document.createElement('div'); tiles.className='tiles'; sec.appendChild(tiles);
   const p = Sprev();
   const kk = k.peratus_penyertaan, kkp = p?.kokurikulum?.peratus_penyertaan;
-  tile(tiles,{lab:'Penyertaan kokurikulum', val:nf1.format(kk||0), unit:'%',
-    delta: kkp!=null?kk-kkp:null, deltaLab: kkp!=null?`${nf1.format(Math.abs(kk-kkp))} mata`:'', better:'up'});
+  const kKk = nilaiKpi(kk, v=>nf1.format(v), '%');
+  tile(tiles,{lab:'Penyertaan kokurikulum', val:kKk.val, unit:kKk.unit,
+    delta: bezaKpi(kk,kkp), deltaLab: bezaKpi(kk,kkp)!=null?`${nf1.format(Math.abs(kk-kkp))} mata`:'', better:'up'});
   const jumP = sum(k.pencapaian||[], r=>r.bilangan);
   const jumPp = p ? sum(p.kokurikulum?.pencapaian||[], r=>r.bilangan) : null;
   tile(tiles,{lab:'Jumlah pencapaian', val:fmtInt(jumP),
@@ -1313,6 +1363,16 @@ function cfgKehadiranKelas(){
     tableHead:['Kelas','Kehadiran (%)','Beza dari purata'],
     tableRows: ()=> rows.map(r=>[r.kelas, nf1.format(r.peratus), (r.peratus>=purata?'+':'−')+nf1.format(Math.abs(r.peratus-purata))])};
 }
+function cfgTidakHadirHariIni(){
+  const rows = (S().kehadiran?.hari_ini?.ikut_kelas || [])
+                 .slice().sort((a,b)=> b.tidak_hadir - a.tidak_hadir);
+  return {items: rows.map(r=>({label:r.kelas, values:[r.tidak_hadir]})),
+    series:[{name:'Tidak hadir', varName:'--s2'}], fmt: fmtInt, rowH:32,
+    tableHead:['Kelas','Tidak hadir','Ditanda','Peratus hadir'],
+    tableRows: ()=> rows.map(r=>[
+      r.kelas, fmtInt(r.tidak_hadir), fmtInt(r.ditanda),
+      r.ditanda ? nf1.format((r.ditanda - r.tidak_hadir) / r.ditanda * 100) + '%' : '—'])};
+}
 function cfgBidang(){
   const rows = (S().kokurikulum?.ikut_bidang || []).slice().sort((a,b)=>b.murid-a.murid);
   return {items: rows.map(r=>({label:r.bidang, values:[r.murid]})),
@@ -1389,10 +1449,10 @@ function buildLaporan(){
     <div class="kpi">
       ${kpiBox('Jumlah murid', fmtInt(murid))}
       ${kpiBox('Guru & staf', fmtInt((s.enrolmen?.guru||0)+(s.enrolmen?.staf_sokongan||0)))}
-      ${kpiBox('Kehadiran murid', nf1.format(kh||0), '%')}
-      ${kpiBox('GPS', fmtGp(s.akademik?.gps||0))}
-      ${kpiBox('Peratus lulus', nf1.format(s.akademik?.peratus_lulus||0), '%')}
-      ${kpiBox('Penyertaan koku', nf1.format(s.kokurikulum?.peratus_penyertaan||0), '%')}
+      ${(k=>kpiBox('Kehadiran murid', k.val, k.unit))(nilaiKpi(kh, v=>nf1.format(v), '%'))}
+      ${(k=>kpiBox('GPS', k.val))(nilaiKpi(s.akademik?.gps, fmtGp, ''))}
+      ${(k=>kpiBox('Peratus lulus', k.val, k.unit))(nilaiKpi(s.akademik?.peratus_lulus, v=>nf1.format(v), '%'))}
+      ${(k=>kpiBox('Penyertaan koku', k.val, k.unit))(nilaiKpi(s.kokurikulum?.peratus_penyertaan, v=>nf1.format(v), '%'))}
     </div>
 
     <div class="dua">
