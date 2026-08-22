@@ -248,6 +248,24 @@
             "bilangan": 1
           }
         ],
+        "rumah_sukan": [
+          {
+            "rumah": "Biru",
+            "murid": 52
+          },
+          {
+            "rumah": "Hijau",
+            "murid": 45
+          },
+          {
+            "rumah": "Kuning",
+            "murid": 53
+          },
+          {
+            "rumah": "Merah",
+            "murid": 52
+          }
+        ],
         "sumber_aksi": {
           "tahun": "2026",
           "ahli": 129,
