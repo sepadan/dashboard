@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-08-21"
+    "dikemaskini": "2026-08-22"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -105,13 +105,13 @@
           },
           {
             "bulan": "Ogos",
-            "murid": 90.3
+            "murid": 90.1
           }
         ],
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 87.3
+            "peratus": 87.2
           },
           {
             "kelas": "2 BIJAK",
@@ -127,7 +127,7 @@
           },
           {
             "kelas": "4 BIJAK",
-            "peratus": 94.8
+            "peratus": 94.7
           },
           {
             "kelas": "5 BIJAK",
@@ -139,28 +139,28 @@
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 92.1
+            "peratus": 92
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 90.3
+            "peratus": 90.4
           }
         ]
       },
       "akademik": {
-        "gps": 3.54,
-        "peratus_lulus": 90.73,
+        "gps": 3.21,
+        "peratus_lulus": 93.15,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
-            "gpmp": 2.04,
-            "peratus_a": 51.85,
-            "peratus_lulus": 96.3
+            "gpmp": 2.26,
+            "peratus_a": 34,
+            "peratus_lulus": 98
           },
           {
             "mp": "PEND. ISLAM",
-            "gpmp": 2.43,
-            "peratus_a": 33.33,
+            "gpmp": 2.28,
+            "peratus_a": 32.77,
             "peratus_lulus": 100
           },
           {
@@ -183,14 +183,14 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 3.54
+            "gps": 3.21
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
-          "murid": 146,
-          "rekod": 248
+          "murid": 171,
+          "rekod": 336
         }
       },
       "hem": {
@@ -221,9 +221,38 @@
         ]
       },
       "kokurikulum": {
-        "peratus_penyertaan": null,
-        "ikut_bidang": [],
-        "pencapaian": []
+        "peratus_penyertaan": 92.83,
+        "ikut_bidang": [
+          {
+            "bidang": "Sukan & Permainan",
+            "murid": 207
+          },
+          {
+            "bidang": "Unit Beruniform",
+            "murid": 133
+          },
+          {
+            "bidang": "Kelab & Persatuan",
+            "murid": 133
+          }
+        ],
+        "pencapaian": [
+          {
+            "peringkat": "Daerah",
+            "bilangan": 1
+          },
+          {
+            "peringkat": "Negeri",
+            "bilangan": 1
+          }
+        ],
+        "sumber_aksi": {
+          "tahun": "2026",
+          "ahli": 207,
+          "kelab": 16,
+          "pencapaian": 2,
+          "asas": "enrolmen tab main"
+        }
       }
     }
   }
