@@ -173,6 +173,13 @@
   }
   .tile .delta.up{color:var(--up)} .tile .delta.down{color:var(--crit)}
 
+  /* ================= SUB-TAJUK ================= */
+  .subtajuk{margin:22px 0 12px}
+  .subtajuk h3{margin:0;font-size:15px;font-weight:650;letter-spacing:-.01em}
+  .subtajuk span{display:block;margin-top:3px;font-size:12px;color:var(--muted);line-height:1.5}
+  #tvStage .subtajuk h3{font-size:20px}
+  #tvStage .subtajuk span{font-size:13.5px}
+
   /* ================= LEGEND ================= */
   .legend{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px;font-size:11.5px;color:var(--ink2)}
   .legend span{
@@ -1261,6 +1268,22 @@ function secKoku(sec){
   const bid = (k.ikut_bidang||[]).length;
   tile(tiles,{lab:'Bidang aktif', val:fmtInt(bid), delta:null});
 
+  /* Rumah Sukan — barisan tile berasingan.
+     Ia bukan bidang kokurikulum, jadi ia tidak bercampur dengan angka di atas. */
+  const rumah = k.rumah_sukan || [];
+  if(rumah.length){
+    const tajuk = document.createElement('div');
+    tajuk.className = 'subtajuk';
+    tajuk.innerHTML = '<h3>Rumah Sukan</h3><span>Bilangan murid setiap rumah. ' +
+      'Rumah Sukan melibatkan semua murid kecuali Prasekolah, dan tidak dikira ' +
+      'dalam peratus penyertaan kokurikulum.</span>';
+    sec.appendChild(tajuk);
+    const tr = document.createElement('div'); tr.className='tiles'; sec.appendChild(tr);
+    const jumR = sum(rumah, r=>r.murid);
+    rumah.forEach(r=> tile(tr,{lab:r.rumah, val:fmtInt(r.murid),
+      delta:null, deltaLab: jumR ? `${nf1.format(r.murid/jumR*100)}% daripada ${fmtInt(jumR)}` : ''}));
+  }
+
   const g = document.createElement('div'); g.className='grid'; sec.appendChild(g);
   addCard(g,{title:'Penyertaan mengikut bidang kokurikulum', col:'col-6', type:'barh',
     note:'Bilangan murid berdaftar dalam setiap bidang.', cfg: cfgBidang});
@@ -1545,19 +1568,44 @@ function tvBinaSlaid(){
     if(!sec) return;
     const kumpulan = [];
 
-    const tiles = sec.querySelector(':scope > .tiles');
-    if(tiles && tiles.children.length) kumpulan.push({tajuk:t.nama, sub:'Angka utama', nod:[tiles], tiles:true});
+    /*
+       Ambil SETIAP anak langsung seksyen, bukan hanya .tiles pertama dan .grid
+       pertama. Satu seksyen kini boleh ada beberapa baris tile (Kokurikulum ada
+       tile utama dan tile Rumah Sukan) dan kad berdiri sendiri di luar grid
+       (nota "belum ditanda" dalam Kehadiran). Tanpa ini, apa-apa selain yang
+       pertama akan hilang dari Mod TV.
+    */
+    let tunggu = null;                       // sub-tajuk yang menunggu barisan tile
+    [...sec.children].forEach(anak=>{
+      if(anak.classList.contains('subtajuk')){ tunggu = anak; return; }
 
-    const grid = sec.querySelector(':scope > .grid');
-    if(grid){
-      let baris = [], lebar = 0;
-      [...grid.children].forEach(kad=>{
-        const w = tvLebarKad(kad);
-        if(baris.length && lebar + w > 12){ kumpulan.push({tajuk:t.nama, nod:baris}); baris = []; lebar = 0; }
-        baris.push(kad); lebar += w;
-      });
-      if(baris.length) kumpulan.push({tajuk:t.nama, nod:baris});
-    }
+      if(anak.classList.contains('tiles')){
+        if(!anak.children.length){ tunggu = null; return; }
+        kumpulan.push({
+          tajuk: t.nama,
+          sub: tunggu ? tunggu.querySelector('h3').textContent : 'Angka utama',
+          nod: tunggu ? [tunggu, anak] : [anak],
+          tiles: true
+        });
+        tunggu = null;
+        return;
+      }
+
+      if(anak.classList.contains('card')){    // kad berdiri sendiri di luar grid
+        kumpulan.push({tajuk:t.nama, nod:[anak]});
+        return;
+      }
+
+      if(anak.classList.contains('grid')){
+        let baris = [], lebar = 0;
+        [...anak.children].forEach(kad=>{
+          const w = tvLebarKad(kad);
+          if(baris.length && lebar + w > 12){ kumpulan.push({tajuk:t.nama, nod:baris}); baris = []; lebar = 0; }
+          baris.push(kad); lebar += w;
+        });
+        if(baris.length) kumpulan.push({tajuk:t.nama, nod:baris});
+      }
+    });
     kumpulan.forEach(k=> tvSlaid.push(k));
   });
 
@@ -1614,6 +1662,9 @@ function tvMuatSlaid(sl){
     const n = tiles.children.length;
     tiles.style.gridTemplateColumns = `repeat(${n <= 4 ? 2 : 3},1fr)`;
   }
+  // Sub-tajuk tidak meregang; hanya barisan tile mengisi ruang yang tinggal.
+  const st = isi.querySelector(':scope > .subtajuk');
+  if(st) st.style.flex = '0 0 auto';
 
   // Pas 1 — saiz asal, untuk mengukur tinggi carta dan tinggi selain carta.
   // Kelas .mengukur mematikan grid-auto-rows:1fr supaya setiap kad menunjukkan
