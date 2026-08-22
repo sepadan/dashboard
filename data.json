@@ -190,7 +190,8 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 171,
-          "rekod": 336
+          "rekod": 336,
+          "luar_main": 0
         }
       },
       "hem": {
@@ -221,19 +222,19 @@
         ]
       },
       "kokurikulum": {
-        "peratus_penyertaan": 92.83,
+        "peratus_penyertaan": 90.58,
         "ikut_bidang": [
           {
             "bidang": "Sukan & Permainan",
-            "murid": 207
+            "murid": 202
           },
           {
             "bidang": "Unit Beruniform",
-            "murid": 133
+            "murid": 129
           },
           {
             "bidang": "Kelab & Persatuan",
-            "murid": 133
+            "murid": 129
           }
         ],
         "pencapaian": [
@@ -248,10 +249,11 @@
         ],
         "sumber_aksi": {
           "tahun": "2026",
-          "ahli": 207,
+          "ahli": 202,
           "kelab": 16,
           "pencapaian": 2,
-          "asas": "enrolmen tab main"
+          "asas": "enrolmen tab main",
+          "luar_main": 5
         }
       }
     }
