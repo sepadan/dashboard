@@ -145,7 +145,8 @@
             "kelas": "PRASEKOLAH",
             "peratus": 90.4
           }
-        ]
+        ],
+        "hari_ini": null
       },
       "akademik": {
         "gps": 3.21,
@@ -222,18 +223,18 @@
         ]
       },
       "kokurikulum": {
-        "peratus_penyertaan": 90.58,
+        "peratus_penyertaan": 100,
         "ikut_bidang": [
-          {
-            "bidang": "Sukan & Permainan",
-            "murid": 202
-          },
           {
             "bidang": "Unit Beruniform",
             "murid": 129
           },
           {
             "bidang": "Kelab & Persatuan",
+            "murid": 129
+          },
+          {
+            "bidang": "Sukan & Permainan",
             "murid": 129
           }
         ],
@@ -249,11 +250,14 @@
         ],
         "sumber_aksi": {
           "tahun": "2026",
-          "ahli": 202,
-          "kelab": 16,
+          "ahli": 129,
+          "kelab": 12,
           "pencapaian": 2,
-          "asas": "enrolmen tab main",
-          "luar_main": 5
+          "asas": "murid Tahun 3-6 dalam tab main",
+          "luar_main": 5,
+          "rumah_sukan": 202,
+          "bukan_layak": 0,
+          "layak": 129
         }
       }
     }
