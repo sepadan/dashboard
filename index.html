@@ -1277,7 +1277,8 @@ function secKoku(sec){
     }
   } else {
     const bid = (k.ikut_bidang||[]).length;
-    tile(tiles,{lab:'Bidang aktif', val:fmtInt(bid), delta:null});
+    tile(tiles,{lab:'Bidang aktif', val:fmtInt(bid), delta:null,
+      deltaLab:'rekod perjumpaan belum bermula'});
   }
 
   /* Rumah Sukan — barisan tile berasingan.
@@ -1307,8 +1308,14 @@ function secKoku(sec){
       note:'Peratus kehadiran purata bagi setiap kelab sepanjang sesi. Kelab di bawah senarai memerlukan perhatian.',
       cfg: cfgHadirKelab});
   } else {
+    /* AKSI baharu dibina, jadi tab PERJUMPAAN mungkin masih kosong. Nota ini
+       menjelaskan kenapa carta kehadiran tiada — supaya ia tidak dibaca
+       sebagai kegagalan sistem atau kelab yang tidak berjumpa. */
     addCard(g,{title:'Penyertaan mengikut bidang kokurikulum', col:'col-6', type:'barh',
-      note:'Bilangan murid berdaftar dalam setiap bidang.', cfg: cfgBidang});
+      note:'Bilangan murid berdaftar dalam setiap bidang. Ketiga-tiga angka sepatutnya sama, '+
+           'kerana setiap murid Tahun 3–6 menyertai satu unit beruniform, satu kelab, dan satu sukan. '+
+           'Carta kehadiran perjumpaan akan menggantikan carta ini secara automatik sebaik sahaja '+
+           'perjumpaan pertama direkod dalam AKSI.', cfg: cfgBidang});
   }
   addCard(g,{title:'Pencapaian mengikut peringkat', col:'col-6', type:'column',
     note:'Bilangan pingat / kemenangan mengikut peringkat pertandingan.', cfg: cfgPencapaian});

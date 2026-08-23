@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 1.6 · 23 Ogos 2026**
+**Versi 2.0 · 23 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -226,7 +226,30 @@ Medan tetapan yang kosong menjadi `null`, dan dashboard memaparkan **`—`**.
 
 Gunakan `nomborAtauNull_()` untuk medan pilihan.
 
-### 3.7 Manual sentiasa menang
+### 3.7 Tapisan tahun pada `PERJUMPAAN` tidak boleh membuang baris yang kabur
+
+Tab `PERJUMPAAN` dalam AKSI **tiada lajur tahun akademik**, jadi tahun dicungkil dari lajur `TARIKH`. Kalau sel itu dipaparkan sebagai `5/3/26`, tiada tahun 4-digit di dalamnya.
+
+Peraturan: baris tanpa tahun 4-digit **dikekalkan**, bukan dibuang. Ia dikira dalam `diag_perjumpaan.tarikh_kabur` dan dilaporkan dalam dialog **🏃 Uji Sambungan AKSI**.
+
+> Sebabnya: pembuangan senyap menghasilkan carta kosong yang kelihatan seperti *tiada perjumpaan diadakan* — satu kenyataan palsu tentang guru. Angka yang longgar sedikit lebih baik daripada tuduhan yang salah.
+
+`kiraKokuAksi_()` sentiasa memulangkan `diag_perjumpaan` untuk tujuan ini. Medan itu **tidak** masuk ke `data.json`; ada ujian yang membuktikannya.
+
+### 3.8 Satu fail, satu pemilik
+
+| Fail | Pemilik | Cara ia sampai ke GitHub |
+|---|---|---|
+| `index.html` | **git** | Manusia menolaknya dari komputer |
+| `data.json` | **Apps Script** | Automatik setiap 30 minit |
+
+Apps Script **tidak boleh** menolak `index.html`. Fungsi `hantarDashboardKeGitHub()`, pembantu `cariIndexHtml_()`, dan baris tetapan `id_html_dashboard` sudah dibuang pada 23 Ogos 2026.
+
+> Sebabnya: fungsi itu menyalin `index.html` dari Google Drive. Salinan Drive itu menjadi sumber kebenaran kedua. Bila salinan lapuk ditolak, ia menindih kerja yang baharu **di luar git** — jadi tiada `git reflog`, tiada commit, tiada apa yang boleh dipulihkan. Kemudahan satu klik itu tidak berbaloi dengan risiko kehilangan senyap.
+
+Ada ujian dalam `uji-pasang.js` yang gagal kalau mana-mana pengenal itu muncul semula.
+
+### 3.9 Manual sentiasa menang
 
 Nilai yang diisi manual dalam `tetapan_dashboard` atau tab `dash_*` **menindih** nilai dari sistem luar. Kosongkan untuk kembali kepada automatik. Ini memberi jalan keluar bila sistem luar tersilap.
 
@@ -247,7 +270,6 @@ Nilai yang diisi manual dalam `tetapan_dashboard` atau tab `dash_*` **menindih**
 | `id_aksi` | ID spreadsheet AKSI |
 | `peperiksaan_dashboard` | Kosong = ikut `TETAPAN!B4` SEMAK |
 | `ambang_b40` | Pendapatan isi rumah, lalai 5250 |
-| `id_html_dashboard` | ID fail `index.html` dalam Drive; kosong = langkau Langkah 7 |
 
 ### 4.2 Bentuk `data.json`
 
@@ -275,7 +297,6 @@ Menambah sesi baharu = menambah satu kunci di bawah `sesi`. Tiada perubahan kod 
 | `pasangSemua` | Pemasangan satu tekan — tetapan, semakan, jana, hantar, pemicu |
 | `janaDataDashboard` | Pulangkan objek `data.json` |
 | `hantarDataKeGitHub` | Tolak `data.json`; **langkau bila tiada perubahan** |
-| `hantarDashboardKeGitHub` | Tolak `index.html` dari Drive |
 | `semakAkaun` | Akaun semasa + capaian SEMAK/AKSI + pemicu dimiliki |
 | `senaraiPemicu` · `buangPemicuBertimbun` | Urus had 20 pemicu |
 | `ujiSambunganSemak` · `ujiSambunganAksi` | Uji satu penyambung tanpa menghantar |
@@ -346,9 +367,10 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 ## 8. Perkara yang belum selesai
 
 1. ~~Carta bidang kokurikulum tidak bermakna~~ — **selesai 23 Ogos 2026.** Digantikan dengan **Kehadiran perjumpaan mengikut kelab**, dikira dari `PERJUMPAAN.BIL_HADIR` dan `BIL_AHLI`. Carta bidang dikekalkan sebagai jadual dengan nota menerangkan kenapa ketiga-tiga angka sepatutnya sama. Ditambah tile *Perjumpaan diadakan* dan *Laporan belum dihantar* (muncul hanya bila > 0)
-2. **Lima ahli AKSI tiada dalam tab `main`** (`luar_main: 5`) — kemungkinan murid berpindah keluar yang belum dikemas kini dalam tab `KEAHLIAN`. Jalankan **🏃 Uji Sambungan AKSI**; dialog itu kini menyenaraikan IC mereka. **Dialog sahaja — IC tidak pernah masuk ke `data.json`**, dan ada ujian khusus yang membuktikannya
-3. **`id_html_dashboard` kosong** — Langkah 7 dilangkau; `index.html` ditolak manual
-4. **SEMAK masih di Firebase** (`semak-skpr.web.app`) — rancangan migrasi ke GitHub Pages ada, belum dilaksana
+2. ~~Lima ahli AKSI tiada dalam tab `main`~~ — **selesai 23 Ogos 2026.** IC dikenal pasti melalui **🏃 Uji Sambungan AKSI** dan disahkan oleh pengguna: kelima-lima murid **memang sudah berpindah keluar**. Data betul, bukan pepijat. Angka dashboard sudah pun mengecualikan mereka. Kemas kini pilihan: buang baris mereka dari tab `KEAHLIAN` AKSI supaya amaran `luar_main` kembali kosong dan tidak menjadi bunyi bising yang diabaikan. **IC hanya dipaparkan dalam dialog — tidak pernah masuk ke `data.json`**, dan ada ujian khusus yang membuktikannya
+2b. ~~Carta kehadiran perjumpaan kosong~~ — **bukan pepijat.** Disahkan 23 Ogos 2026: AKSI baru sahaja dibina dan tab `PERJUMPAAN` memang belum ada isi. Dashboard sudah menangani keadaan ini dengan betul — ia berundur kepada carta bidang dan memaparkan nota bahawa carta kehadiran akan menggantikannya secara automatik sebaik sahaja perjumpaan pertama direkod. **Tiada tindakan kod diperlukan; ia akan pulih sendiri apabila guru mula menanda kehadiran**
+3. ~~`id_html_dashboard` kosong~~ — **ditutup 23 Ogos 2026 dengan membuang cirinya.** `index.html` memang sepatutnya ditolak melalui git sahaja. Lihat peraturan 3.8
+4. **SEMAK masih di Firebase** (`semak-skpr.web.app`) — pengganti sudah hidup dan disahkan: `sepadan.github.io/semak/` menghidangkan aplikasi penuh (`src/App.html`) dengan log masuk berfungsi. Firebase kini hanya menghidangkan halaman lama yang menghala ke Apps Script, jadi ia **berlebihan tetapi masih hidup** — dua pintu masuk berbeza ke sistem yang sama. Halaman ubah hala sudah disediakan dalam `semak/firebase-tutup/`; tinggal deploy sekali, beri guru masa menukar penanda buku, kemudian padam tapak itu dari Firebase Console
 5. ~~AKSI Fasa 2~~ — **selesai.** Antara muka web ada dalam `docs/` dan log masuk disahkan berfungsi
 6. **Tab `dash_kepimpinan` kosong** — HEM masih perlukan input manual
 7. **Kata laluan lalai SEMAK dan AKSI** (`admin`/`guru`) belum ditukar
@@ -358,7 +380,7 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 11. ~~Pemicu `cuciSesiLama` AKSI belum disahkan~~ — **selesai 23 Ogos 2026.** Pemicu masa wujud dalam projek `1a-_G8le…`, larian terakhir 23 Ogos 3:05 pagi, kadar ralat 0%. Isu #8 turut ditutup dengan ini
 12. ~~`PELAN-MIGRASI.md` ketinggalan~~ — **selesai 23 Ogos 2026.** Fasa 1 dan 2 ditanda siap dan disahkan; Fasa 3–5 ditanda *dibina, menunggu pengesahan*; Fasa 6 ditanda belum patut bermula. Ditambah senarai semak pengesahan operasi baca/tulis
 13. ~~Projek Apps Script "AKSI" bertindih~~ — **selesai 23 Ogos 2026.** Projek `1ABvFq…` sudah dinamakan semula
-14. **Operasi tulis AKSI belum disahkan** — kesepuluh halaman memuat tanpa ralat, tetapi belum diuji sama ada `keahlian`, `kehadiran`, `laporan`, `pencapaian` dan `penilaian` benar-benar menyimpan ke spreadsheet. Senarai semak ada dalam `PELAN-MIGRASI.md`. **Fasa 6 tidak boleh bermula sebelum ini selesai** — deployment lama ialah satu-satunya jaring keselamatan
+14. **Operasi tulis AKSI separa disahkan** — `laporan.html` **disahkan berfungsi 23 Ogos 2026**: laporan tersimpan bersama satu gambar, nama guru dan tarikh betul. Ini membuktikan laluan tulis dan muat naik fail menerusi ApiShim memang berfungsi, iaitu operasi paling berisiko dalam senarai. Masih belum diuji: `keahlian`, `kehadiran`, `pencapaian`, `penilaian`, dan sama ada `PDF_URL` benar-benar terisi. Senarai semak ada dalam `PELAN-MIGRASI.md`; **`kehadiran.html` ialah keutamaan tertinggi** kerana ia yang mengisi tab `PERJUMPAAN`. **Fasa 6 tidak boleh bermula sebelum ini selesai** — deployment lama ialah satu-satunya jaring keselamatan
 
 ---
 
@@ -378,6 +400,10 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 | Versi | Tarikh | Perubahan |
 |---|---|---|
 | 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
+| 2.0 | 23 Ogos 2026 | Isu #3 ditutup dengan **membuang** laluan Drive→GitHub untuk `index.html` — peraturan 3.8 *satu fail, satu pemilik* ditambah, dengan ujian yang menghalangnya dipulihkan. Isu #4 disiasat: pengganti GitHub Pages disahkan hidup, halaman ubah hala Firebase disediakan |
+| 1.9 | 23 Ogos 2026 | Isu #2 dan #2b ditutup selepas pengesahan pengguna: lima murid memang berpindah keluar, dan tab `PERJUMPAAN` kosong kerana AKSI baru dibina — kedua-duanya data betul, bukan pepijat. Carta bidang (keadaan berundur) kini membawa nota menerangkan bila carta kehadiran akan menggantikannya |
+| 1.8 | 23 Ogos 2026 | `laporan.html` AKSI disahkan menulis ke spreadsheet bersama muat naik gambar — isu #14 separa ditutup, laluan tulis ApiShim terbukti. Dialog AKSI kini mencetak inventori tab (wujud / bilangan baris / dinamakan semula) |
+| 1.7 | 23 Ogos 2026 | IC lima ahli `luar_main` dikenal pasti dan dinyahkod — satu murid setiap Tahun 1, 3, 4, 5, 6. Tapisan tahun `PERJUMPAAN` tidak lagi membuang tarikh 2-digit secara senyap (peraturan 3.7). Dialog AKSI kini menerangkan kenapa statistik perjumpaan kosong |
 | 1.6 | 23 Ogos 2026 | Tab Kokurikulum ditulis semula — kehadiran perjumpaan menggantikan carta bidang yang rata. SEMAK disahkan berfungsi. Isu #1, #5, #10, #13 ditutup |
 | 1.5 | 23 Ogos 2026 | Isu #8 dan #11 ditutup — pemicu `cuciSesiLama` disahkan berjalan. Amaran dua projek Apps Script bernama "AKSI" ditambah ke 2.3; dibuka sebagai isu #13 |
 | 1.4 | 23 Ogos 2026 | Tulis semula `README.md` dan `PELAN-MIGRASI.md` repo AKSI supaya sepadan dengan kenyataan. Isu #9 dan #12 ditutup; #13 dibuka |
