@@ -149,8 +149,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 3.19,
-        "peratus_lulus": 93.73,
+        "gps": 3.07,
+        "peratus_lulus": 94.4,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
@@ -165,22 +165,28 @@
             "peratus_lulus": 100
           },
           {
+            "mp": "SEJARAH",
+            "gpmp": 2.33,
+            "peratus_a": 14.29,
+            "peratus_lulus": 100
+          },
+          {
             "mp": "RBT",
             "gpmp": 3.03,
             "peratus_a": 12.9,
             "peratus_lulus": 100
           },
           {
+            "mp": "SAINS",
+            "gpmp": 3.84,
+            "peratus_a": 10.92,
+            "peratus_lulus": 89.08
+          },
+          {
             "mp": "B. INGGERIS",
             "gpmp": 3.92,
             "peratus_a": 7.04,
             "peratus_lulus": 87.32
-          },
-          {
-            "mp": "SAINS",
-            "gpmp": 4.32,
-            "peratus_a": 0,
-            "peratus_lulus": 86.46
           }
         ],
         "trend_gps": [
@@ -190,14 +196,31 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 3.19
+            "gps": 3.07
           }
         ],
-        "pbd_tahap": [],
+        "pbd_tahap": [
+          {
+            "tahap": "TP3",
+            "bilangan": 1
+          },
+          {
+            "tahap": "TP4",
+            "bilangan": 2
+          },
+          {
+            "tahap": "TP5",
+            "bilangan": 11
+          },
+          {
+            "tahap": "TP6",
+            "bilangan": 9
+          }
+        ],
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 171,
-          "rekod": 367,
+          "rekod": 411,
           "luar_main": 0
         }
       },
