@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 1.3 · 23 Ogos 2026**
+**Versi 1.4 · 23 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -345,10 +345,11 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 6. **Tab `dash_kepimpinan` kosong** — HEM masih perlukan input manual
 7. **Kata laluan lalai SEMAK dan AKSI** (`admin`/`guru`) belum ditukar
 8. **Sesi AKSI tidak pernah dibersihkan** — `SESI_*` dalam Script Properties bertimbun; had 500 KB akan menyebabkan log masuk gagal
-9. **`README.md` repo AKSI sudah lapuk** — ia berkata kod berada dalam `src/` dan `web/ belum dibina`. Sebenarnya kod di akar repo dan `docs/` sudah siap serta berfungsi. Betulkan
+9. ~~`README.md` repo AKSI lapuk~~ — **selesai 23 Ogos 2026.** Ditulis semula: struktur sebenar, cara *shim* berfungsi, status pengesahan
 10. ~~AKSI belum diuji hujung-ke-hujung~~ — **selesai 23 Ogos 2026.** Log masuk dari GitHub Pages berjaya. **SEMAK** (`sepadan/semak`) masih belum disahkan dengan cara yang sama
 11. **Pemicu `cuciSesiLama` AKSI belum disahkan** — log masuk yang berjaya membuktikan langkah 1–4 patch sudah masuk, tetapi langkah 5 (pasang pemicu harian pembersih sesi) dipasang berasingan dan tidak dapat dilihat dari luar. Semak senarai Triggers projek AKSI. Berkaitan dengan isu #8
-12. **`PELAN-MIGRASI.md` AKSI ketinggalan di belakang kenyataan** — ia menyenaraikan Fasa 2 sebagai kerja akan datang, sedangkan kesepuluh halaman sudah wujud dan log masuk berfungsi. Kemas kini penanda fasa supaya ia mencerminkan keadaan sebenar
+12. ~~`PELAN-MIGRASI.md` ketinggalan~~ — **selesai 23 Ogos 2026.** Fasa 1 dan 2 ditanda siap dan disahkan; Fasa 3–5 ditanda *dibina, menunggu pengesahan*; Fasa 6 ditanda belum patut bermula. Ditambah senarai semak pengesahan operasi baca/tulis
+13. **Operasi tulis AKSI belum disahkan** — kesepuluh halaman memuat tanpa ralat, tetapi belum diuji sama ada `keahlian`, `kehadiran`, `laporan`, `pencapaian` dan `penilaian` benar-benar menyimpan ke spreadsheet. Senarai semak ada dalam `PELAN-MIGRASI.md`. **Fasa 6 tidak boleh bermula sebelum ini selesai** — deployment lama ialah satu-satunya jaring keselamatan
 
 ---
 
@@ -368,6 +369,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 | Versi | Tarikh | Perubahan |
 |---|---|---|
 | 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
+| 1.4 | 23 Ogos 2026 | Tulis semula `README.md` dan `PELAN-MIGRASI.md` repo AKSI supaya sepadan dengan kenyataan. Isu #9 dan #12 ditutup; #13 dibuka |
 | 1.3 | 23 Ogos 2026 | AKSI disahkan berfungsi dalam produksi — log masuk berjaya dari GitHub Pages. Isu #10 ditutup; #11 dan #12 dibuka |
 | 1.2 | 23 Ogos 2026 | Audit tiga repo awam. Rekod antara muka web AKSI (`docs/`, ApiShim) sebagai siap dan berfungsi. Tambah 2.3b untuk repo `semak`. Pembersihan fail lapuk di GitHub dan folder tempatan |
 | 1.1 | 23 Ogos 2026 | Tambah `CLAUDE.md` sebagai protokol kerja. Tile Rumah Sukan setiap rumah dalam tab Kokurikulum. Pembina slaid Mod TV mengambil semua anak seksyen (dahulu hanya `.tiles` dan `.grid` pertama, menyebabkan barisan tile kedua hilang dari Mod TV). Sahkan pemicu 30 minit berjalan di produksi |
