@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 1.2 · 23 Ogos 2026**
+**Versi 1.3 · 23 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -99,7 +99,7 @@ MARKAH:  0 PEPERIKSAAN · 1 KELAS · 2 NAMA MURID · 3 SUBJEK · 4 MARKAH
 | Repo kod | awam — `sepadan/aksi` (kod sahaja, tiada data) |
 | Antara muka web | `sepadan/aksi` → `docs/` di GitHub Pages |
 
-**Antara muka web AKSI sudah dibina** (Fasa 2 pelan migrasi, disahkan 23 Ogos 2026). Sepuluh halaman statik dalam `docs/`, dengan `js/api.js` sebagai *shim*: ia menggantikan `google.script.run` dengan `fetch` POST ke `/exec` menggunakan `Proxy`, `Content-Type: text/plain` (elak preflight CORS) dan `redirect: follow`. Halaman-halaman itu memanggil `google.script.run` seperti biasa tanpa perlu diubah — corak yang kemas.
+**Antara muka web AKSI sudah dibina dan BERFUNGSI DALAM PRODUKSI.** Log masuk dari `https://sepadan.github.io/aksi/` disahkan berjaya pada 23 Ogos 2026 — bermakna patch Apps Script (`Auth.gs`, `WebBackend.gs`, dan `getIdentitiAwam`/`getSidebarData` dalam `API_DIBENARKAN`) semuanya sudah masuk ke deployment sebenar, dan CORS merentas asal berfungsi seperti dirancang. Sepuluh halaman statik dalam `docs/`, dengan `js/api.js` sebagai *shim*: ia menggantikan `google.script.run` dengan `fetch` POST ke `/exec` menggunakan `Proxy`, `Content-Type: text/plain` (elak preflight CORS) dan `redirect: follow`. Halaman-halaman itu memanggil `google.script.run` seperti biasa tanpa perlu diubah — corak yang kemas.
 
 `docs/js/config.js` ialah satu-satunya tempat URL `/exec` ditetapkan.
 
@@ -346,7 +346,9 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 7. **Kata laluan lalai SEMAK dan AKSI** (`admin`/`guru`) belum ditukar
 8. **Sesi AKSI tidak pernah dibersihkan** — `SESI_*` dalam Script Properties bertimbun; had 500 KB akan menyebabkan log masuk gagal
 9. **`README.md` repo AKSI sudah lapuk** — ia berkata kod berada dalam `src/` dan `web/ belum dibina`. Sebenarnya kod di akar repo dan `docs/` sudah siap serta berfungsi. Betulkan
-10. **SEMAK dan AKSI belum diuji hujung-ke-hujung dari luar** — kedua-dua tapak memuat cangkerangnya dengan betul dan *shim* terpasang, tetapi panggilan `/exec` tidak dapat disahkan dari persekitaran ujian. Sila sahkan dalam pelayar sekolah
+10. ~~AKSI belum diuji hujung-ke-hujung~~ — **selesai 23 Ogos 2026.** Log masuk dari GitHub Pages berjaya. **SEMAK** (`sepadan/semak`) masih belum disahkan dengan cara yang sama
+11. **Pemicu `cuciSesiLama` AKSI belum disahkan** — log masuk yang berjaya membuktikan langkah 1–4 patch sudah masuk, tetapi langkah 5 (pasang pemicu harian pembersih sesi) dipasang berasingan dan tidak dapat dilihat dari luar. Semak senarai Triggers projek AKSI. Berkaitan dengan isu #8
+12. **`PELAN-MIGRASI.md` AKSI ketinggalan di belakang kenyataan** — ia menyenaraikan Fasa 2 sebagai kerja akan datang, sedangkan kesepuluh halaman sudah wujud dan log masuk berfungsi. Kemas kini penanda fasa supaya ia mencerminkan keadaan sebenar
 
 ---
 
@@ -366,6 +368,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 | Versi | Tarikh | Perubahan |
 |---|---|---|
 | 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
+| 1.3 | 23 Ogos 2026 | AKSI disahkan berfungsi dalam produksi — log masuk berjaya dari GitHub Pages. Isu #10 ditutup; #11 dan #12 dibuka |
 | 1.2 | 23 Ogos 2026 | Audit tiga repo awam. Rekod antara muka web AKSI (`docs/`, ApiShim) sebagai siap dan berfungsi. Tambah 2.3b untuk repo `semak`. Pembersihan fail lapuk di GitHub dan folder tempatan |
 | 1.1 | 23 Ogos 2026 | Tambah `CLAUDE.md` sebagai protokol kerja. Tile Rumah Sukan setiap rumah dalam tab Kokurikulum. Pembina slaid Mod TV mengambil semua anak seksyen (dahulu hanya `.tiles` dan `.grid` pertama, menyebabkan barisan tile kedua hilang dari Mod TV). Sahkan pemicu 30 minit berjalan di produksi |
 
