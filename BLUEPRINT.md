@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 2.0 · 23 Ogos 2026**
+**Versi 2.2 · 23 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -370,7 +370,13 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 2. ~~Lima ahli AKSI tiada dalam tab `main`~~ — **selesai 23 Ogos 2026.** IC dikenal pasti melalui **🏃 Uji Sambungan AKSI** dan disahkan oleh pengguna: kelima-lima murid **memang sudah berpindah keluar**. Data betul, bukan pepijat. Angka dashboard sudah pun mengecualikan mereka. Kemas kini pilihan: buang baris mereka dari tab `KEAHLIAN` AKSI supaya amaran `luar_main` kembali kosong dan tidak menjadi bunyi bising yang diabaikan. **IC hanya dipaparkan dalam dialog — tidak pernah masuk ke `data.json`**, dan ada ujian khusus yang membuktikannya
 2b. ~~Carta kehadiran perjumpaan kosong~~ — **bukan pepijat.** Disahkan 23 Ogos 2026: AKSI baru sahaja dibina dan tab `PERJUMPAAN` memang belum ada isi. Dashboard sudah menangani keadaan ini dengan betul — ia berundur kepada carta bidang dan memaparkan nota bahawa carta kehadiran akan menggantikannya secara automatik sebaik sahaja perjumpaan pertama direkod. **Tiada tindakan kod diperlukan; ia akan pulih sendiri apabila guru mula menanda kehadiran**
 3. ~~`id_html_dashboard` kosong~~ — **ditutup 23 Ogos 2026 dengan membuang cirinya.** `index.html` memang sepatutnya ditolak melalui git sahaja. Lihat peraturan 3.8
-4. **SEMAK masih di Firebase** (`semak-skpr.web.app`) — pengganti sudah hidup dan disahkan: `sepadan.github.io/semak/` menghidangkan aplikasi penuh (`src/App.html`) dengan log masuk berfungsi. Firebase kini hanya menghidangkan halaman lama yang menghala ke Apps Script, jadi ia **berlebihan tetapi masih hidup** — dua pintu masuk berbeza ke sistem yang sama. Halaman ubah hala sudah disediakan dalam `semak/firebase-tutup/`; tinggal deploy sekali, beri guru masa menukar penanda buku, kemudian padam tapak itu dari Firebase Console
+4. **SEMAK masih di Firebase** (`semak-skpr.web.app`) — pengganti sudah hidup dan disahkan: `sepadan.github.io/semak/` menghidangkan aplikasi penuh (`src/App.html`) dengan log masuk berfungsi. Firebase hanya menghidangkan halaman penunjuk ke Apps Script; **tiada kod, data atau markah tersimpan di sana**.
+
+   **Keputusan pengguna (23 Ogos 2026): padam terus tapak Firebase**, tanpa halaman ubah hala. Komputer sekolah tiada Node/npm, jadi Firebase CLI tidak dapat dipasang, dan bilangan guru cukup kecil untuk pautan baharu diumumkan terus. Kesannya: pautan lama memaparkan *Site Not Found*.
+
+   Fail ubah hala kekal disimpan sekiranya keputusan berubah: `semak/tutup-tanpa-cli/doGet-ubah-hala.gs` (tanpa pemasangan) dan `semak/firebase-tutup/` (perlu Firebase CLI).
+
+   ⚠️ **ID projek `semak-skpr` hilang selamanya selepas dipadam** dan tidak boleh diguna semula sesiapa pun.
 5. ~~AKSI Fasa 2~~ — **selesai.** Antara muka web ada dalam `docs/` dan log masuk disahkan berfungsi
 6. **Tab `dash_kepimpinan` kosong** — HEM masih perlukan input manual
 7. **Kata laluan lalai SEMAK dan AKSI** (`admin`/`guru`) belum ditukar
@@ -400,6 +406,8 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 | Versi | Tarikh | Perubahan |
 |---|---|---|
 | 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
+| 2.2 | 23 Ogos 2026 | Keputusan: tapak Firebase dipadam terus tanpa halaman ubah hala; pautan baharu diumumkan kepada guru. Fail ubah hala dikekalkan sebagai simpanan |
+| 2.1 | 23 Ogos 2026 | Firebase CLI tidak boleh dipasang (tiada Node di komputer sekolah). Ubah hala SEMAK dialihkan ke `doGet()` Apps Script — tiada pemasangan diperlukan, dan ia turut menangkap pautan `/exec` terus |
 | 2.0 | 23 Ogos 2026 | Isu #3 ditutup dengan **membuang** laluan Drive→GitHub untuk `index.html` — peraturan 3.8 *satu fail, satu pemilik* ditambah, dengan ujian yang menghalangnya dipulihkan. Isu #4 disiasat: pengganti GitHub Pages disahkan hidup, halaman ubah hala Firebase disediakan |
 | 1.9 | 23 Ogos 2026 | Isu #2 dan #2b ditutup selepas pengesahan pengguna: lima murid memang berpindah keluar, dan tab `PERJUMPAAN` kosong kerana AKSI baru dibina — kedua-duanya data betul, bukan pepijat. Carta bidang (keadaan berundur) kini membawa nota menerangkan bila carta kehadiran akan menggantikannya |
 | 1.8 | 23 Ogos 2026 | `laporan.html` AKSI disahkan menulis ke spreadsheet bersama muat naik gambar — isu #14 separa ditutup, laluan tulis ApiShim terbukti. Dialog AKSI kini mencetak inventori tab (wujud / bilangan baris / dinamakan semula) |
