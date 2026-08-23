@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-08-22"
+    "dikemaskini": "2026-08-23"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -149,8 +149,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 3.21,
-        "peratus_lulus": 93.15,
+        "gps": 3.19,
+        "peratus_lulus": 93.73,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
@@ -162,6 +162,12 @@
             "mp": "PEND. ISLAM",
             "gpmp": 2.28,
             "peratus_a": 32.77,
+            "peratus_lulus": 100
+          },
+          {
+            "mp": "RBT",
+            "gpmp": 3.03,
+            "peratus_a": 12.9,
             "peratus_lulus": 100
           },
           {
@@ -184,14 +190,14 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 3.21
+            "gps": 3.19
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 171,
-          "rekod": 336,
+          "rekod": 367,
           "luar_main": 0
         }
       },
