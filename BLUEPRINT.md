@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 2.2 · 23 Ogos 2026**
+**Versi 2.3 · 24 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -387,6 +387,7 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 12. ~~`PELAN-MIGRASI.md` ketinggalan~~ — **selesai 23 Ogos 2026.** Fasa 1 dan 2 ditanda siap dan disahkan; Fasa 3–5 ditanda *dibina, menunggu pengesahan*; Fasa 6 ditanda belum patut bermula. Ditambah senarai semak pengesahan operasi baca/tulis
 13. ~~Projek Apps Script "AKSI" bertindih~~ — **selesai 23 Ogos 2026.** Projek `1ABvFq…` sudah dinamakan semula
 14. **Operasi tulis AKSI separa disahkan** — `laporan.html` **disahkan berfungsi 23 Ogos 2026**: laporan tersimpan bersama satu gambar, nama guru dan tarikh betul. Ini membuktikan laluan tulis dan muat naik fail menerusi ApiShim memang berfungsi, iaitu operasi paling berisiko dalam senarai. Masih belum diuji: `keahlian`, `kehadiran`, `pencapaian`, `penilaian`, dan sama ada `PDF_URL` benar-benar terisi. Senarai semak ada dalam `PELAN-MIGRASI.md`; **`kehadiran.html` ialah keutamaan tertinggi** kerana ia yang mengisi tab `PERJUMPAAN`. **Fasa 6 tidak boleh bermula sebelum ini selesai** — deployment lama ialah satu-satunya jaring keselamatan
+15. ~~Logout AKSI boleh tergantung~~ — **pembaikan diterbitkan 24 Ogos 2026.** Sesi pelayar kini dipadam serta-merta tanpa menunggu jawapan Apps Script; pembatalan token dihantar dengan `keepalive`, permintaan API mempunyai had masa, dan URL aset diberi versi supaya cache GitHub Pages tidak mengekalkan kod lama. GitHub Pages run #19 berjaya dan ujian automatik lulus. **Masih perlu satu pengesahan manual menggunakan akaun guru sebenar** bahawa sidebar bertukar kepada *Mod lihat sahaja* selepas logout
 
 ---
 
@@ -405,7 +406,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
-| 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
+| 2.3 | 24 Ogos 2026 | Isu logout AKSI yang tergantung dibaiki: sesi tempatan tamat serta-merta, pembatalan token menggunakan `keepalive`, API/loading mempunyai had masa, dan URL aset diberi versi untuk memintas cache. GitHub Pages run #19 berjaya; ujian automatik lulus; pengesahan akaun guru sebenar masih perlu |
 | 2.2 | 23 Ogos 2026 | Keputusan: tapak Firebase dipadam terus tanpa halaman ubah hala; pautan baharu diumumkan kepada guru. Fail ubah hala dikekalkan sebagai simpanan |
 | 2.1 | 23 Ogos 2026 | Firebase CLI tidak boleh dipasang (tiada Node di komputer sekolah). Ubah hala SEMAK dialihkan ke `doGet()` Apps Script — tiada pemasangan diperlukan, dan ia turut menangkap pautan `/exec` terus |
 | 2.0 | 23 Ogos 2026 | Isu #3 ditutup dengan **membuang** laluan Drive→GitHub untuk `index.html` — peraturan 3.8 *satu fail, satu pemilik* ditambah, dengan ujian yang menghalangnya dipulihkan. Isu #4 disiasat: pengganti GitHub Pages disahkan hidup, halaman ubah hala Firebase disediakan |
@@ -418,6 +419,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 | 1.3 | 23 Ogos 2026 | AKSI disahkan berfungsi dalam produksi — log masuk berjaya dari GitHub Pages. Isu #10 ditutup; #11 dan #12 dibuka |
 | 1.2 | 23 Ogos 2026 | Audit tiga repo awam. Rekod antara muka web AKSI (`docs/`, ApiShim) sebagai siap dan berfungsi. Tambah 2.3b untuk repo `semak`. Pembersihan fail lapuk di GitHub dan folder tempatan |
 | 1.1 | 23 Ogos 2026 | Tambah `CLAUDE.md` sebagai protokol kerja. Tile Rumah Sukan setiap rumah dalam tab Kokurikulum. Pembina slaid Mod TV mengambil semua anak seksyen (dahulu hanya `.tiles` dan `.grid` pertama, menyebabkan barisan tile kedua hilang dari Mod TV). Sahkan pemicu 30 minit berjalan di produksi |
+| 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
 
 ---
 
