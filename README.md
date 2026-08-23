@@ -9,6 +9,8 @@ Dibina untuk **SK Paya Redan (JBA5054), Pagoh, Johor**
 
 </div>
 
+> **📐 [BLUEPRINT.md](BLUEPRINT.md)** — seni bina penuh ekosistem: dashboard ini, sistem KEHADIRAN, SEMAK dan AKSI, kontrak data antara mereka, dan peraturan yang tidak boleh dilanggar. Baca dahulu sebelum mengubah apa-apa.
+
 ---
 
 ## Apa ini
