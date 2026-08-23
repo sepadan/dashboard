@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 1.1 · 23 Ogos 2026**
+**Versi 1.2 · 23 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -97,6 +97,11 @@ MARKAH:  0 PEPERIKSAAN · 1 KELAS · 2 NAMA MURID · 3 SUBJEK · 4 MARKAH
 | Apps Script | `1a-_G8leFyeftmf4jUB5JURZbZGYlmqlyKgRHm7H8sdqbFGXX5GFDwskK` |
 | Pemilik | `sekolah-3458-cm1@moe-dl.edu.my` (delima) |
 | Repo kod | awam — `sepadan/aksi` (kod sahaja, tiada data) |
+| Antara muka web | `sepadan/aksi` → `docs/` di GitHub Pages |
+
+**Antara muka web AKSI sudah dibina** (Fasa 2 pelan migrasi, disahkan 23 Ogos 2026). Sepuluh halaman statik dalam `docs/`, dengan `js/api.js` sebagai *shim*: ia menggantikan `google.script.run` dengan `fetch` POST ke `/exec` menggunakan `Proxy`, `Content-Type: text/plain` (elak preflight CORS) dan `redirect: follow`. Halaman-halaman itu memanggil `google.script.run` seperti biasa tanpa perlu diubah — corak yang kemas.
+
+`docs/js/config.js` ialah satu-satunya tempat URL `/exec` ditetapkan.
 
 **Tab yang dibaca dashboard:**
 
@@ -110,6 +115,15 @@ MARKAH:  0 PEPERIKSAAN · 1 KELAS · 2 NAMA MURID · 3 SUBJEK · 4 MARKAH
 Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangunan; menyusun semula lajur tidak akan memecahkan penyambung.
 
 **Data AKSI yang BELUM digunakan** (peluang penambahbaikan): `PERJUMPAAN`, `KEHADIRAN`, `LAPORAN_PERJUMPAAN`, `PENILAIAN_KOKU`, `KOMITMEN_DETAIL`, `EKSTRA_KURIKULUM`, `PAJSK_SUMMARY`.
+
+### 2.3b Repo awam yang lain
+
+| Repo | Kandungan | Nota |
+|---|---|---|
+| `sepadan/semak` | `index.html` (iframe) + `src/` (5 fail) | Aplikasi SEMAK versi statik |
+| `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
+
+`sepadan/semak/index.html` ialah cangkerang 594 bait yang meng-*iframe* `src/App.html`. Ia menggunakan corak *shim* yang sama seperti AKSI.
 
 ### 2.4 DASHBOARD — paparan
 
@@ -331,6 +345,8 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 6. **Tab `dash_kepimpinan` kosong** — HEM masih perlukan input manual
 7. **Kata laluan lalai SEMAK dan AKSI** (`admin`/`guru`) belum ditukar
 8. **Sesi AKSI tidak pernah dibersihkan** — `SESI_*` dalam Script Properties bertimbun; had 500 KB akan menyebabkan log masuk gagal
+9. **`README.md` repo AKSI sudah lapuk** — ia berkata kod berada dalam `src/` dan `web/ belum dibina`. Sebenarnya kod di akar repo dan `docs/` sudah siap serta berfungsi. Betulkan
+10. **SEMAK dan AKSI belum diuji hujung-ke-hujung dari luar** — kedua-dua tapak memuat cangkerangnya dengan betul dan *shim* terpasang, tetapi panggilan `/exec` tidak dapat disahkan dari persekitaran ujian. Sila sahkan dalam pelayar sekolah
 
 ---
 
@@ -350,6 +366,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 | Versi | Tarikh | Perubahan |
 |---|---|---|
 | 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
+| 1.2 | 23 Ogos 2026 | Audit tiga repo awam. Rekod antara muka web AKSI (`docs/`, ApiShim) sebagai siap dan berfungsi. Tambah 2.3b untuk repo `semak`. Pembersihan fail lapuk di GitHub dan folder tempatan |
 | 1.1 | 23 Ogos 2026 | Tambah `CLAUDE.md` sebagai protokol kerja. Tile Rumah Sukan setiap rumah dalam tab Kokurikulum. Pembina slaid Mod TV mengambil semua anak seksyen (dahulu hanya `.tiles` dan `.grid` pertama, menyebabkan barisan tile kedua hilang dari Mod TV). Sahkan pemicu 30 minit berjalan di produksi |
 
 ---
