@@ -1265,8 +1265,20 @@ function secKoku(sec){
   const luar = sum((k.pencapaian||[]).filter(r=>!/sekolah/i.test(r.peringkat)), r=>r.bilangan);
   tile(tiles,{lab:'Pencapaian luar sekolah', val:fmtInt(luar), delta:null,
     deltaLab:'daerah, negeri & kebangsaan'});
-  const bid = (k.ikut_bidang||[]).length;
-  tile(tiles,{lab:'Bidang aktif', val:fmtInt(bid), delta:null});
+  const pj = k.perjumpaan;
+  if(pj){
+    tile(tiles,{lab:'Perjumpaan diadakan', val:fmtInt(pj.bil),
+      delta:null, deltaLab:`${fmtInt(pj.kelab_aktif)} kelab aktif`});
+    /* Hanya muncul bila ada sesuatu untuk ditindak. Tile bertulis "0"
+       setiap hari akan diabaikan dalam seminggu. */
+    if(pj.laporan_belum > 0){
+      tile(tiles,{lab:'Laporan belum dihantar', val:fmtInt(pj.laporan_belum),
+        delta:null, deltaLab:`daripada ${fmtInt(pj.bil)} perjumpaan`});
+    }
+  } else {
+    const bid = (k.ikut_bidang||[]).length;
+    tile(tiles,{lab:'Bidang aktif', val:fmtInt(bid), delta:null});
+  }
 
   /* Rumah Sukan — barisan tile berasingan.
      Ia bukan bidang kokurikulum, jadi ia tidak bercampur dengan angka di atas. */
@@ -1284,11 +1296,27 @@ function secKoku(sec){
       delta:null, deltaLab: jumR ? `${nf1.format(r.murid/jumR*100)}% daripada ${fmtInt(jumR)}` : ''}));
   }
 
+  /* Kehadiran perjumpaan menggantikan carta bidang sebagai carta utama.
+     Setiap murid Tahun 3-6 wajib menyertai ketiga-tiga bidang, jadi carta
+     bidang sentiasa menunjukkan tiga bar sama panjang — betul, tetapi tidak
+     memberitahu sesiapa apa-apa. Kehadiran perjumpaan berbeza antara kelab,
+     dan itulah yang boleh ditindak. */
   const g = document.createElement('div'); g.className='grid'; sec.appendChild(g);
-  addCard(g,{title:'Penyertaan mengikut bidang kokurikulum', col:'col-6', type:'barh',
-    note:'Bilangan murid berdaftar dalam setiap bidang.', cfg: cfgBidang});
+  if(pj && (pj.ikut_kelab||[]).length){
+    addCard(g,{title:'Kehadiran perjumpaan mengikut kelab', col:'col-6', type:'barh',
+      note:'Peratus kehadiran purata bagi setiap kelab sepanjang sesi. Kelab di bawah senarai memerlukan perhatian.',
+      cfg: cfgHadirKelab});
+  } else {
+    addCard(g,{title:'Penyertaan mengikut bidang kokurikulum', col:'col-6', type:'barh',
+      note:'Bilangan murid berdaftar dalam setiap bidang.', cfg: cfgBidang});
+  }
   addCard(g,{title:'Pencapaian mengikut peringkat', col:'col-6', type:'column',
     note:'Bilangan pingat / kemenangan mengikut peringkat pertandingan.', cfg: cfgPencapaian});
+  if(pj && (pj.ikut_kelab||[]).length){
+    addCard(g,{title:'Penyertaan mengikut bidang', col:'col-12', type:'table',
+      note:'Setiap murid Tahun 3–6 menyertai satu unit beruniform, satu kelab, dan satu sukan — jadi ketiga-tiga angka ini sepatutnya sama.',
+      cfg: cfgBidangJadual});
+  }
 }
 
 /* ============================ CONFIG CARTA ============================ */
@@ -1395,6 +1423,26 @@ function cfgTidakHadirHariIni(){
     tableRows: ()=> rows.map(r=>[
       r.kelas, fmtInt(r.tidak_hadir), fmtInt(r.ditanda),
       r.ditanda ? nf1.format((r.ditanda - r.tidak_hadir) / r.ditanda * 100) + '%' : '—'])};
+}
+function cfgHadirKelab(){
+  const rows = (S().kokurikulum?.perjumpaan?.ikut_kelab || []).slice()
+                 .sort((a,b)=> (a.peratus_hadir??0) - (b.peratus_hadir??0));
+  const vals = rows.map(r=>r.peratus_hadir).filter(v=>typeof v==='number');
+  const purata = vals.length ? sum(vals)/vals.length : 0;
+  return {items: rows.map(r=>({label:r.kelab, values:[r.peratus_hadir]})),
+    series:[{name:'Kehadiran', varName:'--s1'}], fmt: fmtPct, rowH:30,
+    dmin: 0, dmax: 100, tickFmt: v=>v+'%',
+    ref:{value:purata, label:'Purata sekolah'},
+    tableHead:['Kelab','Perjumpaan','Kehadiran (%)'],
+    tableRows: ()=> rows.slice().reverse().map(r=>[
+      r.kelab, fmtInt(r.perjumpaan),
+      r.peratus_hadir==null ? '—' : nf1.format(r.peratus_hadir)])};
+}
+function cfgBidangJadual(){
+  const rows = (S().kokurikulum?.ikut_bidang || []);
+  return {type:'table',
+    tableHead:['Bidang','Murid'],
+    tableRows: ()=> rows.map(r=>[r.bidang, fmtInt(r.murid)])};
 }
 function cfgBidang(){
   const rows = (S().kokurikulum?.ikut_bidang || []).slice().sort((a,b)=>b.murid-a.murid);

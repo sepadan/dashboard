@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 1.5 · 23 Ogos 2026**
+**Versi 1.6 · 23 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -116,6 +116,8 @@ MARKAH:  0 PEPERIKSAAN · 1 KELAS · 2 NAMA MURID · 3 SUBJEK · 4 MARKAH
 | `KEAHLIAN` | `IC`, `ID_KELAB`, `KATEGORI`, `TAHUN_AKADEMIK`, `STATUS` |
 | `KELAB` | `ID_KELAB`, `NAMA_KELAB`, `KATEGORI`, `JENIS_KELAB` |
 | `PENCAPAIAN` | `IC`, `PERINGKAT`, `TAHUN_AKADEMIK` |
+| `PERJUMPAAN` | `ID_PERJUMPAAN`, `ID_KELAB`, `TARIKH`, `BIL_HADIR`, `BIL_AHLI` |
+| `LAPORAN_PERJUMPAAN` | `ID_PERJUMPAAN` — untuk mengesan perjumpaan tanpa laporan |
 | `MURID_MASTER` | `IC`, `STATUS` — sandaran penyebut sahaja |
 
 Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangunan; menyusun semula lajur tidak akan memecahkan penyambung.
@@ -129,7 +131,7 @@ Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangu
 | `sepadan/semak` | `index.html` (iframe) + `src/` (5 fail) | Aplikasi SEMAK versi statik |
 | `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
 
-`sepadan/semak/index.html` ialah cangkerang 594 bait yang meng-*iframe* `src/App.html`. Ia menggunakan corak *shim* yang sama seperti AKSI.
+`sepadan/semak/index.html` ialah cangkerang 594 bait yang meng-*iframe* `src/App.html`. Ia menggunakan corak *shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos 2026.**
 
 ### 2.4 DASHBOARD — paparan
 
@@ -343,19 +345,19 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 
 ## 8. Perkara yang belum selesai
 
-1. **Carta bidang kokurikulum tidak bermakna** — tiga bar sama panjang (129 setiap satu), kerana setiap murid Tahun 3–6 wajib menyertai ketiga-tiga bidang. Peratus penyertaan pula kekal 100%. Angkanya betul tetapi tidak memberitahu sesiapa apa-apa. Ganti dengan data AKSI yang lebih bercerita: kehadiran perjumpaan (`PERJUMPAAN` + `KEHADIRAN`), markah `PENILAIAN_KOKU`, atau gred `PAJSK_SUMMARY`. **Ini keutamaan pertama sesi akan datang**
-2. **`luar_main: 5`** — lima ahli AKSI tiada dalam tab `main`; perlu disemak
+1. ~~Carta bidang kokurikulum tidak bermakna~~ — **selesai 23 Ogos 2026.** Digantikan dengan **Kehadiran perjumpaan mengikut kelab**, dikira dari `PERJUMPAAN.BIL_HADIR` dan `BIL_AHLI`. Carta bidang dikekalkan sebagai jadual dengan nota menerangkan kenapa ketiga-tiga angka sepatutnya sama. Ditambah tile *Perjumpaan diadakan* dan *Laporan belum dihantar* (muncul hanya bila > 0)
+2. **Lima ahli AKSI tiada dalam tab `main`** (`luar_main: 5`) — kemungkinan murid berpindah keluar yang belum dikemas kini dalam tab `KEAHLIAN`. Jalankan **🏃 Uji Sambungan AKSI**; dialog itu kini menyenaraikan IC mereka. **Dialog sahaja — IC tidak pernah masuk ke `data.json`**, dan ada ujian khusus yang membuktikannya
 3. **`id_html_dashboard` kosong** — Langkah 7 dilangkau; `index.html` ditolak manual
 4. **SEMAK masih di Firebase** (`semak-skpr.web.app`) — rancangan migrasi ke GitHub Pages ada, belum dilaksana
-5. **AKSI Fasa 2** — `web/` belum dibina; lihat `PELAN-MIGRASI.md` dalam repo `sepadan/aksi`
+5. ~~AKSI Fasa 2~~ — **selesai.** Antara muka web ada dalam `docs/` dan log masuk disahkan berfungsi
 6. **Tab `dash_kepimpinan` kosong** — HEM masih perlukan input manual
 7. **Kata laluan lalai SEMAK dan AKSI** (`admin`/`guru`) belum ditukar
 8. ~~Sesi AKSI tidak pernah dibersihkan~~ — **selesai.** Pemicu harian `cuciSesiLama` berjalan setiap 3 pagi, kadar ralat 0%
 9. ~~`README.md` repo AKSI lapuk~~ — **selesai 23 Ogos 2026.** Ditulis semula: struktur sebenar, cara *shim* berfungsi, status pengesahan
-10. ~~AKSI belum diuji hujung-ke-hujung~~ — **selesai 23 Ogos 2026.** Log masuk dari GitHub Pages berjaya. **SEMAK** (`sepadan/semak`) masih belum disahkan dengan cara yang sama
+10. ~~AKSI dan SEMAK belum diuji hujung-ke-hujung~~ — **selesai 23 Ogos 2026.** Log masuk dari GitHub Pages berjaya bagi **kedua-duanya**
 11. ~~Pemicu `cuciSesiLama` AKSI belum disahkan~~ — **selesai 23 Ogos 2026.** Pemicu masa wujud dalam projek `1a-_G8le…`, larian terakhir 23 Ogos 3:05 pagi, kadar ralat 0%. Isu #8 turut ditutup dengan ini
 12. ~~`PELAN-MIGRASI.md` ketinggalan~~ — **selesai 23 Ogos 2026.** Fasa 1 dan 2 ditanda siap dan disahkan; Fasa 3–5 ditanda *dibina, menunggu pengesahan*; Fasa 6 ditanda belum patut bermula. Ditambah senarai semak pengesahan operasi baca/tulis
-13. **Projek Apps Script "AKSI" bertindih** — dua projek dengan nama sama wujud (lihat amaran dalam 2.3). Kenal pasti `1ABvFq…`, kemudian namakan semula atau padam supaya tiada siapa tersilap menampal patch ke dalamnya
+13. ~~Projek Apps Script "AKSI" bertindih~~ — **selesai 23 Ogos 2026.** Projek `1ABvFq…` sudah dinamakan semula
 14. **Operasi tulis AKSI belum disahkan** — kesepuluh halaman memuat tanpa ralat, tetapi belum diuji sama ada `keahlian`, `kehadiran`, `laporan`, `pencapaian` dan `penilaian` benar-benar menyimpan ke spreadsheet. Senarai semak ada dalam `PELAN-MIGRASI.md`. **Fasa 6 tidak boleh bermula sebelum ini selesai** — deployment lama ialah satu-satunya jaring keselamatan
 
 ---
@@ -376,6 +378,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 | Versi | Tarikh | Perubahan |
 |---|---|---|
 | 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
+| 1.6 | 23 Ogos 2026 | Tab Kokurikulum ditulis semula — kehadiran perjumpaan menggantikan carta bidang yang rata. SEMAK disahkan berfungsi. Isu #1, #5, #10, #13 ditutup |
 | 1.5 | 23 Ogos 2026 | Isu #8 dan #11 ditutup — pemicu `cuciSesiLama` disahkan berjalan. Amaran dua projek Apps Script bernama "AKSI" ditambah ke 2.3; dibuka sebagai isu #13 |
 | 1.4 | 23 Ogos 2026 | Tulis semula `README.md` dan `PELAN-MIGRASI.md` repo AKSI supaya sepadan dengan kenyataan. Isu #9 dan #12 ditutup; #13 dibuka |
 | 1.3 | 23 Ogos 2026 | AKSI disahkan berfungsi dalam produksi — log masuk berjaya dari GitHub Pages. Isu #10 ditutup; #11 dan #12 dibuka |
