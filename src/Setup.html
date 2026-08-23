@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+  </head>
+  <body class="setup-page">
+
+    <div class="setup-container">
+
+      <div class="setup-header">
+        <div class="setup-icon">🏫</div>
+        <h1>AKSI</h1>
+        <p style="margin:2px 0 0 0; font-size:12px;
+           color:#888">Aplikasi Kokurikulum Sekolah
+           Integrasi</p>
+        <p>Selamat datang! Lengkapkan maklumat
+           sekolah untuk memulakan sistem.</p>
+      </div>
+
+      <div class="langkah-indicator">
+        <div class="langkah aktif" id="langkah-1">
+          <span>1</span>
+          Maklumat Sekolah
+        </div>
+        <div class="langkah" id="langkah-2">
+          <span>2</span>
+          Pengesahan
+        </div>
+        <div class="langkah" id="langkah-3">
+          <span>3</span>
+          Selesai
+        </div>
+      </div>
+
+      <!-- Panel 1: Borang -->
+      <div id="panel-1" class="panel aktif">
+        <div class="form-group">
+          <label>Jenis Sekolah</label>
+          <select id="jenisSekolah" class="form-input"
+                  onchange="binaJadualKokuSetup()">
+            <option value="rendah">
+              Sekolah Rendah (Tahun 1-6)</option>
+            <option value="menengah">
+              Sekolah Menengah (Tingkatan 1-5)</option>
+          </select>
+          <p class="upload-sub" style="margin:4px 0 0 0">
+            ⚠️ Tidak boleh diubah selepas setup.</p>
+        </div>
+        <div class="form-group">
+          <label>Nama Sekolah</label>
+          <input type="text" id="namaSekolah"
+                 class="form-input"
+                 placeholder="cth: SK Paya Redan">
+        </div>
+        <div class="form-group">
+          <label>Kod Sekolah</label>
+          <input type="text" id="kodSekolah"
+                 class="form-input"
+                 placeholder="cth: JBA5054">
+        </div>
+        <div class="form-group">
+          <label>Tahun Akademik</label>
+          <input type="number" id="tahunAkademik"
+                 class="form-input"
+                 placeholder="cth: 2025"
+                 value="2025">
+        </div>
+
+        <div class="form-group">
+          <label>Tahun/Tingkatan Ada Koku</label>
+          <p class="upload-sub" style="margin:2px 0 8px 0">
+            Tandakan tahun yang menyertai setiap
+            kategori kokurikulum.</p>
+          <div style="overflow-x:auto">
+            <table style="border-collapse:collapse">
+              <thead>
+                <tr>
+                  <th style="padding:5px 10px"></th>
+                  <th style="padding:5px 10px;
+                      font-size:12px">Unit<br>Beruniform</th>
+                  <th style="padding:5px 10px;
+                      font-size:12px">Kelab &amp;<br>Persatuan</th>
+                  <th style="padding:5px 10px;
+                      font-size:12px">Sukan &amp;<br>Permainan</th>
+                </tr>
+              </thead>
+              <tbody id="badan-koku-setup"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password Admin</label>
+          <input type="password" id="passwordAdmin"
+                 class="form-input"
+                 placeholder="Cipta password admin">
+        </div>
+        <div class="form-group">
+          <label>Password Guru</label>
+          <input type="password" id="passwordGuru"
+                 class="form-input"
+                 placeholder="Password dikongsi semua guru">
+        </div>
+        <button class="btn-utama"
+                onclick="langkahSeterusnya()">
+          Seterusnya →
+        </button>
+      </div>
+
+      <!-- Panel 2: Pengesahan -->
+      <div id="panel-2" class="panel">
+        <h3 style="margin-bottom:16px;font-size:15px">
+          Sila semak maklumat:
+        </h3>
+        <div class="semak-item">
+          <span class="label">Nama Sekolah</span>
+          <span id="semak-nama" class="nilai"></span>
+        </div>
+        <div class="semak-item">
+          <span class="label">Kod Sekolah</span>
+          <span id="semak-kod" class="nilai"></span>
+        </div>
+        <div class="semak-item">
+          <span class="label">Jenis Sekolah</span>
+          <span id="semak-jenis" class="nilai"></span>
+        </div>
+        <div class="semak-item">
+          <span class="label">Tahun Akademik</span>
+          <span id="semak-tahun" class="nilai"></span>
+        </div>
+
+        <div class="nota-box">
+          📁 Folder Google Drive akan dicipta:<br>
+          <strong id="semak-folder"></strong>
+        </div>
+
+        <div class="butang-row">
+          <button class="btn-balik"
+                  onclick="tunjukPanel(1)">
+            ← Balik
+          </button>
+          <button class="btn-utama"
+                  onclick="mulakanSetup()">
+            Mulakan Sistem ✓
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel 3: Loading & Selesai -->
+      <div id="panel-3" class="panel">
+
+        <div id="loading" class="loading-box">
+          <div class="spinner"></div>
+          <p>Sedang menyediakan sistem...</p>
+          <div class="progress-list"
+               id="progress-list"></div>
+        </div>
+
+        <div id="selesai" class="selesai-box"
+             style="display:none">
+          <div class="selesai-icon">✅</div>
+          <h2>Sistem Berjaya Disediakan!</h2>
+          <p>Sistem kokurikulum anda sudah sedia.</p>
+          <button class="btn-utama"
+                  onclick="pergiLoginSekarang()">
+            Pergi ke Login →
+          </button>
+        </div>
+
+        <div id="ralat-setup" class="ralat-box"
+             style="display:none">
+          <div class="ralat-icon">❌</div>
+          <h2>Ralat Berlaku</h2>
+          <p id="ralat-mesej"></p>
+          <button class="btn-balik"
+                  onclick="tunjukPanel(1)">
+            Cuba Lagi
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <script>
+  window.URL_EXEC = '<?= url ?>';
+</script>
+<?!= include('ApiShim') ?>
+<script>
+      var dataSetup = {};
+      var KAT_KOKU_SETUP = ['unit', 'kelab', 'sukan'];
+
+      function binaJadualKokuSetup() {
+        var badan = document.getElementById(
+          'badan-koku-setup');
+        if (!badan) return;
+        var jenis = document.getElementById(
+          'jenisSekolah').value;
+        var maks = jenis === 'menengah' ? 5 : 6;
+        var label = jenis === 'menengah' ?
+          'Tingkatan' : 'Tahun';
+        var html = '';
+        for (var n = 1; n <= maks; n++) {
+          html += '<tr>' +
+            '<td style="padding:6px 10px;' +
+            ' font-size:13px; border-top:1px solid' +
+            ' #f0f0f0">' + label + ' ' + n + '</td>';
+          KAT_KOKU_SETUP.forEach(function(k) {
+            html += '<td style="text-align:center;' +
+              ' border-top:1px solid #f0f0f0">' +
+              '<input type="checkbox" checked' +
+              ' id="setup-koku-' + k + '-' + n + '"' +
+              ' style="width:18px; height:18px;' +
+              ' cursor:pointer"></td>';
+          });
+          html += '</tr>';
+        }
+        badan.innerHTML = html;
+      }
+
+      function senaraiKokuSetup(kat) {
+        var jenis = document.getElementById(
+          'jenisSekolah').value;
+        var maks = jenis === 'menengah' ? 5 : 6;
+        var pilih = [];
+        for (var n = 1; n <= maks; n++) {
+          var cb = document.getElementById(
+            'setup-koku-' + kat + '-' + n);
+          if (cb && cb.checked) pilih.push(n);
+        }
+        return pilih.join(',');
+      }
+
+      binaJadualKokuSetup();
+
+      function langkahSeterusnya() {
+        var nama = document.getElementById('namaSekolah')
+                           .value.trim();
+        var kod = document.getElementById('kodSekolah')
+                          .value.trim();
+        var tahun = document.getElementById('tahunAkademik')
+                            .value.trim();
+        var passAdmin = document.getElementById('passwordAdmin')
+                                .value;
+        var passGuru = document.getElementById('passwordGuru')
+                               .value;
+
+        if (!nama || !kod || !tahun ||
+            !passAdmin || !passGuru) {
+          alert('Sila lengkapkan semua maklumat.');
+          return;
+        }
+
+        var jenis = document.getElementById(
+          'jenisSekolah').value;
+
+        dataSetup = {
+          jenisSekolah: jenis,
+          tahunKokuUnit: senaraiKokuSetup('unit'),
+          tahunKokuKelab: senaraiKokuSetup('kelab'),
+          tahunKokuSukan: senaraiKokuSetup('sukan'),
+          namaSekolah: nama,
+          kodSekolah: kod,
+          tahunAkademik: tahun,
+          passwordAdmin: passAdmin,
+          passwordGuru: passGuru
+        };
+
+        document.getElementById('semak-nama')
+                .textContent = nama;
+        document.getElementById('semak-kod')
+                .textContent = kod;
+        document.getElementById('semak-jenis')
+                .textContent = jenis === 'menengah' ?
+                  'Sekolah Menengah' : 'Sekolah Rendah';
+        document.getElementById('semak-tahun')
+                .textContent = tahun;
+        document.getElementById('semak-folder')
+                .textContent =
+                  'AKSI (' + nama + ')';
+
+        tunjukPanel(2);
+      }
+
+      function mulakanSetup() {
+        tunjukPanel(3);
+
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            if (hasil.berjaya) {
+              tambahProgress('✅ Sheets berjaya dicipta');
+              tambahProgress(
+                '✅ Folder Google Drive dicipta'
+              );
+              tambahProgress('✅ Tetapan disimpan');
+              tambahProgress('✅ Akaun pengguna disediakan');
+
+              document.getElementById('loading')
+                      .style.display = 'none';
+              document.getElementById('selesai')
+                      .style.display = 'block';
+            } else {
+              document.getElementById('loading')
+                      .style.display = 'none';
+              document.getElementById('ralat-mesej')
+                      .textContent = hasil.mesej;
+              document.getElementById('ralat-setup')
+                      .style.display = 'block';
+            }
+          })
+          .withFailureHandler(function(e) {
+            document.getElementById('loading')
+                    .style.display = 'none';
+            document.getElementById('ralat-mesej')
+                    .textContent = e.message;
+            document.getElementById('ralat-setup')
+                    .style.display = 'block';
+          })
+          .jalankanSetup(dataSetup);
+      }
+
+      function tambahProgress(mesej) {
+        var list = document.getElementById('progress-list');
+        var item = document.createElement('p');
+        item.textContent = mesej;
+        list.appendChild(item);
+      }
+
+      function tunjukPanel(no) {
+        document.querySelectorAll('.panel')
+                .forEach(function(p) {
+                  p.classList.remove('aktif');
+                });
+        document.querySelectorAll('.langkah')
+                .forEach(function(l) {
+                  l.classList.remove('aktif');
+                });
+        var panel = document.getElementById('panel-' + no);
+        var langkah = document.getElementById(
+          'langkah-' + no
+        );
+        if (panel) panel.classList.add('aktif');
+        if (langkah) langkah.classList.add('aktif');
+      }
+
+      function pergiLoginSekarang() {
+        google.script.run
+          .withSuccessHandler(function(url) {
+            window.top.location.href = url;
+          })
+          .getScriptUrl();
+      }
+    </script>
+
+  </body>
+</html>

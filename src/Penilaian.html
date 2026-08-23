@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+    <style>
+      .jadual-anggaran {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .jadual-anggaran td {
+        padding: 5px 8px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .jadual-anggaran td:last-child {
+        text-align: right;
+      }
+      .tag-sumber {
+        font-size: 11px;
+        color: #1a73e8;
+      }
+      .tag-tiada {
+        font-size: 11px;
+        color: #999;
+      }
+      .baris-klik {
+        cursor: pointer;
+      }
+      .baris-klik:hover td {
+        background: #f8fbff;
+      }
+      #bar-nav-murid {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      #bar-nav-murid button {
+        min-width: 100px;
+        padding: 10px 14px;
+      }
+      #bar-nav-murid button:disabled {
+        opacity: .35;
+        cursor: default;
+      }
+    </style>
+  </head>
+  <body class="dashboard-page">
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <?!= renderSidebar(token, peranan) ?>
+
+    <div class="kandungan">
+      <div class="halaman-header">
+        <h2>📋 Penilaian Koku</h2>
+        <p>Maklumat koku murid dan anggaran PAJSK</p>
+      </div>
+
+      <!-- Pemilihan -->
+      <div class="kad">
+        <h3 class="seksyen-tajuk">Sila Pilih</h3>
+
+        <div class="tab-bar">
+          <button class="tab aktif" id="tab-mod-murid"
+                  onclick="tukarMod('murid')">
+            👤 Ikut Murid
+          </button>
+          <button class="tab" id="tab-mod-kelas"
+                  onclick="tukarMod('kelas')">
+            🎓 Ikut Kelas
+          </button>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kelas</label>
+            <select id="pilih-kelas" class="form-input"
+                    onchange="onKelasBerubah()">
+              <option value="">-- Pilih Kelas --</option>
+            </select>
+          </div>
+          <div class="form-group" id="grup-murid">
+            <label>Murid</label>
+            <select id="pilih-murid" class="form-input"
+                    onchange="muatMurid()">
+              <option value="">-- Pilih Murid --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mod kelas: jadual anggaran -->
+      <div class="kad" id="panel-kelas" style="display:none">
+        <h3 class="seksyen-tajuk">
+          Anggaran PAJSK Kelas
+          <span id="bil-murid-kelas"
+                class="badge-bilangan"></span>
+        </h3>
+        <div id="jadual-kelas"></div>
+      </div>
+
+      <!-- Navigasi murid sebelum/seterusnya -->
+      <div id="bar-nav-murid">
+        <button class="btn-kecil" id="btn-nav-prev"
+                onclick="navigasiMurid(-1)">
+          ◀ Sebelum
+        </button>
+        <span id="nav-posisi" class="masa-text"></span>
+        <button class="btn-kecil" id="btn-nav-next"
+                onclick="navigasiMurid(1)">
+          Seterusnya ▶
+        </button>
+      </div>
+
+      <!-- Mod murid: kad murid -->
+      <div class="kad" id="kad-murid" style="display:none">
+        <div id="profil-murid"></div>
+        <div id="senarai-kelab-murid"></div>
+      </div>
+
+      <!-- Kad anggaran PAJSK -->
+      <div class="kad" id="kad-anggaran"
+           style="display:none; border:2px solid #1a73e8">
+      </div>
+
+    </div>
+
+    <?!= include('Script') ?>
+    <script>
+
+      // ===== AMBIL TOKEN DARI SERVER (WAJIB) =====
+      (function() {
+        try {
+          var t = '<?= token ?>';
+          var p = '<?= peranan ?>';
+          if (t && t !== 'undefined')
+            sessionStorage.setItem('token', t);
+          if (p && p !== 'undefined')
+            sessionStorage.setItem('peranan', p);
+        } catch(e) {}
+      })();
+
+      let mod = 'murid';
+      let anggaran = null;
+      let autoPilihMurid = null;
+
+      document.addEventListener('DOMContentLoaded',
+        function() {
+          const token = initHalaman('Penilaian');
+          if (!token) return;
+
+          google.script.run
+            .withSuccessHandler(function(data) {
+              const sel = document.getElementById(
+                'pilih-kelas');
+              (data || []).forEach(k => {
+                const o = document.createElement('option');
+                o.value = k;
+                o.textContent = k;
+                sel.appendChild(o);
+              });
+            })
+            .getSenaraiKelasAktif(token);
+        }
+      );
+
+      function tukarMod(m) {
+        mod = m;
+        document.getElementById('tab-mod-murid')
+          .classList.toggle('aktif', m === 'murid');
+        document.getElementById('tab-mod-kelas')
+          .classList.toggle('aktif', m === 'kelas');
+        document.getElementById('grup-murid')
+          .style.display = m === 'murid' ? '' : 'none';
+        document.getElementById('panel-kelas')
+          .style.display = 'none';
+        document.getElementById('kad-murid')
+          .style.display = 'none';
+        document.getElementById('kad-anggaran')
+          .style.display = 'none';
+        document.getElementById('bar-nav-murid')
+          .style.display = 'none';
+        onKelasBerubah();
+      }
+
+      function onKelasBerubah() {
+        const kelas = document.getElementById(
+          'pilih-kelas').value;
+        if (!kelas) return;
+        if (mod === 'murid') {
+          muatSenaraiMuridKelas(kelas);
+        } else {
+          muatAnggaranKelas(kelas);
+        }
+      }
+
+      // ===== MOD MURID =====
+      function muatSenaraiMuridKelas(kelas) {
+        const selM = document.getElementById('pilih-murid');
+        selM.innerHTML =
+          '<option value="">-- Pilih Murid --</option>';
+        document.getElementById('kad-murid')
+          .style.display = 'none';
+        document.getElementById('kad-anggaran')
+          .style.display = 'none';
+        document.getElementById('bar-nav-murid')
+          .style.display = 'none';
+
+        google.script.run
+          .withSuccessHandler(function(data) {
+            (data || []).forEach(m => {
+              const o = document.createElement('option');
+              o.value = m.ic;
+              o.textContent = m.nama;
+              selM.appendChild(o);
+            });
+            if (autoPilihMurid) {
+              selM.value = autoPilihMurid;
+              autoPilihMurid = null;
+              if (selM.value) muatMurid();
+            }
+          })
+          .getSenaraiIkutKelas(kelas,
+            sessionStorage.getItem('token'));
+      }
+
+      function muatMurid() {
+        const ic = document.getElementById(
+          'pilih-murid').value;
+        if (!ic) {
+          document.getElementById('kad-murid')
+            .style.display = 'none';
+          document.getElementById('kad-anggaran')
+            .style.display = 'none';
+          document.getElementById('bar-nav-murid')
+            .style.display = 'none';
+          return;
+        }
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(a) {
+            tunjukLoading(false);
+            anggaran = a;
+            renderMurid();
+            renderAnggaran();
+            kemaskiniNavMurid();
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .getAnggaranMurid(ic,
+            sessionStorage.getItem('token'));
+      }
+
+      function labelSumber(sumber) {
+        if (sumber === 'anggaran')
+          return ' <span class="tag-sumber">(anggaran)</span>';
+        if (sumber === 'tiada')
+          return ' <span class="tag-tiada">(tiada rekod)</span>';
+        return '';
+      }
+
+      function renderMurid() {
+        const kad = document.getElementById('kad-murid');
+        if (!anggaran) {
+          kad.style.display = 'none';
+          return;
+        }
+        const a = anggaran;
+        kad.style.display = 'block';
+
+        document.getElementById('profil-murid').innerHTML =
+          '<strong style="font-size:16px">' + a.nama +
+          '</strong><br>' +
+          '<span class="masa-text">' + a.kelas +
+          ' · IC ' + a.ic +
+          (a.rumahSukan ?
+            ' · Rumah Sukan: ' + a.rumahSukan : '') +
+          ' · TA ' + a.tahunAkademik + '</span>';
+
+        let html = '';
+        if (a.kelab.length === 0) {
+          html = '<p class="tiada-data" style=' +
+            '"margin-top:16px">Tiada keahlian ' +
+            'kelab/unit/sukan tahun ini.</p>';
+        }
+        a.kelab.forEach(function(k) {
+          html +=
+            '<div style="border-top:1px solid #f0f0f0;' +
+            ' margin-top:14px; padding-top:12px">' +
+            '<strong>' + k.nama + '</strong> ' +
+            '<span class="badge">' + k.kategori +
+            '</span>' +
+            (k.jawatanKeahlian ?
+              ' <span class="masa-text">' +
+              k.jawatanKeahlian + '</span>' : '') +
+            '<table class="jadual-anggaran"' +
+            ' style="margin-top:8px">' +
+            '<tr><td>Kehadiran</td><td>' + k.hadir + '/' +
+            k.jumlahPerjumpaan + ' perjumpaan → <b>' +
+            k.kehadiran + '</b>/40</td></tr>' +
+            '<tr><td>Pencapaian</td><td><b>' +
+            k.pencapaian + '</b>/20' +
+            (k.senaraiPencapaian.length ?
+              '<br><span class="masa-text">' +
+              k.senaraiPencapaian.map(p => p.nama +
+                ' (' + p.tempat + ' ' + p.peringkat +
+                ')').join('; ') + '</span>' : '') +
+            '</td></tr>' +
+            '<tr><td>Jawatan</td><td><b>' + k.jawatan +
+            '</b>/10' + labelSumber(k.sumberJawatan) +
+            '</td></tr>' +
+            '<tr><td>Penglibatan</td><td><b>' +
+            k.penglibatan + '</b>/20' +
+            labelSumber(k.sumberPenglibatan) +
+            '</td></tr>' +
+            '<tr><td>Komitmen</td><td><b>' + k.komitmen +
+            '</b>/10' + (k.komitmen === 0 ?
+              labelSumber('tiada') : '') + '</td></tr>' +
+            '<tr><td>Khidmat</td><td><b>' + k.khidmat +
+            '</b>/10' + (k.khidmat === 0 ?
+              labelSumber('tiada') : '') + '</td></tr>' +
+            '<tr><td><b>Jumlah</b></td><td><b>' +
+            k.jumlah110 + '/110 → ' + k.jumlah100 +
+            '/100</b></td></tr>' +
+            '</table></div>';
+        });
+        document.getElementById('senarai-kelab-murid')
+          .innerHTML = html;
+      }
+
+      function renderAnggaran() {
+        const div = document.getElementById('kad-anggaran');
+        if (!anggaran || !anggaran.layakTaksir ||
+            anggaran.kelab.length === 0) {
+          div.style.display = 'none';
+          return;
+        }
+        const a = anggaran;
+        const kat = v => v === null ?
+          '<span class="tag-tiada">—</span>' :
+          '<b>' + v + '</b>';
+
+        let html =
+          '<div class="flex-antara">' +
+          '<h3 class="seksyen-tajuk"' +
+          ' style="margin-bottom:0">🎓 Anggaran PAJSK</h3>' +
+          '<span class="status-badge kuning">' +
+          'data sedia ada</span></div>' +
+          '<table class="jadual-anggaran"' +
+          ' style="margin-top:12px">' +
+          '<tr><td>Kelab & Persatuan (KP)</td><td>' +
+          kat(a.kategori.KP) + '</td></tr>' +
+          '<tr><td>Unit Beruniform (PBB)</td><td>' +
+          kat(a.kategori.PBB) + '</td></tr>' +
+          '<tr><td>Sukan & Permainan (SP)</td><td>' +
+          kat(a.kategori.SP) + '</td></tr>' +
+          '<tr><td>Ekstra Kurikulum</td><td><b>' +
+          a.ekstra + '</b>/10</td></tr>' +
+          '<tr style="border-top:2px solid #1a73e8">' +
+          '<td><b>GPA Anggaran</b>' +
+          '<br><span class="masa-text">2 tertinggi ÷ 2 ' +
+          '+ ekstra</span></td>' +
+          '<td style="font-size:17px"><b>' +
+          a.gpa.toFixed(2) + '</b> · Gred <b>' + a.gred +
+          '</b></td></tr>' +
+          '</table>';
+
+        if (a.gred === 'A') {
+          html += '<p class="upload-sub"' +
+            ' style="margin-top:10px; color:#0f6e56">' +
+            '🌟 Murid ini sudah mencapai tahap gred A!' +
+            '</p>';
+        } else {
+          html += '<p style="font-size:13px;' +
+            ' margin-top:12px"><b>Untuk gred A (GPA ≥ 80):' +
+            ' perlu +' + a.perluUntukA.toFixed(2) +
+            ' markah lagi.</b></p>';
+          if (a.gpaMaks < 80) {
+            html += '<p class="upload-sub"' +
+              ' style="color:#b26a00">⚠️ Dengan bilangan ' +
+              'kategori semasa, GPA maksimum ialah ' +
+              a.gpaMaks.toFixed(2) +
+              ' — gred A memerlukan penyertaan kategori ' +
+              'tambahan.</p>';
+          }
+          if (a.peluang.length) {
+            html += '<p class="upload-sub"' +
+              ' style="margin:8px 0 4px 0">Peluang markah ' +
+              'yang masih tersedia:</p>' +
+              '<ul style="margin:0 0 0 18px; padding:0;' +
+              ' font-size:13px">' +
+              a.peluang.map(p => '<li>' + p.label +
+                ': <b>+' + p.tambah + '</b></li>')
+                .join('') + '</ul>';
+          }
+        }
+
+        div.style.display = 'block';
+        div.innerHTML = html;
+      }
+
+      // ===== NAVIGASI MURID (butang & leret) =====
+      function kemaskiniNavMurid() {
+        var bar = document.getElementById('bar-nav-murid');
+        var sel = document.getElementById('pilih-murid');
+        var jumlah = sel.options.length - 1;
+        if (mod !== 'murid' || !sel.value || jumlah < 2) {
+          bar.style.display = 'none';
+          return;
+        }
+        bar.style.display = 'flex';
+        var i = sel.selectedIndex;
+        document.getElementById('nav-posisi')
+          .textContent = i + ' / ' + jumlah;
+        document.getElementById('btn-nav-prev')
+          .disabled = (i <= 1);
+        document.getElementById('btn-nav-next')
+          .disabled = (i >= jumlah);
+      }
+
+      function navigasiMurid(arah) {
+        var sel = document.getElementById('pilih-murid');
+        var baru = sel.selectedIndex + arah;
+        if (baru < 1 || baru > sel.options.length - 1)
+          return;
+        sel.selectedIndex = baru;
+        muatMurid();
+      }
+
+      // Leret kiri/kanan pada skrin sentuh
+      (function() {
+        var x0 = null, y0 = null;
+        document.addEventListener('touchstart',
+          function(e) {
+            x0 = e.touches[0].clientX;
+            y0 = e.touches[0].clientY;
+          }, { passive: true });
+        document.addEventListener('touchend',
+          function(e) {
+            if (x0 === null) return;
+            var dx = e.changedTouches[0].clientX - x0;
+            var dy = e.changedTouches[0].clientY - y0;
+            x0 = null; y0 = null;
+            var bar = document.getElementById(
+              'bar-nav-murid');
+            if (!bar || bar.style.display !== 'flex')
+              return;
+            // Abaikan skrol menegak / leretan pendek
+            if (Math.abs(dx) < 70 ||
+                Math.abs(dy) > Math.abs(dx)) return;
+            navigasiMurid(dx < 0 ? 1 : -1);
+          }, { passive: true });
+      })();
+
+      // ===== MOD KELAS =====
+      function muatAnggaranKelas(kelas) {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            renderKelas(data || []);
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .getAnggaranKelas(kelas,
+            sessionStorage.getItem('token'));
+      }
+
+      function renderKelas(data) {
+        document.getElementById('panel-kelas')
+          .style.display = 'block';
+        document.getElementById('bil-murid-kelas')
+          .textContent = data.length + ' murid';
+
+        const div = document.getElementById('jadual-kelas');
+        if (data.length === 0) {
+          div.innerHTML =
+            '<p class="tiada-data">Tiada murid.</p>';
+          return;
+        }
+
+        const t4 = !!data[0].layakTaksir;
+        let html = '<table class="jadual-anggaran">' +
+          '<tr style="font-weight:600">' +
+          '<td>Bil</td><td style="text-align:left">Nama' +
+          '</td><td>Keahlian</td>' +
+          (t4 ? '<td>GPA Angg.</td><td>Gred</td>' +
+            '<td>Perlu utk A</td>' : '') +
+          '</tr>';
+
+        data.forEach(function(a, i) {
+          html += '<tr class="baris-klik"' +
+            ' onclick="bukaMurid(\'' + a.ic + '\')">' +
+            '<td>' + (i + 1) + '</td>' +
+            '<td style="text-align:left">' + a.nama +
+            '</td>' +
+            '<td>' + a.kelab.length + '</td>' +
+            (t4 ? '<td><b>' + a.gpa.toFixed(2) +
+              '</b></td><td>' + a.gred + '</td>' +
+              '<td>' + (a.gred === 'A' ? '✅' :
+                '+' + a.perluUntukA.toFixed(2)) +
+              '</td>' : '') +
+            '</tr>';
+        });
+        html += '</table>' +
+          '<p class="upload-sub" style="margin-top:8px">' +
+          'Klik baris untuk lihat butiran murid.</p>';
+        div.innerHTML = html;
+      }
+
+      function bukaMurid(ic) {
+        autoPilihMurid = ic;
+        tukarMod('murid');
+      }
+
+    </script>
+  </body>
+</html>

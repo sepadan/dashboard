@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+    <style>
+      .jadual-senarai {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-top: 12px;
+      }
+      .jadual-senarai th {
+        background: #1a73e8;
+        color: #fff;
+        padding: 8px 10px;
+        text-align: left;
+        white-space: nowrap;
+      }
+      .jadual-senarai td {
+        padding: 6px 10px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      /* Header khas untuk cetakan */
+      .print-header {
+        display: none;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .print-header h2 {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+      }
+      .print-header p {
+        margin: 2px 0;
+        font-size: 12px;
+      }
+
+      @media print {
+        .sidebar, .topbar, .toast, .loading-overlay,
+        .no-print {
+          display: none !important;
+        }
+        .kandungan {
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .kad {
+          box-shadow: none !important;
+          border: none !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+        .print-header {
+          display: block !important;
+        }
+        .jadual-senarai th {
+          background: #eee !important;
+          color: #000 !important;
+          border: 1px solid #999;
+          -webkit-print-color-adjust: exact;
+        }
+        .jadual-senarai td {
+          border: 1px solid #999;
+        }
+        body {
+          background: #fff !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="dashboard-page">
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <?!= renderSidebar(token, peranan) ?>
+
+    <div class="kandungan">
+      <div class="halaman-header no-print">
+        <h2>⬇️ Muat Turun</h2>
+        <p>Jana senarai murid — cetak atau muat turun CSV</p>
+      </div>
+
+      <!-- Pemilihan -->
+      <div class="kad no-print">
+        <h3 class="seksyen-tajuk">Sila Pilih</h3>
+
+        <div class="form-group">
+          <label>Kategori</label>
+          <select id="pilih-kategori" class="form-input"
+                  onchange="tukarKategori()">
+            <option value="">-- Semua Kategori --</option>
+            <option>Unit Beruniform</option>
+            <option>Kelab & Persatuan</option>
+            <option>Sukan & Permainan</option>
+            <option>Rumah Sukan</option>
+            <option value="__KELAS__">Kelas</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label id="label-jenis">Semua Kategori</label>
+          <select id="pilih-item" class="form-input"
+                  onchange="janaSenarai()">
+            <option value="">-- Pilih --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Hasil -->
+      <div class="kad" id="panel-hasil"
+           style="display:none">
+
+        <div class="print-header">
+          <h2 id="print-nama-sekolah"></h2>
+          <p id="print-tajuk"></p>
+          <p id="print-info"></p>
+        </div>
+
+        <div class="flex-antara no-print">
+          <h3 class="seksyen-tajuk"
+              style="margin-bottom:0">
+            <span id="tajuk-hasil"></span>
+            <span id="bil-hasil"
+                  class="badge-bilangan"></span>
+          </h3>
+          <div>
+            <button class="btn-kecil"
+                    onclick="eksportCSV()">
+              ⬇️ Export CSV
+            </button>
+            <button class="btn-kecil"
+                    onclick="window.print()">
+              🖨️ Cetak
+            </button>
+          </div>
+        </div>
+
+        <div id="jadual-hasil"></div>
+      </div>
+
+    </div>
+
+    <?!= include('Script') ?>
+    <script>
+
+      // ===== AMBIL TOKEN DARI SERVER (WAJIB) =====
+      (function() {
+        try {
+          var t = '<?= token ?>';
+          var p = '<?= peranan ?>';
+          if (t && t !== 'undefined')
+            sessionStorage.setItem('token', t);
+          if (p && p !== 'undefined')
+            sessionStorage.setItem('peranan', p);
+        } catch(e) {}
+      })();
+
+      var namaSekolah = '<?= namaSekolah ?>';
+      var tahunAkademik = '<?= tahunAkademik ?>';
+
+      var semuaKelab = [];
+      var senaraiKelas = [];
+      var dataSemasa = [];   // data jadual semasa
+      var headerCSV = [];    // header untuk export
+      var tajukSemasa = '';
+
+      var LABEL_KATEGORI = {
+        '': 'Semua Kategori',
+        'Unit Beruniform': 'Unit',
+        'Kelab & Persatuan': 'Kelab',
+        'Sukan & Permainan': 'Sukan',
+        'Rumah Sukan': 'Rumah Sukan',
+        '__KELAS__': 'Kelas'
+      };
+
+      // ===== INIT =====
+      document.addEventListener('DOMContentLoaded',
+        function() {
+          var token = initHalaman('Senarai');
+          if (!token) return;
+
+          document.getElementById('print-nama-sekolah')
+            .textContent = namaSekolah;
+
+          google.script.run
+            .withSuccessHandler(function(data) {
+              semuaKelab = data || [];
+              tukarKategori();
+            })
+            .getSenaraiKelab(token);
+
+          google.script.run
+            .withSuccessHandler(function(data) {
+              senaraiKelas = data || [];
+            })
+            .getSenaraiKelasAktif(token);
+        }
+      );
+
+      // ===== PEMILIHAN =====
+      function tukarKategori() {
+        var kategori = document.getElementById(
+          'pilih-kategori').value;
+        var select = document.getElementById(
+          'pilih-item');
+        var label = LABEL_KATEGORI[kategori] ||
+          'Semua Kategori';
+        document.getElementById('label-jenis')
+                .textContent = label;
+        select.innerHTML =
+          '<option value="">-- Pilih ' + label +
+          ' --</option>';
+
+        if (kategori === '__KELAS__') {
+          senaraiKelas.forEach(function(k) {
+            var opt = document.createElement('option');
+            opt.value = k;
+            opt.textContent = k;
+            select.appendChild(opt);
+          });
+        } else {
+          semuaKelab.filter(function(k) {
+            return !kategori || k.kategori === kategori;
+          }).forEach(function(k) {
+            var opt = document.createElement('option');
+            opt.value = k.id;
+            opt.textContent = k.nama +
+              (kategori ? '' : ' (' + k.kategori + ')');
+            select.appendChild(opt);
+          });
+        }
+
+        document.getElementById('panel-hasil')
+          .style.display = 'none';
+      }
+
+      function janaSenarai() {
+        var kategori = document.getElementById(
+          'pilih-kategori').value;
+        var nilai = document.getElementById(
+          'pilih-item').value;
+        if (!nilai) {
+          document.getElementById('panel-hasil')
+            .style.display = 'none';
+          return;
+        }
+        if (kategori === '__KELAS__') {
+          janaSenaraiKelas(nilai);
+        } else {
+          janaSenaraiKelab(nilai);
+        }
+      }
+
+      // ===== SENARAI IKUT KELAB =====
+      function janaSenaraiKelab(idKelab) {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            if (!data) {
+              tunjukToast('Kelab tidak dijumpai.',
+                'ralat');
+              return;
+            }
+
+            tajukSemasa = 'Senarai Ahli — ' +
+              data.info.nama;
+            var infoGuru = data.info.guru1 ?
+              'Guru Penasihat: ' + data.info.guru1 +
+              (data.info.guru2 ?
+                ', ' + data.info.guru2 : '') : '';
+
+            headerCSV = ['Bil', 'Nama', 'IC',
+              'Kelas', 'Jawatan'];
+            dataSemasa = (data.ahli || []).map(
+              function(a, i) {
+                return [i + 1, a.nama, a.ic,
+                  a.kelas || '', a.jawatan || ''];
+              });
+
+            paparHasil(tajukSemasa,
+              data.info.kategori +
+              (infoGuru ? ' | ' + infoGuru : ''));
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .getDataKeahlianKelab(idKelab,
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== SENARAI IKUT KELAS =====
+      function janaSenaraiKelas(kelas) {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            data = data || [];
+
+            tajukSemasa = 'Senarai Kokurikulum — Kelas ' +
+              kelas;
+
+            headerCSV = ['Bil', 'Nama', 'IC',
+              'Unit Beruniform', 'Kelab & Persatuan',
+              'Sukan & Permainan', 'Rumah Sukan'];
+            dataSemasa = data.map(function(m, i) {
+              return [i + 1, m.nama, m.ic,
+                m.unit, m.kelab, m.sukan, m.rumah];
+            });
+
+            paparHasil(tajukSemasa, '');
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .getSenaraiIkutKelas(kelas,
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== PAPAR JADUAL =====
+      function paparHasil(tajuk, infoTambahan) {
+        document.getElementById('panel-hasil')
+          .style.display = 'block';
+        document.getElementById('tajuk-hasil')
+          .textContent = tajuk;
+        document.getElementById('bil-hasil')
+          .textContent = dataSemasa.length + ' murid';
+
+        document.getElementById('print-tajuk')
+          .textContent = tajuk +
+          ' — Tahun Akademik ' + tahunAkademik;
+        document.getElementById('print-info')
+          .textContent = infoTambahan;
+
+        var div = document.getElementById(
+          'jadual-hasil');
+        if (dataSemasa.length === 0) {
+          div.innerHTML = '<p class="tiada-data">' +
+            'Tiada rekod.</p>';
+          return;
+        }
+
+        var html = '<table class="jadual-senarai">' +
+          '<thead><tr>';
+        headerCSV.forEach(function(h) {
+          html += '<th>' + h + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+        dataSemasa.forEach(function(baris) {
+          html += '<tr>';
+          baris.forEach(function(sel) {
+            html += '<td>' + (sel !== null &&
+              sel !== undefined ? sel : '') + '</td>';
+          });
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+        div.innerHTML = html;
+      }
+
+      // ===== EXPORT CSV =====
+      function eksportCSV() {
+        if (dataSemasa.length === 0) {
+          tunjukToast('Tiada data untuk dieksport.',
+            'ralat');
+          return;
+        }
+
+        var csv = headerCSV.map(petik).join(',') + '\n';
+        dataSemasa.forEach(function(baris) {
+          csv += baris.map(petik).join(',') + '\n';
+        });
+
+        // BOM UTF-8 supaya Excel baca dengan betul
+        var blob = new Blob(['\ufeff' + csv],
+          { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = tajukSemasa
+          .replace(/[^a-zA-Z0-9 ]/g, '')
+          .replace(/ +/g, '_') + '.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+        tunjukToast('CSV dimuat turun!', 'berjaya');
+      }
+
+      function petik(nilai) {
+        return '"' + String(nilai !== null &&
+          nilai !== undefined ? nilai : '')
+          .replace(/"/g, '""') + '"';
+      }
+
+    </script>
+
+  </body>
+</html>

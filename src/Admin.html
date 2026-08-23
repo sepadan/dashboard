@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+  </head>
+  <body class="dashboard-page">
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <?!= renderSidebar(token, peranan) ?>
+
+    <div class="kandungan">
+      <div class="halaman-header">
+        <h2>⚙️ Tetapan & Upload Data</h2>
+        <p>Urus data murid dan kokurikulum sekolah</p>
+      </div>
+
+      <!-- Tab navigasi -->
+      <div class="tab-bar">
+        <button class="tab aktif"
+                onclick="tukarTab('murid', this)">
+          👤 Upload Data Murid
+        </button>
+        <button class="tab"
+                onclick="tukarTab('koku', this)">
+          📋 Upload Data Koku
+        </button>
+        <button class="tab"
+                onclick="tukarTab('kelab', this)">
+          🏫 Urus Koku
+        </button>
+        <button class="tab"
+                onclick="tukarTab('guru', this)">
+          👨‍🏫 Urus Guru
+        </button>
+        <button class="tab"
+                onclick="tukarTab('tetapan', this)">
+          ⚙️ Tetapan Sistem
+        </button>
+        <button class="tab"
+                onclick="tukarTab('arkib', this)">
+          🗄️ Arkib & Backup
+        </button>
+      </div>
+
+      <!-- Tab 1: Upload Data Murid -->
+      <div id="tab-murid" class="tab-panel aktif">
+        <div class="kad">
+          <h3 class="seksyen-tajuk">
+            Upload Data Murid (CSV iDMe)
+          </h3>
+
+          <div class="info-box">
+            ℹ️ Upload fail CSV yang dieksport dari sistem iDMe.
+            Data murid sedia ada akan dikemaskini.
+            Data kokurikulum <strong>tidak akan terjejas</strong>.
+          </div>
+
+          <div class="upload-area" id="upload-murid-area"
+               onclick="document.getElementById('fail-murid').click()"
+               ondrop="dropFail(event, 'murid')"
+               ondragover="event.preventDefault()">
+            <div class="upload-ikon">📂</div>
+            <p>Klik untuk pilih fail CSV</p>
+            <p class="upload-sub">atau seret & lepas fail di sini</p>
+            <input type="file" id="fail-murid"
+                   accept=".csv" style="display:none"
+                   onchange="pilihFail(event, 'murid')">
+          </div>
+
+          <div id="preview-murid" style="display:none">
+            <h4 class="preview-tajuk">
+              Preview (5 baris pertama):
+            </h4>
+            <div class="preview-jadual"
+                 id="jadual-preview-murid"></div>
+            <div class="butang-row" style="margin-top:16px">
+              <button class="btn-balik"
+                      onclick="batalUpload('murid')">
+                Batal
+              </button>
+              <button class="btn-utama" style="width:auto"
+                      onclick="confirmImportMurid()">
+                ✓ Confirm Import
+              </button>
+            </div>
+          </div>
+
+          <div id="hasil-murid" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Upload Data Koku -->
+      <div id="tab-koku" class="tab-panel">
+        <div class="kad">
+          <h3 class="seksyen-tajuk">
+            Upload Data Kokurikulum
+          </h3>
+
+          <div class="info-box">
+            ℹ️ Muat turun template, isi maklumat kokurikulum
+            murid, kemudian upload semula.
+          </div>
+
+          <div class="langkah-upload">
+            <div class="langkah-no">1</div>
+            <div class="langkah-isi">
+              <h4>Muat Turun Template</h4>
+              <p>Template sudah ada IC, Nama dan Kelas murid.
+                 Isi lajur UNIT, KELAB, SUKAN dan RUMAH.</p>
+              <button class="btn-template"
+                      onclick="muatTurunTemplate()">
+                ⬇️ Muat Turun Template CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="langkah-upload">
+            <div class="langkah-no">2</div>
+            <div class="langkah-isi">
+              <h4>Upload Template Yang Telah Diisi</h4>
+              <div class="upload-area"
+                   id="upload-koku-area"
+                   onclick="document.getElementById('fail-koku').click()"
+                   ondrop="dropFail(event, 'koku')"
+                   ondragover="event.preventDefault()">
+                <div class="upload-ikon">📂</div>
+                <p>Klik untuk pilih fail CSV</p>
+                <input type="file" id="fail-koku"
+                       accept=".csv" style="display:none"
+                       onchange="pilihFail(event, 'koku')">
+              </div>
+            </div>
+          </div>
+
+          <div id="preview-koku" style="display:none">
+            <h4 class="preview-tajuk">
+              Preview (5 baris pertama):
+            </h4>
+            <div class="preview-jadual"
+                 id="jadual-preview-koku"></div>
+            <div class="butang-row" style="margin-top:16px">
+              <button class="btn-balik"
+                      onclick="batalUpload('koku')">
+                Batal
+              </button>
+              <button class="btn-utama" style="width:auto"
+                      onclick="confirmImportKoku()">
+                ✓ Confirm Import
+              </button>
+            </div>
+          </div>
+
+          <div id="hasil-koku" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Urus Kelab -->
+      <div id="tab-kelab" class="tab-panel">
+        <div class="kad">
+          <h3 class="seksyen-tajuk">Tambah Koku Baru</h3>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Nama
+                <span class="wajib">*</span>
+              </label>
+              <input type="text" id="kelab-nama"
+                     class="form-input"
+                     placeholder="cth: PENGAKAP">
+            </div>
+            <div class="form-group">
+              <label>Kategori
+                <span class="wajib">*</span>
+              </label>
+              <select id="kelab-kategori"
+                      class="form-input">
+                <option value="">-- Pilih --</option>
+                <option>Unit Beruniform</option>
+                <option>Kelab &amp; Persatuan</option>
+                <option>Sukan &amp; Permainan</option>
+                <option>Rumah Sukan</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Jenis (untuk jawatan PAJSK)</label>
+              <select id="kelab-jenis" class="form-input">
+                <option value="">Umum</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-utama" style="width:auto"
+                  onclick="simpanKelabBaru()">
+            💾 Tambah Kelab
+          </button>
+        </div>
+
+        <div class="kad">
+          <h3 class="seksyen-tajuk">
+            Senarai Kokurikulum
+            <span id="bil-kelab"
+                  class="badge-bilangan"></span>
+          </h3>
+          <div id="senarai-kelab-admin">
+            <p class="tiada-data">Memuatkan...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 4: Urus Guru -->
+      <div id="tab-guru" class="tab-panel">
+        <div class="kad">
+          <h3 class="seksyen-tajuk">Tambah Guru</h3>
+          <div class="form-group">
+            <label>Nama Guru
+              <span class="wajib">*</span>
+            </label>
+            <input type="text" id="guru-nama"
+                   class="form-input"
+                   placeholder="cth: AHMAD BIN ALI">
+          </div>
+          <button class="btn-utama" style="width:auto"
+                  onclick="simpanGuruBaru()">
+            💾 Tambah Guru
+          </button>
+        </div>
+
+        <div class="kad">
+          <h3 class="seksyen-tajuk">
+            Upload Senarai Guru (CSV)
+          </h3>
+          <div class="info-box">
+            ℹ️ Untuk sekolah yang ramai guru: muat
+            turun template, isi nama guru (satu nama
+            satu baris), kemudian upload semula.
+            Nama yang sudah wujud dilangkau automatik.
+          </div>
+          <button class="btn-kecil"
+                  onclick="templateGuruCSV()">
+            ⬇️ Muat Turun Template CSV
+          </button>
+          <div class="upload-area" style="margin-top:12px"
+               onclick="document.getElementById('fail-guru').click()">
+            <div class="upload-ikon">📂</div>
+            <p>Klik untuk pilih fail CSV guru</p>
+            <input type="file" id="fail-guru"
+                   accept=".csv" style="display:none"
+                   onchange="pilihFailGuru(event)">
+          </div>
+        </div>
+
+        <div class="kad">
+          <h3 class="seksyen-tajuk">
+            Senarai Guru
+            <span id="bil-guru"
+                  class="badge-bilangan"></span>
+          </h3>
+          <div id="senarai-guru-admin">
+            <p class="tiada-data">Memuatkan...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 5: Tetapan -->
+      <div id="tab-tetapan" class="tab-panel">
+        <div class="kad">
+          <h3 class="seksyen-tajuk">Tetapan Sistem</h3>
+
+          <div class="form-group">
+            <label>Nama Sekolah</label>
+            <input type="text" id="set-nama-sekolah"
+                   class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Kod Sekolah</label>
+            <input type="text" id="set-kod-sekolah"
+                   class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Jenis Sekolah</label>
+            <select id="set-jenis-sekolah"
+                    class="form-input" disabled
+                    style="background:#f1f3f4;
+                    color:#777; cursor:not-allowed">
+              <option value="rendah">
+                Sekolah Rendah (Tahun 1-6)</option>
+              <option value="menengah">
+                Sekolah Menengah (Tingkatan 1-5)</option>
+            </select>
+            <p class="upload-sub" style="margin:4px 0 0 0">
+              🔒 Ditetapkan semasa setup awal —
+              tidak boleh diubah.</p>
+          </div>
+          <div class="form-group">
+            <label>Tahun Akademik</label>
+            <input type="number" id="set-tahun"
+                   class="form-input">
+          </div>
+
+          <h4 style="margin:18px 0 4px 0;
+              font-size:13px; color:#555">
+            Tahun/Tingkatan Ada Koku</h4>
+          <p class="upload-sub" style="margin:0 0 10px 0">
+            Tandakan tahun yang menyertai setiap
+            kategori. Murid tahun tanpa tanda tidak
+            muncul semasa menambah ahli.</p>
+          <div style="overflow-x:auto">
+            <table id="jadual-tahun-koku"
+                   style="border-collapse:collapse">
+              <thead>
+                <tr>
+                  <th style="padding:6px 12px"></th>
+                  <th style="padding:6px 12px;
+                      font-size:12px">Unit<br>Beruniform</th>
+                  <th style="padding:6px 12px;
+                      font-size:12px">Kelab &amp;<br>Persatuan</th>
+                  <th style="padding:6px 12px;
+                      font-size:12px">Sukan &amp;<br>Permainan</th>
+                </tr>
+              </thead>
+              <tbody id="badan-tahun-koku"></tbody>
+            </table>
+          </div>
+
+          <hr style="margin:24px 0; border:none;
+                     border-top:1px solid #f0f0f0">
+
+          <h3 class="seksyen-tajuk">Logo Sekolah</h3>
+          <div class="info-box">
+            ℹ️ Logo akan dipaparkan di halaman log masuk
+            dan di sidebar. Imej dimampat automatik.
+          </div>
+          <div style="display:flex; align-items:center;
+               gap:16px; margin-bottom:16px">
+            <div id="preview-logo"
+                 style="width:64px;height:64px;
+                 display:flex;align-items:center;
+                 justify-content:center;
+                 border:1px solid #e0e0e0;
+                 border-radius:12px;font-size:36px;
+                 background:#fafafa">🏫</div>
+            <div>
+              <button class="btn-kecil" type="button"
+                onclick="document.getElementById('fail-logo').click()">
+                📤 Pilih Logo
+              </button>
+              <input type="file" id="fail-logo"
+                     accept="image/*" style="display:none"
+                     onchange="pilihLogo(event)">
+              <p class="upload-sub" id="status-logo"
+                 style="margin:6px 0 0 0"></p>
+            </div>
+          </div>
+
+          <hr style="margin:24px 0; border:none;
+                     border-top:1px solid #f0f0f0">
+
+          <h3 class="seksyen-tajuk">Tukar Password</h3>
+
+          <div class="form-group">
+            <label>Password Admin Baru</label>
+            <input type="password" id="pass-admin-baru"
+                   class="form-input"
+                   placeholder="Kosongkan jika tidak tukar">
+          </div>
+          <div class="form-group">
+            <label>Password Guru Baru</label>
+            <input type="password" id="pass-guru-baru"
+                   class="form-input"
+                   placeholder="Kosongkan jika tidak tukar">
+          </div>
+
+          <button class="btn-utama"
+                  style="width:auto; padding:10px 24px"
+                  onclick="simpanTetapanSistem()">
+            💾 Simpan Perubahan
+          </button>
+        </div>
+      </div>
+
+
+      <!-- Tab 6: Arkib & Backup -->
+      <div id="tab-arkib" class="tab-panel">
+
+        <div class="kad">
+          <h3 class="seksyen-tajuk">Status Tahun Semasa</h3>
+          <div id="arkib-status">
+            <p class="tiada-data">Memuatkan...</p>
+          </div>
+        </div>
+
+        <div class="kad">
+          <h3 class="seksyen-tajuk">Tutup Tahun Akademik</h3>
+          <div class="info-box">
+            ⚠️ Tindakan ini akan: (1) buat backup penuh
+            sistem, (2) pindahkan semua perjumpaan, kehadiran
+            dan laporan tahun semasa ke arkib, (3) tukar tahun
+            akademik sistem. Data keahlian, pencapaian dan
+            PAJSK tahun lama <strong>kekal</strong> dan masih
+            boleh diakses. Lakukan <strong>hanya pada hujung
+            tahun akademik</strong>.
+          </div>
+          <div class="form-group">
+            <label>Tahun Akademik Baru</label>
+            <input type="number" id="input-tahun-baru"
+                   class="form-input"
+                   placeholder="cth: 2027">
+          </div>
+          <button class="btn-utama" style="width:auto"
+                  onclick="tutupTahun()">
+            🗄️ Tutup Tahun &amp; Mula Tahun Baru
+          </button>
+        </div>
+
+        <div class="kad">
+          <h3 class="seksyen-tajuk">Backup</h3>
+          <div class="form-group">
+            <label style="display:flex;align-items:center;
+                   gap:8px;cursor:pointer">
+              <input type="checkbox" id="chk-backup-auto"
+                     onchange="togolBackupAuto(this)">
+              Backup automatik mingguan (Ahad, 2 pagi)
+            </label>
+          </div>
+          <button class="btn-kecil"
+                  onclick="backupSekarang()">
+            💾 Backup Sekarang
+          </button>
+
+          <h4 class="preview-tajuk" style="margin-top:20px">
+            Backup Terkini
+            <a id="link-folder-backup" href="#"
+               target="_blank" rel="noopener"
+               style="display:none; font-size:12px;
+               font-weight:normal; margin-left:10px;
+               color:#1a73e8; text-decoration:none">
+              📂 Buka Folder Backup</a>
+          </h4>
+          <div id="senarai-backup">
+            <p class="tiada-data">Memuatkan...</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <?!= include('Script') ?>
+    <script>
+
+      // ===== AMBIL TOKEN DARI SERVER (WAJIB) =====
+      (function() {
+        try {
+          var t = '<?= token ?>';
+          var p = '<?= peranan ?>';
+          if (t && t !== 'undefined')
+            sessionStorage.setItem('token', t);
+          if (p && p !== 'undefined')
+            sessionStorage.setItem('peranan', p);
+        } catch(e) {}
+      })();
+
+      var csvMurid = '';
+      var csvKoku = '';
+
+      // ===== INIT =====
+      document.addEventListener('DOMContentLoaded',
+        function() {
+          var token = initHalaman('Admin');
+          if (!token) return;
+
+          if (!isAdmin()) {
+            tunjukToast(
+              'Akses ditolak. Admin sahaja.', 'ralat');
+            setTimeout(function() {
+              pergiHalaman('Dashboard');
+            }, 2000);
+            return;
+          }
+
+          // Muat tetapan sedia ada
+          google.script.run
+            .withSuccessHandler(function(t) {
+              if (!t) return;
+              var e1 = document.getElementById(
+                'set-nama-sekolah');
+              var e2 = document.getElementById(
+                'set-kod-sekolah');
+              var e3 = document.getElementById(
+                'set-tahun');
+              if (e1) e1.value = t.NAMA_SEKOLAH || '';
+              if (e2) e2.value = t.KOD_SEKOLAH || '';
+              if (e3) e3.value = t.TAHUN_AKADEMIK || '';
+              var e4 = document.getElementById(
+                'set-jenis-sekolah');
+              if (e4) e4.value =
+                t.JENIS_SEKOLAH || 'rendah';
+              tetapanKokuSemasa = t;
+              binaJadualTahunKoku(t);
+              if (t.LOGO) {
+                document.getElementById('preview-logo')
+                  .innerHTML = '<img src="' + t.LOGO +
+                  '" style="width:100%;height:100%;' +
+                  'object-fit:contain">';
+              }
+            })
+            .getTetapan();
+
+          // Muat senarai jenis koku (utk dropdown)
+          google.script.run
+            .withSuccessHandler(function(j) {
+              if (j && j.length) {
+                senaraiJenisKoku = j;
+                isiJenisBorangBaru();
+                muatSenaraiKelabAdmin();
+              }
+            })
+            .getSenaraiJenisKoku(
+              sessionStorage.getItem('token'));
+
+          // Muat senarai kelab & guru
+          muatSenaraiKelabAdmin();
+          muatSenaraiGuruAdmin();
+          muatStatusArkib();
+        }
+      );
+
+      // ===== TAB (nama fungsi diseragamkan) =====
+      function tukarTab(nama, el) {
+        document.querySelectorAll('.tab-panel')
+          .forEach(function(p) {
+            p.classList.remove('aktif');
+          });
+        document.querySelectorAll('.tab')
+          .forEach(function(t) {
+            t.classList.remove('aktif');
+          });
+        document.getElementById('tab-' + nama)
+                .classList.add('aktif');
+        el.classList.add('aktif');
+      }
+
+      // ===== UPLOAD FAIL =====
+      function pilihFail(event, jenis) {
+        var fail = event.target.files[0];
+        if (!fail) return;
+        bacaFail(fail, jenis);
+      }
+
+      function dropFail(event, jenis) {
+        event.preventDefault();
+        var fail = event.dataTransfer.files[0];
+        if (!fail) return;
+        bacaFail(fail, jenis);
+      }
+
+      function bacaFail(fail, jenis) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var csv = e.target.result;
+          if (jenis === 'murid') {
+            csvMurid = csv;
+            tunjukPreview(csv, 'murid');
+          } else {
+            csvKoku = csv;
+            tunjukPreview(csv, 'koku');
+          }
+        };
+        reader.readAsText(fail, 'UTF-8');
+      }
+
+      function tunjukPreview(csv, jenis) {
+        var baris = csv.trim().split('\n').slice(0, 6);
+        var header = baris[0].split(',').map(function(h) {
+          return h.replace(/"/g, '').trim();
+        });
+        var data = baris.slice(1);
+
+        var html = '<table class="jadual-preview">' +
+          '<thead><tr>';
+        header.forEach(function(h) {
+          html += '<th>' + h + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+        data.forEach(function(b) {
+          var lajur = b.split(',').map(function(l) {
+            return l.replace(/"/g, '').trim();
+          });
+          html += '<tr>';
+          lajur.forEach(function(l) {
+            html += '<td>' + l + '</td>';
+          });
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+
+        document.getElementById(
+          'upload-' + jenis + '-area')
+          .style.display = 'none';
+        document.getElementById('preview-' + jenis)
+                .style.display = 'block';
+        document.getElementById(
+          'jadual-preview-' + jenis)
+          .innerHTML = html;
+      }
+
+      function batalUpload(jenis) {
+        if (jenis === 'murid') csvMurid = '';
+        else csvKoku = '';
+
+        document.getElementById(
+          'upload-' + jenis + '-area')
+          .style.display = 'block';
+        document.getElementById('preview-' + jenis)
+                .style.display = 'none';
+        document.getElementById('hasil-' + jenis)
+                .style.display = 'none';
+        // Reset input supaya boleh pilih fail sama semula
+        document.getElementById('fail-' + jenis)
+                .value = '';
+      }
+
+      // ===== IMPORT MURID =====
+      function confirmImportMurid() {
+        if (!csvMurid) return;
+        tunjukLoading(true);
+
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            var div = document.getElementById(
+              'hasil-murid');
+            div.style.display = 'block';
+            document.getElementById('preview-murid')
+                    .style.display = 'none';
+
+            if (hasil.berjaya) {
+              var jumMurid = (hasil.tambah || 0) +
+                (hasil.kemaskini || 0);
+              div.innerHTML =
+                '<div class="hasil-box ' +
+                (jumMurid === 0 ? 'ralat' : 'berjaya') +
+                '">' +
+                '<h4>' + (jumMurid === 0 ?
+                  '⚠️ Tiada murid diimport — semak ' +
+                  'format fail' :
+                  '✅ Import Berjaya!') + '</h4>' +
+                '<div class="hasil-grid">' +
+                '<div class="hasil-item">' +
+                '<span class="hasil-no hijau">' +
+                hasil.tambah + '</span>' +
+                '<span>Murid Baru</span></div>' +
+                '<div class="hasil-item">' +
+                '<span class="hasil-no biru">' +
+                hasil.kemaskini + '</span>' +
+                '<span>Dikemaskini</span></div>' +
+                '<div class="hasil-item">' +
+                '<span class="hasil-no kuning">' +
+                hasil.tidakAktif + '</span>' +
+                '<span>Tidak Aktif</span></div>' +
+                '</div>' +
+                '<button class="btn-balik" ' +
+                'style="margin-top:16px" ' +
+                'onclick="batalUpload(\'murid\')">' +
+                'Upload Lagi</button></div>';
+              tunjukToast(
+                'Import murid berjaya!', 'berjaya');
+            } else {
+              div.innerHTML =
+                '<div class="hasil-box ralat">' +
+                '<h4>❌ Import Gagal</h4>' +
+                '<p>' + hasil.mesej + '</p>' +
+                '<button class="btn-balik" ' +
+                'onclick="batalUpload(\'murid\')">' +
+                'Cuba Lagi</button></div>';
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .importMurid(csvMurid,
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== TEMPLATE KOKU =====
+      function muatTurunTemplate() {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(csv) {
+            tunjukLoading(false);
+            if (!csv) {
+              tunjukToast('Tiada data murid. ' +
+                'Sila upload data murid dahulu.',
+                'ralat');
+              return;
+            }
+            // BOM UTF-8 supaya Excel baca huruf
+            // Melayu dengan betul
+            var blob = new Blob(['\uFEFF' + csv],
+              { type: 'text/csv;charset=utf-8;' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'Template_Kokurikulum.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            tunjukToast(
+              'Template dimuat turun!', 'berjaya');
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .exportTemplateKoku(
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== IMPORT KOKU =====
+      function confirmImportKoku() {
+        if (!csvKoku) return;
+        tunjukLoading(true);
+
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            var div = document.getElementById(
+              'hasil-koku');
+            div.style.display = 'block';
+            document.getElementById('preview-koku')
+                    .style.display = 'none';
+
+            if (hasil.berjaya) {
+              var htmlRalat = '';
+              if (hasil.jumlahRalat > 0 &&
+                  hasil.senaraiBaris) {
+                htmlRalat =
+                  '<div style="background:white;' +
+                  'border-radius:8px;padding:12px;' +
+                  'margin-top:12px;font-size:12px">' +
+                  '<p>⚠️ ' + hasil.jumlahRalat +
+                  ' ralat dijumpai:</p><ul ' +
+                  'style="margin:8px 0 0 16px">' +
+                  hasil.senaraiBaris.map(function(r) {
+                    return '<li>' + r + '</li>';
+                  }).join('') + '</ul></div>';
+              }
+              var htmlBaru = '';
+              if (hasil.kokuBaru &&
+                  hasil.kokuBaru.length) {
+                htmlBaru = '<div style="background:' +
+                  '#e6f4ea; border-radius:8px;' +
+                  ' padding:12px; margin-top:12px;' +
+                  ' font-size:12px">' +
+                  '<p>🆕 ' + hasil.kokuBaru.length +
+                  ' koku didaftarkan automatik ' +
+                  'dalam Urus Koku:</p>' +
+                  '<ul style="margin:8px 0 0 16px">' +
+                  hasil.kokuBaru.slice(0, 30)
+                    .map(function(n) {
+                      return '<li>' + n + '</li>';
+                    }).join('') +
+                  (hasil.kokuBaru.length > 30 ?
+                    '<li>... dan ' +
+                    (hasil.kokuBaru.length - 30) +
+                    ' lagi</li>' : '') +
+                  '</ul></div>';
+              }
+              var tajukKoku, boxKoku;
+              if (hasil.jumlahBerjaya === 0) {
+                tajukKoku = '❌ Import Gagal — tiada ' +
+                  'rekod dimasukkan';
+                boxKoku = 'ralat';
+              } else if (hasil.jumlahRalat > 0) {
+                tajukKoku = '⚠️ Import Separa Berjaya';
+                boxKoku = 'berjaya';
+              } else {
+                tajukKoku = '✅ Import Berjaya!';
+                boxKoku = 'berjaya';
+              }
+              div.innerHTML =
+                '<div class="hasil-box ' + boxKoku +
+                '">' +
+                '<h4>' + tajukKoku + '</h4>' +
+                '<div class="hasil-grid">' +
+                '<div class="hasil-item">' +
+                '<span class="hasil-no hijau">' +
+                hasil.jumlahBerjaya + '</span>' +
+                '<span>Rekod Berjaya</span></div>' +
+                '<div class="hasil-item">' +
+                '<span class="hasil-no merah">' +
+                hasil.jumlahRalat + '</span>' +
+                '<span>Rekod Gagal</span></div>' +
+                '</div>' + htmlBaru + htmlRalat +
+                '<button class="btn-balik" ' +
+                'style="margin-top:16px" ' +
+                'onclick="batalUpload(\'koku\')">' +
+                'Upload Lagi</button></div>';
+              tunjukToast(hasil.jumlahBerjaya === 0 ?
+                'Import gagal — semak senarai ralat.' :
+                'Import selesai!',
+                hasil.jumlahBerjaya === 0 ?
+                'ralat' : 'berjaya');
+              // Segarkan senarai koku (mungkin ada
+              // koku baru didaftar automatik)
+              muatSenaraiKelabAdmin();
+            } else {
+              div.innerHTML =
+                '<div class="hasil-box ralat">' +
+                '<h4>❌ Import Gagal</h4>' +
+                '<p>' + hasil.mesej + '</p>' +
+                '<button class="btn-balik" ' +
+                'onclick="batalUpload(\'koku\')">' +
+                'Cuba Lagi</button></div>';
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .importKeahlian(csvKoku,
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== URUS KELAB =====
+      var senaraiJenisKoku = ['Umum'];
+
+      function isiJenisBorangBaru() {
+        var sel = document.getElementById(
+          'kelab-jenis');
+        if (!sel) return;
+        sel.innerHTML = senaraiJenisKoku
+          .map(function(j) {
+            return '<option value="' +
+              (j === 'Umum' ? '' : j) + '">' + j +
+              '</option>';
+          }).join('');
+      }
+
+      function muatSenaraiKelabAdmin() {
+        google.script.run
+          .withSuccessHandler(function(data) {
+            var div = document.getElementById(
+              'senarai-kelab-admin');
+            var bil = document.getElementById(
+              'bil-kelab');
+            data = data || [];
+            // Susun ikut kategori, kemudian nama
+            data.sort(function(a, b) {
+              if (a.kategori !== b.kategori)
+                return a.kategori.localeCompare(b.kategori);
+              return a.nama.localeCompare(b.nama);
+            });
+            if (bil) bil.textContent =
+              data.length + ' Koku';
+
+            if (data.length === 0) {
+              div.innerHTML =
+                '<p class="tiada-data">' +
+                'Tiada kelab. Tambah kelab baru.</p>';
+              return;
+            }
+
+            var JENIS_KOKU = senaraiJenisKoku;
+            div.innerHTML = data.map(function(k) {
+              var statusKelas = k.status === 'AKTIF' ?
+                'hijau' : 'merah';
+              var butangLabel = k.status === 'AKTIF' ?
+                'Nyahaktif' : 'Aktifkan';
+              var jenisSemasa = k.jenis || 'Umum';
+              var pilihJenis = '<select ' +
+                'style="padding:4px 8px; font-size:12px;' +
+                ' border:1px solid #ddd;' +
+                ' border-radius:6px; background:#fff" ' +
+                'title="Jenis (jadual jawatan PAJSK)" ' +
+                'onchange="tukarJenisKoku(\'' + k.id +
+                '\', this.value)">' +
+                JENIS_KOKU.map(function(j) {
+                  return '<option value="' + j + '"' +
+                    (j === jenisSemasa ?
+                      ' selected' : '') + '>' + j +
+                    '</option>';
+                }).join('') + '</select>';
+              return '<div class="item-baris">' +
+                '<div class="item-kiri">' +
+                '<strong>' + k.nama + '</strong>' +
+                '<span class="badge">' +
+                k.kategori + '</span>' +
+                '</div>' +
+                '<div class="item-kanan">' +
+                pilihJenis +
+                '<span class="status-badge ' +
+                statusKelas + '">' + k.status +
+                '</span>' +
+                '<button class="btn-kecil" ' +
+                'onclick="togolKelab(\'' + k.id +
+                '\')">' + butangLabel + '</button>' +
+                '<button class="btn-padam" ' +
+                'title="Padam kekal" ' +
+                'onclick="padamKelabAdmin(\'' + k.id +
+                '\',\'' +
+                k.nama.replace(/'/g, "\\'") +
+                '\')">🗑️</button>' +
+                '</div></div>';
+            }).join('');
+          })
+          .getSenaraiKelabPenuh(
+            sessionStorage.getItem('token'));
+      }
+
+      function tukarJenisKoku(id, jenis) {
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            if (hasil.berjaya) {
+              tunjukToast('Jenis dikemaskini!',
+                'berjaya');
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+              muatSenaraiKelabAdmin();
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+            muatSenaraiKelabAdmin();
+          })
+          .tukarJenisKelab(id, jenis,
+            sessionStorage.getItem('token'));
+      }
+
+      function simpanKelabBaru() {
+        var nama = document.getElementById(
+          'kelab-nama').value.trim();
+        var kategori = document.getElementById(
+          'kelab-kategori').value;
+
+        if (!nama || !kategori) {
+          tunjukToast(
+            'Sila isi nama dan kategori kelab.',
+            'ralat');
+          return;
+        }
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Kelab ditambah!', 'berjaya');
+              document.getElementById('kelab-nama')
+                      .value = '';
+              document.getElementById('kelab-kategori')
+                      .value = '';
+              document.getElementById('kelab-jenis')
+                      .value = '';
+              muatSenaraiKelabAdmin();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .tambahKelab({
+            nama: nama,
+            kategori: kategori,
+            jenis: document.getElementById(
+              'kelab-jenis').value,
+            guru1: '',
+            guru2: ''
+          }, sessionStorage.getItem('token'));
+      }
+
+      function togolKelab(id) {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast(
+                'Status kelab: ' + hasil.status,
+                'berjaya');
+              muatSenaraiKelabAdmin();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .togolStatusKelab(id,
+            sessionStorage.getItem('token'));
+      }
+
+      function padamKelabAdmin(id, nama) {
+        if (!confirm('PADAM ' + nama + ' secara kekal?' +
+            '\n\nHanya boleh dipadam jika tiada data ' +
+            'keahlian atau perjumpaan berkaitan.')) return;
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Dipadam.', 'berjaya');
+              muatSenaraiKelabAdmin();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .padamKelab(id,
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== URUS GURU =====
+      function muatSenaraiGuruAdmin() {
+        google.script.run
+          .withSuccessHandler(function(data) {
+            var div = document.getElementById(
+              'senarai-guru-admin');
+            var bil = document.getElementById(
+              'bil-guru');
+            data = data || [];
+            if (bil) bil.textContent =
+              data.length + ' guru';
+
+            if (data.length === 0) {
+              div.innerHTML =
+                '<p class="tiada-data">' +
+                'Tiada guru. Tambah guru baru.</p>';
+              return;
+            }
+
+            div.innerHTML = data.map(function(g) {
+              return '<div class="item-baris">' +
+                '<div class="item-kiri">' +
+                '<strong>' + g.nama + '</strong>' +
+                '</div>' +
+                '<div class="item-kanan">' +
+                '<button class="btn-padam" ' +
+                'onclick="padamGuruAdmin(\'' +
+                g.id + '\',\'' + g.nama +
+                '\')">🗑️</button>' +
+                '</div></div>';
+            }).join('');
+          })
+          .getSenaraiGuru(
+            sessionStorage.getItem('token'));
+      }
+
+      function simpanGuruBaru() {
+        var nama = document.getElementById(
+          'guru-nama').value.trim();
+        if (!nama) {
+          tunjukToast('Sila isi nama guru.', 'ralat');
+          return;
+        }
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Guru ditambah!', 'berjaya');
+              document.getElementById('guru-nama')
+                      .value = '';
+              muatSenaraiGuruAdmin();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .tambahGuru(nama, '',
+            sessionStorage.getItem('token'));
+      }
+
+      function templateGuruCSV() {
+        var csv = '\uFEFF' + 'NAMA GURU\n' +
+          'AHMAD BIN ALI\n' +
+          'SITI AMINAH BINTI HASSAN\n';
+        var blob = new Blob([csv],
+          { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'Template_Guru.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function pilihFailGuru(event) {
+        var fail = event.target.files[0];
+        if (!fail) return;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var baris = e.target.result
+            .replace(/\r/g, '').split('\n');
+          var senarai = [];
+          baris.forEach(function(b, i) {
+            var nama = (b.split(',')[0] || '')
+              .replace(/"/g, '').trim();
+            if (!nama) return;
+            // langkau baris header
+            if (i === 0 &&
+                nama.toUpperCase()
+                  .indexOf('NAMA') !== -1) return;
+            senarai.push(nama.toUpperCase());
+          });
+          if (senarai.length === 0) {
+            tunjukToast('Tiada nama dalam fail.',
+              'ralat');
+            return;
+          }
+          if (!confirm('Import ' + senarai.length +
+              ' nama guru?')) return;
+          tunjukLoading(true);
+          google.script.run
+            .withSuccessHandler(function(hasil) {
+              tunjukLoading(false);
+              if (hasil.berjaya) {
+                tunjukToast(hasil.tambah +
+                  ' guru ditambah, ' + hasil.langkau +
+                  ' dilangkau (sudah wujud).',
+                  'berjaya');
+                muatSenaraiGuruAdmin();
+              } else {
+                tunjukToast(hasil.mesej, 'ralat');
+              }
+            })
+            .withFailureHandler(function(e2) {
+              tunjukLoading(false);
+              tunjukToast('Ralat: ' + e2.message,
+                'ralat');
+            })
+            .importGuru(senarai,
+              sessionStorage.getItem('token'));
+        };
+        reader.readAsText(fail);
+        event.target.value = '';
+      }
+
+      function padamGuruAdmin(id, nama) {
+        if (!confirm('Padam guru ' + nama + '?'))
+          return;
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Guru dipadam.', 'berjaya');
+              muatSenaraiGuruAdmin();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .padamGuru(id,
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== LOGO =====
+      function pilihLogo(event) {
+        var fail = event.target.files[0];
+        if (!fail) return;
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() {
+            // Mampat ke saiz ikon (max 128px)
+            var MAX = 128;
+            var w = img.width, h = img.height;
+            if (Math.max(w, h) > MAX) {
+              var skala = MAX / Math.max(w, h);
+              w = Math.round(w * skala);
+              h = Math.round(h * skala);
+            }
+            var kanvas = document.createElement('canvas');
+            kanvas.width = w;
+            kanvas.height = h;
+            kanvas.getContext('2d')
+                  .drawImage(img, 0, 0, w, h);
+
+            // Cuba PNG (kekal telus); jika besar,
+            // guna JPEG latar putih
+            var dataUrl = kanvas.toDataURL('image/png');
+            if (dataUrl.length > 45000) {
+              var k2 = document.createElement('canvas');
+              k2.width = w; k2.height = h;
+              var ctx2 = k2.getContext('2d');
+              ctx2.fillStyle = '#ffffff';
+              ctx2.fillRect(0, 0, w, h);
+              ctx2.drawImage(img, 0, 0, w, h);
+              dataUrl = k2.toDataURL('image/jpeg', 0.85);
+            }
+            if (dataUrl.length > 45000) {
+              tunjukToast('Logo terlalu kompleks. ' +
+                'Cuba imej lebih ringkas.', 'ralat');
+              return;
+            }
+
+            document.getElementById('preview-logo')
+              .innerHTML = '<img src="' + dataUrl +
+              '" style="width:100%;height:100%;' +
+              'object-fit:contain">';
+            document.getElementById('status-logo')
+              .textContent = 'Menyimpan... (' +
+              Math.round(dataUrl.length * 3 / 4 / 1024) +
+              ' KB)';
+
+            google.script.run
+              .withSuccessHandler(function(hasil) {
+                document.getElementById('status-logo')
+                  .textContent = hasil.berjaya ?
+                  '✅ Logo disimpan! Refresh untuk lihat.' :
+                  '❌ ' + hasil.mesej;
+              })
+              .withFailureHandler(function(e2) {
+                document.getElementById('status-logo')
+                  .textContent = '❌ ' + e2.message;
+              })
+              .simpanLogo(dataUrl,
+                sessionStorage.getItem('token'));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(fail);
+      }
+
+      // ===== JADUAL TAHUN ADA KOKU =====
+      var tetapanKokuSemasa = null;
+      var KAT_KOKU = [
+        ['unit', 'TAHUN_KOKU_UNIT', 'TAHUN_MULA_UNIT'],
+        ['kelab', 'TAHUN_KOKU_KELAB', 'TAHUN_MULA_KELAB'],
+        ['sukan', 'TAHUN_KOKU_SUKAN', 'TAHUN_MULA_SUKAN']
+      ];
+
+      function adaTahunKoku(t, kunci, kunciLama, n) {
+        var nilai = t ? t[kunci] : null;
+        if (nilai !== undefined && nilai !== null &&
+            String(nilai) !== '') {
+          return (',' + nilai + ',')
+            .indexOf(',' + n + ',') !== -1;
+        }
+        // Serasi ke belakang: TAHUN_MULA_* lama
+        var mula = t ? parseInt(t[kunciLama], 10) : NaN;
+        if (mula >= 2) return n >= mula;
+        return true; // default: semua tahun
+      }
+
+      function binaJadualTahunKoku(t) {
+        var badan = document.getElementById(
+          'badan-tahun-koku');
+        if (!badan) return;
+        var jenis = document.getElementById(
+          'set-jenis-sekolah').value;
+        var maks = jenis === 'menengah' ? 5 : 6;
+        var label = jenis === 'menengah' ?
+          'Tingkatan' : 'Tahun';
+        var html = '';
+        for (var n = 1; n <= maks; n++) {
+          html += '<tr>' +
+            '<td style="padding:7px 12px;' +
+            ' font-size:13px; border-top:1px solid' +
+            ' #f0f0f0">' + label + ' ' + n + '</td>';
+          KAT_KOKU.forEach(function(k) {
+            html += '<td style="text-align:center;' +
+              ' border-top:1px solid #f0f0f0">' +
+              '<input type="checkbox" id="koku-' +
+              k[0] + '-' + n + '"' +
+              (adaTahunKoku(t, k[1], k[2], n) ?
+                ' checked' : '') +
+              ' style="width:18px; height:18px;' +
+              ' cursor:pointer"></td>';
+          });
+          html += '</tr>';
+        }
+        badan.innerHTML = html;
+      }
+
+      function senaraiTahunKoku(kat) {
+        var jenis = document.getElementById(
+          'set-jenis-sekolah').value;
+        var maks = jenis === 'menengah' ? 5 : 6;
+        var pilih = [];
+        for (var n = 1; n <= maks; n++) {
+          var cb = document.getElementById(
+            'koku-' + kat + '-' + n);
+          if (cb && cb.checked) pilih.push(n);
+        }
+        return pilih.join(',');
+      }
+
+      // ===== TETAPAN =====
+      function simpanTetapanSistem() {
+        var data = {
+          namaSekolah: document.getElementById(
+            'set-nama-sekolah').value,
+          kodSekolah: document.getElementById(
+            'set-kod-sekolah').value,
+          tahunAkademik: document.getElementById(
+            'set-tahun').value,
+          tahunKokuUnit: senaraiTahunKoku('unit'),
+          tahunKokuKelab: senaraiTahunKoku('kelab'),
+          tahunKokuSukan: senaraiTahunKoku('sukan'),
+          passAdminBaru: document.getElementById(
+            'pass-admin-baru').value,
+          passGuruBaru: document.getElementById(
+            'pass-guru-baru').value
+        };
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Tetapan disimpan!',
+                'berjaya');
+              document.getElementById(
+                'pass-admin-baru').value = '';
+              document.getElementById(
+                'pass-guru-baru').value = '';
+            } else {
+              tunjukToast(
+                'Ralat: ' + hasil.mesej, 'ralat');
+            }
+          })
+          .kemaskiniTetapan(data,
+            sessionStorage.getItem('token'));
+      }
+
+
+      // ===== ARKIB & BACKUP =====
+      var tahunSemasaArkib = '';
+
+      function muatStatusArkib() {
+        google.script.run
+          .withSuccessHandler(function(s) {
+            if (!s) return;
+            tahunSemasaArkib = s.tahunSemasa.toString();
+
+            document.getElementById('arkib-status')
+              .innerHTML =
+              '<p><strong>Tahun Akademik Semasa: ' +
+              s.tahunSemasa + '</strong></p>' +
+              '<p>Perjumpaan: ' + s.bilPerjumpaan +
+              ' &nbsp;|&nbsp; Rekod kehadiran: ' +
+              s.bilKehadiran +
+              ' &nbsp;|&nbsp; Laporan: ' +
+              s.bilLaporan + '</p>' +
+              '<p>Tahun dalam arkib: ' +
+              (s.tahunArkib && s.tahunArkib.length ?
+                s.tahunArkib.join(', ') : 'Tiada') +
+              '</p>';
+
+            document.getElementById('chk-backup-auto')
+              .checked = !!s.backupAuto;
+
+            var lf = document.getElementById(
+              'link-folder-backup');
+            if (lf && s.folderBackupUrl) {
+              lf.href = s.folderBackupUrl;
+              lf.style.display = 'inline';
+            }
+
+            var sb = document.getElementById(
+              'senarai-backup');
+            if (!s.senaraiBackup ||
+                s.senaraiBackup.length === 0) {
+              sb.innerHTML = '<p class="tiada-data">' +
+                'Tiada backup lagi.</p>';
+            } else {
+              sb.innerHTML = s.senaraiBackup
+                .map(function(b) {
+                  return '<div class="item-baris">' +
+                    '<div class="item-kiri">' +
+                    '<strong>' + b.nama + '</strong>' +
+                    '<span class="masa-text">' +
+                    b.tarikh + '</span>' +
+                    '</div>' +
+                    (b.url ?
+                      '<div class="item-kanan">' +
+                      '<a href="' + b.url + '"' +
+                      ' target="_blank" rel="noopener"' +
+                      ' class="btn-kecil"' +
+                      ' style="text-decoration:none">' +
+                      '👁️ Buka</a></div>' : '') +
+                    '</div>';
+                }).join('');
+            }
+          })
+          .getStatusArkib(
+            sessionStorage.getItem('token'));
+      }
+
+      function tutupTahun() {
+        var tahunBaru = document.getElementById(
+          'input-tahun-baru').value.trim();
+        if (!/^\d{4}$/.test(tahunBaru)) {
+          tunjukToast(
+            'Masukkan tahun 4 digit (cth: 2027).',
+            'ralat');
+          return;
+        }
+        if (tahunBaru === tahunSemasaArkib) {
+          tunjukToast(
+            'Tahun baru sama dengan tahun semasa.',
+            'ralat');
+          return;
+        }
+
+        var sah = prompt(
+          'AMARAN: Tindakan ini tidak boleh ' +
+          'dibatalkan!\n\nSemua perjumpaan, kehadiran ' +
+          'dan laporan tahun ' + tahunSemasaArkib +
+          ' akan diarkibkan.\n\nTaip tahun semasa (' +
+          tahunSemasaArkib + ') untuk sahkan:');
+        if (sah === null) return;
+        if (sah.trim() !== tahunSemasaArkib) {
+          tunjukToast('Pengesahan tidak sepadan. ' +
+            'Tindakan dibatalkan.', 'ralat');
+          return;
+        }
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              alert('✅ Tahun akademik ditutup!\n\n' +
+                'Tahun ' + hasil.tahunLama + ' → ' +
+                hasil.tahunBaru + '\n' +
+                'Perjumpaan diarkib: ' +
+                hasil.bilArkib.perjumpaan + '\n' +
+                'Kehadiran diarkib: ' +
+                hasil.bilArkib.kehadiran + '\n' +
+                'Laporan diarkib: ' +
+                hasil.bilArkib.laporan + '\n\n' +
+                'Backup: ' + hasil.namaBackup);
+              document.getElementById(
+                'input-tahun-baru').value = '';
+              var eT = document.getElementById(
+                'set-tahun');
+              if (eT) eT.value = hasil.tahunBaru;
+              muatStatusArkib();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .tutupTahunAkademik(tahunBaru,
+            sessionStorage.getItem('token'));
+      }
+
+      function backupSekarang() {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Backup berjaya: ' +
+                hasil.nama, 'berjaya');
+              muatStatusArkib();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .buatBackupManual(
+            sessionStorage.getItem('token'));
+      }
+
+      function togolBackupAuto(el) {
+        var aktif = el.checked;
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            if (hasil.berjaya) {
+              tunjukToast('Backup automatik ' +
+                (hasil.aktif ? 'dihidupkan.' :
+                 'dimatikan.'), 'berjaya');
+            } else {
+              el.checked = !aktif;
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            el.checked = !aktif;
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .togolBackupAutomatik(aktif,
+            sessionStorage.getItem('token'));
+      }
+
+    </script>
+
+  </body>
+</html>

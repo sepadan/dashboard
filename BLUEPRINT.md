@@ -1,10 +1,10 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 1.0 · 22 Ogos 2026**
+**Versi 1.1 · 23 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
-> **Kepada AI yang membaca ini:** baca bahagian *Peraturan yang tidak boleh dilanggar* sebelum menulis sebarang kod. Beberapa keputusan di sini kelihatan seperti kesilapan tetapi sebenarnya betul, dan pernah dibetulkan sekali. Kemas kini dokumen ini setiap kali sistem berubah — lihat *Protokol penyelenggaraan* di hujung.
+> **Kepada AI yang membaca ini:** [`CLAUDE.md`](CLAUDE.md) mengikat cara kerja pada repo ini — baca sekali. Kemudian baca bahagian *Peraturan yang tidak boleh dilanggar* di bawah sebelum menulis sebarang kod. Beberapa keputusan di sini kelihatan seperti kesilapan tetapi sebenarnya betul, dan pernah dibetulkan sekali. Kemas kini dokumen ini setiap kali sistem berubah — lihat *Protokol penyelenggaraan* di hujung.
 
 ---
 
@@ -263,6 +263,9 @@ Menambah sesi baharu = menambah satu kunci di bawah `sesi`. Tiada perubahan kod 
 
 ## 5. Kitaran automatik
 
+**Status pada 23 Ogos 2026: berjalan.** Commit automatik terakhir yang disahkan — `Kemas kini data dashboard — 2026-08-23 21:47`.
+
+
 1. Pemicu masa berjalan **setiap 30 minit** (`DASH_MINIT_PEMICU`)
 2. `hantarDataKeGitHub` menjana `data.json` baharu
 3. Membaca versi sedia ada di GitHub, mengekalkan sesi tahun lain
@@ -320,7 +323,7 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 
 ## 8. Perkara yang belum selesai
 
-1. **Carta bidang kokurikulum tidak bermakna** — tiga bar sama panjang (129 setiap satu), kerana setiap murid Tahun 3–6 wajib menyertai ketiga-tiga bidang. Ganti dengan data AKSI yang lebih bercerita: kehadiran perjumpaan, markah `PENILAIAN_KOKU`, atau gred `PAJSK_SUMMARY`
+1. **Carta bidang kokurikulum tidak bermakna** — tiga bar sama panjang (129 setiap satu), kerana setiap murid Tahun 3–6 wajib menyertai ketiga-tiga bidang. Peratus penyertaan pula kekal 100%. Angkanya betul tetapi tidak memberitahu sesiapa apa-apa. Ganti dengan data AKSI yang lebih bercerita: kehadiran perjumpaan (`PERJUMPAAN` + `KEHADIRAN`), markah `PENILAIAN_KOKU`, atau gred `PAJSK_SUMMARY`. **Ini keutamaan pertama sesi akan datang**
 2. **`luar_main: 5`** — lima ahli AKSI tiada dalam tab `main`; perlu disemak
 3. **`id_html_dashboard` kosong** — Langkah 7 dilangkau; `index.html` ditolak manual
 4. **SEMAK masih di Firebase** (`semak-skpr.web.app`) — rancangan migrasi ke GitHub Pages ada, belum dilaksana
@@ -347,6 +350,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 | Versi | Tarikh | Perubahan |
 |---|---|---|
 | 1.0 | 22 Ogos 2026 | Dokumen asal. Merangkumi KEHADIRAN, SEMAK, AKSI, Dashboard |
+| 1.1 | 23 Ogos 2026 | Tambah `CLAUDE.md` sebagai protokol kerja. Tile Rumah Sukan setiap rumah dalam tab Kokurikulum. Pembina slaid Mod TV mengambil semua anak seksyen (dahulu hanya `.tiles` dan `.grid` pertama, menyebabkan barisan tile kedua hilang dari Mod TV). Sahkan pemicu 30 minit berjalan di produksi |
 
 ---
 

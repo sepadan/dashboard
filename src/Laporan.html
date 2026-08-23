@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+  </head>
+  <body class="dashboard-page">
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <?!= renderSidebar(token, peranan) ?>
+
+    <div class="kandungan">
+      <div class="halaman-header">
+        <h2>📝 Laporan Perjumpaan</h2>
+        <p>Rekod laporan aktiviti perjumpaan kelab</p>
+      </div>
+
+      <!-- Pilih Kelab -->
+      <div class="kad" id="panel-pilih">
+        <h3 class="seksyen-tajuk">Sila Pilih</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kategori</label>
+            <select id="pilih-kategori" class="form-input"
+                    onchange="tapishKelab()">
+              <option value="">-- Semua Kategori --</option>
+              <option>Unit Beruniform</option>
+              <option>Kelab & Persatuan</option>
+              <option>Sukan & Permainan</option>
+              <option>Rumah Sukan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label id="label-jenis">Semua Kategori</label>
+            <select id="pilih-kelab" class="form-input"
+                    onchange="muatPerjumpaan()">
+              <option value="">-- Pilih --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Perjumpaan</label>
+            <select id="pilih-perjumpaan" class="form-input"
+                    onchange="muatLaporan()">
+              <option value="">-- Pilih Perjumpaan --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel Laporan -->
+      <div class="kad" id="panel-laporan" style="display:none">
+
+        <!-- Jika laporan sudah ada -->
+        <div id="laporan-sedia" style="display:none">
+          <div class="flex-antara">
+            <h3 class="seksyen-tajuk" style="margin-bottom:0">
+              Laporan Perjumpaan
+            </h3>
+            <div style="display:flex; gap:8px">
+              <button class="btn-kecil" 
+                      onclick="bukaPDF()">
+                🔗 Lihat PDF
+              </button>
+              <button class="btn-tambah"
+                      onclick="editLaporan()">
+                ✏️ Edit
+              </button>
+              <button class="btn-padam" id="btn-padam-laporan"
+                      style="display:none"
+                      onclick="padamLaporanAdmin()">
+                🗑️ Padam
+              </button>
+            </div>
+          </div>
+
+          <div class="laporan-paparan" id="paparan-laporan">
+          </div>
+        </div>
+
+        <!-- Jika laporan belum ada / edit -->
+        <div id="laporan-borang" style="display:none">
+          <h3 class="seksyen-tajuk">
+            Isi Laporan Perjumpaan
+          </h3>
+
+          <!-- Maklumat auto -->
+          <div class="info-auto">
+            <div class="info-auto-item">
+              <span class="label">Kelab</span>
+              <span id="auto-kelab">-</span>
+            </div>
+            <div class="info-auto-item">
+              <span class="label">Tarikh</span>
+              <span id="auto-tarikh">-</span>
+            </div>
+            <div class="info-auto-item">
+              <span class="label">Bilangan Hadir</span>
+              <span id="auto-hadir" 
+                    class="nilai-hijau">-</span>
+            </div>
+            <div class="info-auto-item">
+              <span class="label">Bilangan Tidak Hadir</span>
+              <span id="auto-tidak-hadir" 
+                    class="nilai-merah">-</span>
+            </div>
+          </div>
+
+          <!-- Input guru -->
+          <div class="form-group" style="margin-top:20px">
+            <label>Tajuk Perjumpaan <span class="wajib">*</span></label>
+            <input type="text" id="input-tajuk"
+                   class="form-input"
+                   placeholder="cth: Latihan Pengakap Minggu 3">
+          </div>
+
+          <div class="form-group">
+            <label>Aktiviti / Penerangan <span class="wajib">*</span></label>
+            <textarea id="input-aktiviti" class="form-textarea"
+                      rows="5" maxlength="1000"
+                      oninput="kiraAksara()"
+                      placeholder="Huraikan aktiviti yang dijalankan..."></textarea>
+            <p class="upload-sub" style="text-align:right;
+               margin:2px 0 0 0">
+              <span id="kaunter-aksara">0</span>/1000 aksara
+              (had supaya PDF kekal satu muka surat)
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label>Gambar Aktiviti</label>
+            <div class="upload-gambar-area"
+                 onclick="document.getElementById('input-gambar').click()">
+              <span>📸 Klik untuk upload gambar</span>
+              <span class="upload-sub">
+                JPG, PNG — maksimum 4 gambar
+                (dimampat automatik)
+              </span>
+              <input type="file" id="input-gambar"
+                     accept="image/*" multiple
+                     style="display:none"
+                     onchange="pralihatGambar(event)">
+            </div>
+
+            <!-- Gambar sedia ada (mod edit) -->
+            <div id="gambar-sedia-ada"
+                 class="preview-gambar"></div>
+
+            <!-- Preview gambar -->
+            <div id="preview-gambar" class="preview-gambar">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Guru Penasihat
+              <span class="wajib">*</span>
+            </label>
+            <div style="display:flex; gap:8px">
+              <select id="pilih-guru" class="form-input"
+                      style="flex:1">
+                <option value="">-- Pilih Nama Guru --</option>
+              </select>
+              <button type="button" class="btn-kecil"
+                      onclick="tambahGuruLaporan()">
+                + Tambah
+              </button>
+            </div>
+            <div id="chip-guru"
+                 style="display:flex; flex-wrap:wrap;
+                 gap:8px; margin-top:10px"></div>
+          </div>
+
+          <div class="butang-row">
+            <button class="btn-balik"
+                    onclick="batalBorang()">
+              Batal
+            </button>
+            <button class="btn-utama"
+                    onclick="hantarLaporan()">
+              📤 Hantar Laporan
+            </button>
+          </div>
+        </div>
+
+        <!-- Jika perjumpaan belum pilih -->
+        <div id="laporan-kosong">
+          <p class="tiada-data">
+            Pilih perjumpaan untuk lihat atau isi laporan.
+          </p>
+        </div>
+
+        <!-- Kehadiran belum diisi -->
+        <div id="laporan-sekat" style="display:none">
+          <div class="info-box" style="border-color:#f9ab00">
+            ⚠️ <strong>Kehadiran belum diisi</strong> untuk
+            perjumpaan ini. Sila ambil kehadiran dahulu
+            sebelum mengisi laporan — bilangan hadir akan
+            dimasukkan secara automatik ke dalam laporan.
+          </div>
+          <button class="btn-utama" style="width:auto"
+                  onclick="pergiHalaman('Kehadiran')">
+            📅 Pergi ke Kehadiran
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <?!= include('Script') ?>
+    <script>
+
+      let senaraiKelab = [];
+      let infoPerjumpaan = null;
+      let gambarUpload = [];
+      let modEdit = false;
+      let urlPDFSemasa = '';
+      let laporanSemasa = null;
+      let gambarBuang = [];
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const token = semakSesiAktif();
+        if (!token) return;
+        muatSenaraiKelab();
+        muatSenaraiGuru();
+      });
+
+      function muatSenaraiKelab() {
+        google.script.run
+          .withSuccessHandler(function(data) {
+            senaraiKelab = data || [];
+            tapishKelab();
+            semakAutoLapor();
+          })
+          .getSenaraiKelab(sessionStorage.getItem('token'));
+      }
+
+      // Auto-navigasi dari halaman Kehadiran
+      let autoPerjumpaan = null;
+
+      function semakAutoLapor() {
+        const kelab = sessionStorage.getItem('autoLaporKelab');
+        const perjumpaan = sessionStorage.getItem('autoLaporPerjumpaan');
+        if (!kelab) return;
+        sessionStorage.removeItem('autoLaporKelab');
+        sessionStorage.removeItem('autoLaporPerjumpaan');
+
+        const sel = document.getElementById('pilih-kelab');
+        sel.value = kelab;
+        if (sel.value !== kelab) return; // kelab tiada
+        autoPerjumpaan = perjumpaan;
+        muatPerjumpaan();
+      }
+
+      function muatSenaraiGuru() {
+        google.script.run
+          .withSuccessHandler(function(data) {
+            const select = document.getElementById('pilih-guru');
+            (data || []).forEach(g => {
+              const opt = document.createElement('option');
+              opt.value = g.nama;
+              opt.textContent = g.nama +
+                (g.jawatan ? ' (' + g.jawatan + ')' : '');
+              select.appendChild(opt);
+            });
+          })
+          .getSenaraiGuru(sessionStorage.getItem('token'));
+      }
+
+      // ===== Guru penasihat dipilih (chip) =====
+      let guruLaporan = [];
+
+      function renderChipGuru() {
+        document.getElementById('chip-guru').innerHTML =
+          guruLaporan.map((n, i) => `
+            <span class="badge" style="display:inline-flex;
+                  align-items:center; gap:6px">
+              ${n}
+              <a style="cursor:pointer; font-weight:bold"
+                 onclick="buangGuruLaporan(${i})">✕</a>
+            </span>
+          `).join('');
+      }
+
+      function tambahGuruLaporan() {
+        const sel = document.getElementById('pilih-guru');
+        const nama = sel.value;
+        if (!nama) return;
+        if (guruLaporan.includes(nama)) {
+          tunjukToast('Guru sudah dalam senarai.', 'ralat');
+          return;
+        }
+        guruLaporan.push(nama);
+        sel.value = '';
+        renderChipGuru();
+      }
+
+      function buangGuruLaporan(i) {
+        guruLaporan.splice(i, 1);
+        renderChipGuru();
+      }
+
+      function guruDipilih() {
+        return guruLaporan;
+      }
+
+      function setGuruDipilih(senarai) {
+        guruLaporan = (senarai || '').split(',')
+          .map(n => n.trim())
+          .filter(n => n);
+        renderChipGuru();
+      }
+
+      const LABEL_KATEGORI = {
+        '': 'Semua Kategori',
+        'Unit Beruniform': 'Unit',
+        'Kelab & Persatuan': 'Kelab',
+        'Sukan & Permainan': 'Sukan',
+        'Rumah Sukan': 'Rumah Sukan'
+      };
+
+      function tapishKelab() {
+        const kategori = document.getElementById('pilih-kategori')
+                                 .value;
+        const select = document.getElementById('pilih-kelab');
+        const label = LABEL_KATEGORI[kategori] ||
+          'Semua Kategori';
+        document.getElementById('label-jenis')
+                .textContent = label;
+        select.innerHTML = '<option value="">-- Pilih ' +
+          label + ' --</option>';
+
+        senaraiKelab
+          .filter(k => !kategori || k.kategori === kategori)
+          .forEach(k => {
+            const opt = document.createElement('option');
+            opt.value = k.id;
+            opt.textContent = k.nama;
+            select.appendChild(opt);
+          });
+
+        document.getElementById('pilih-perjumpaan')
+                .innerHTML = '<option value="">-- Pilih Perjumpaan --</option>';
+        document.getElementById('panel-laporan')
+                .style.display = 'none';
+      }
+
+      function muatPerjumpaan() {
+        const idKelab = document.getElementById('pilih-kelab').value;
+        const select = document.getElementById('pilih-perjumpaan');
+        select.innerHTML = '<option value="">-- Pilih Perjumpaan --</option>';
+
+        if (!idKelab) return;
+
+        google.script.run
+          .withSuccessHandler(function(data) {
+            (data || []).forEach(p => {
+              const opt = document.createElement('option');
+              opt.value = p.id;
+              opt.dataset.tarikh = p.tarikh;
+              opt.dataset.masa = p.masa;
+              opt.dataset.tempat = p.tempat;
+              opt.dataset.adaLaporan = p.adaLaporan;
+              opt.textContent = formatTarikh(p.tarikh) + 
+                ' — ' + p.tempat +
+                (p.adaLaporan ? ' ✅' : ' ⏳');
+              select.appendChild(opt);
+            });
+            if (autoPerjumpaan) {
+              select.value = autoPerjumpaan;
+              autoPerjumpaan = null;
+              if (select.value) muatLaporan();
+            }
+          })
+          .getPerjumpaanKelab(idKelab,
+            sessionStorage.getItem('token'));
+      }
+
+      function muatLaporan() {
+        const select = document.getElementById('pilih-perjumpaan');
+        const opt = select.options[select.selectedIndex];
+        const idPerjumpaan = select.value;
+
+        if (!idPerjumpaan) {
+          document.getElementById('panel-laporan')
+                  .style.display = 'none';
+          return;
+        }
+
+        // Simpan info perjumpaan
+        infoPerjumpaan = {
+          id: idPerjumpaan,
+          tarikh: opt.dataset.tarikh,
+          masa: opt.dataset.masa,
+          tempat: opt.dataset.tempat,
+          adaLaporan: opt.dataset.adaLaporan === 'true'
+        };
+
+        document.getElementById('panel-laporan')
+                .style.display = 'block';
+
+        // Muat info kehadiran auto
+        const idKelab = document.getElementById('pilih-kelab').value;
+        muatInfoAuto(idPerjumpaan, idKelab);
+
+        if (infoPerjumpaan.adaLaporan) {
+          muatLaporanSedia(idPerjumpaan);
+        } else {
+          semakKehadiranSebelumBorang(idPerjumpaan);
+        }
+      }
+
+      // Laporan hanya boleh diisi selepas kehadiran
+      // diambil (sekurang-kurangnya 1 murid hadir)
+      function semakKehadiranSebelumBorang(idPerjumpaan) {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            const hadir = (data || []).filter(d =>
+              d.status === 'Hadir').length;
+            if (hadir > 0) {
+              tunjukBorangBaru();
+            } else {
+              document.getElementById('laporan-sedia')
+                      .style.display = 'none';
+              document.getElementById('laporan-borang')
+                      .style.display = 'none';
+              document.getElementById('laporan-kosong')
+                      .style.display = 'none';
+              document.getElementById('laporan-sekat')
+                      .style.display = 'block';
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .getKehadiran(idPerjumpaan,
+            sessionStorage.getItem('token'));
+      }
+
+      function muatInfoAuto(idPerjumpaan, idKelab) {
+        const kelabSelect = document.getElementById('pilih-kelab');
+        const namaKelab = kelabSelect.options[
+          kelabSelect.selectedIndex
+        ].textContent;
+
+        document.getElementById('auto-kelab')
+                .textContent = namaKelab;
+        document.getElementById('auto-tarikh')
+                .textContent = formatTarikh(infoPerjumpaan.tarikh);
+
+        // Kira kehadiran
+        google.script.run
+          .withSuccessHandler(function(data) {
+            if (!data) return;
+            const hadir = data.filter(d => 
+              d.status === 'Hadir').length;
+            const tidakHadir = data.filter(d => 
+              d.status !== 'Hadir').length;
+            document.getElementById('auto-hadir')
+                    .textContent = hadir + ' orang';
+            document.getElementById('auto-tidak-hadir')
+                    .textContent = tidakHadir + ' orang';
+          })
+          .getKehadiran(idPerjumpaan,
+            sessionStorage.getItem('token'));
+      }
+
+      function muatLaporanSedia(idPerjumpaan) {
+        tunjukLoading(true);
+
+        google.script.run
+          .withSuccessHandler(function(laporan) {
+            tunjukLoading(false);
+            if (!laporan) {
+              tunjukBorangBaru();
+              return;
+            }
+
+            urlPDFSemasa = laporan.pdfUrl;
+            laporanSemasa = laporan;
+            document.getElementById('btn-padam-laporan')
+              .style.display = isAdmin() ?
+              'inline-block' : 'none';
+
+            document.getElementById('laporan-sedia')
+                    .style.display = 'block';
+            document.getElementById('laporan-borang')
+                    .style.display = 'none';
+            document.getElementById('laporan-kosong')
+                    .style.display = 'none';
+            document.getElementById('laporan-sekat')
+                    .style.display = 'none';
+
+            document.getElementById('paparan-laporan')
+                    .innerHTML = `
+              <div class="laporan-item">
+                <span class="label">Tajuk</span>
+                <span>${laporan.tajuk}</span>
+              </div>
+              <div class="laporan-item">
+                <span class="label">Aktiviti</span>
+                <span>${laporan.aktiviti}</span>
+              </div>
+              <div class="laporan-item">
+                <span class="label">Guru Penasihat</span>
+                <span>${laporan.namaGuru}</span>
+              </div>
+              <div class="laporan-item">
+                <span class="label">Tarikh Dihantar</span>
+                <span>${laporan.tarikhHantar}</span>
+              </div>
+              ${(laporan.gambar && laporan.gambar.length) ? `
+              <div class="laporan-item">
+                <span class="label">Gambar (${laporan.gambar.length})</span>
+                <span>${laporan.gambar.map(g =>
+                  `<a href="${g.url}" target="_blank">📷 ${g.nama}</a>`
+                ).join('<br>')}</span>
+              </div>` : ''}
+            `;
+          })
+          .getLaporan(idPerjumpaan,
+            sessionStorage.getItem('token'));
+      }
+
+      function tunjukBorangBaru() {
+        document.getElementById('laporan-sekat')
+                .style.display = 'none';
+        document.getElementById('laporan-sedia')
+                .style.display = 'none';
+        document.getElementById('laporan-borang')
+                .style.display = 'block';
+        document.getElementById('laporan-kosong')
+                .style.display = 'none';
+        modEdit = false;
+        gambarUpload = [];
+        gambarBuang = [];
+        document.getElementById('preview-gambar').innerHTML = '';
+        document.getElementById('gambar-sedia-ada').innerHTML = '';
+        document.getElementById('input-tajuk').value = '';
+        document.getElementById('input-aktiviti').value = '';
+        setGuruDipilih('');
+        kiraAksara();
+      }
+
+      function editLaporan() {
+        modEdit = true;
+        tunjukBorangBaru();
+        modEdit = true;
+        if (!laporanSemasa) return;
+        document.getElementById('input-tajuk')
+                .value = laporanSemasa.tajuk || '';
+        document.getElementById('input-aktiviti')
+                .value = laporanSemasa.aktiviti || '';
+        setGuruDipilih(laporanSemasa.namaGuru || '');
+        kiraAksara();
+        renderGambarSediaAda();
+      }
+
+      function thumbnailDrive(url) {
+        const m = (url || '').match(/[-\w]{25,}/);
+        return m ?
+          'https://drive.google.com/thumbnail?id=' +
+          m[0] + '&sz=w200' : '';
+      }
+
+      function renderGambarSediaAda() {
+        const div = document.getElementById(
+          'gambar-sedia-ada');
+        const senarai = (laporanSemasa &&
+          laporanSemasa.gambar) ? laporanSemasa.gambar : [];
+        if (senarai.length === 0) {
+          div.innerHTML = '';
+          return;
+        }
+        div.innerHTML = senarai.map(g => {
+          const dibuang = gambarBuang.includes(g.id);
+          return `
+            <div class="gambar-preview-item"
+                 style="${dibuang ?
+                   'opacity:0.35;filter:grayscale(1)' : ''}">
+              <img src="${thumbnailDrive(g.url)}"
+                   alt="${g.nama}">
+              <span>${g.nama}</span>
+              <button type="button" class="btn-kecil"
+                      style="margin-top:4px"
+                      onclick="togolBuangGambar('${g.id}')">
+                ${dibuang ?
+                  '↩️ Kekalkan' : '🗑️ Buang'}
+              </button>
+            </div>`;
+        }).join('');
+      }
+
+      function togolBuangGambar(id) {
+        if (gambarBuang.includes(id)) {
+          gambarBuang = gambarBuang.filter(x => x !== id);
+        } else {
+          gambarBuang.push(id);
+        }
+        renderGambarSediaAda();
+      }
+
+      function batalBorang() {
+        if (infoPerjumpaan?.adaLaporan) {
+          muatLaporanSedia(infoPerjumpaan.id);
+        } else {
+          document.getElementById('laporan-sedia')
+                  .style.display = 'none';
+          document.getElementById('laporan-borang')
+                  .style.display = 'none';
+          document.getElementById('laporan-kosong')
+                  .style.display = 'block';
+        }
+      }
+
+      const MAX_GAMBAR = 4;
+      const MAX_DIMENSI = 1600;   // px sisi terpanjang
+      const KUALITI_JPEG = 0.85;
+
+      function kiraAksara() {
+        const t = document.getElementById('input-aktiviti')
+                          .value;
+        document.getElementById('kaunter-aksara')
+                .textContent = t.length;
+      }
+
+      function pralihatGambar(event) {
+        let fail = Array.from(event.target.files);
+        const div = document.getElementById('preview-gambar');
+        div.innerHTML = '';
+        gambarUpload = [];
+
+        // Ambil kira gambar sedia ada semasa edit
+        const sediaAda = (modEdit && laporanSemasa &&
+          laporanSemasa.gambar) ?
+          laporanSemasa.gambar.length -
+          gambarBuang.length : 0;
+        const bakiSlot = MAX_GAMBAR - sediaAda;
+
+        if (bakiSlot <= 0) {
+          tunjukToast('Laporan sudah ada ' + sediaAda +
+            ' gambar (maksimum ' + MAX_GAMBAR + ').',
+            'ralat');
+          event.target.value = '';
+          return;
+        }
+        if (fail.length > bakiSlot) {
+          tunjukToast('Maksimum ' + MAX_GAMBAR +
+            ' gambar' + (sediaAda ? ' (termasuk ' +
+            sediaAda + ' sedia ada)' : '') +
+            '. Hanya ' + bakiSlot +
+            ' gambar pertama diambil.', 'ralat');
+          fail = fail.slice(0, bakiSlot);
+        }
+
+        fail.forEach(f => mampatGambar(f, div));
+      }
+
+      // Mampat gambar guna canvas: kecilkan resolusi
+      // & tukar ke JPEG — kualiti kekal jelas tetapi
+      // saiz jauh lebih kecil (laju upload & PDF ringan)
+      function mampatGambar(f, div) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imgEl = new Image();
+          imgEl.onload = function() {
+            let w = imgEl.width;
+            let h = imgEl.height;
+            if (Math.max(w, h) > MAX_DIMENSI) {
+              const skala = MAX_DIMENSI / Math.max(w, h);
+              w = Math.round(w * skala);
+              h = Math.round(h * skala);
+            }
+            const kanvas = document.createElement('canvas');
+            kanvas.width = w;
+            kanvas.height = h;
+            kanvas.getContext('2d')
+                  .drawImage(imgEl, 0, 0, w, h);
+
+            const dataUrl = kanvas.toDataURL(
+              'image/jpeg', KUALITI_JPEG);
+            const base64 = dataUrl.split(',')[1];
+            const namaBaru =
+              f.name.replace(/\.\w+$/, '') + '.jpg';
+
+            gambarUpload.push({
+              nama: namaBaru,
+              jenis: 'image/jpeg',
+              data: base64
+            });
+
+            const saizKB = Math.round(
+              base64.length * 3 / 4 / 1024);
+            const item = document.createElement('div');
+            item.className = 'gambar-preview-item';
+            item.innerHTML = `
+              <img src="${dataUrl}" alt="${namaBaru}">
+              <span>${namaBaru} (${saizKB} KB)</span>
+            `;
+            div.appendChild(item);
+          };
+          imgEl.src = e.target.result;
+        };
+        reader.readAsDataURL(f);
+      }
+
+      function hantarLaporan() {
+        const tajuk = document.getElementById('input-tajuk')
+                              .value.trim();
+        const aktiviti = document.getElementById('input-aktiviti')
+                                 .value.trim();
+        const senaraiGuruDipilih = guruDipilih();
+        const namaGuru = senaraiGuruDipilih.join(', ');
+
+        if (!tajuk || !aktiviti ||
+            senaraiGuruDipilih.length === 0) {
+          tunjukToast('Sila lengkapkan semua maklumat ' +
+            'wajib (termasuk sekurang-kurangnya ' +
+            'seorang guru penasihat).', 'ralat');
+          return;
+        }
+
+        tunjukLoading(true);
+
+        const data = {
+          idPerjumpaan: infoPerjumpaan.id,
+          idKelab: document.getElementById('pilih-kelab').value,
+          tajuk: tajuk,
+          aktiviti: aktiviti,
+          namaGuru: namaGuru
+        };
+
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Laporan berjaya dihantar!', 'berjaya');
+              infoPerjumpaan.adaLaporan = true;
+              muatLaporanSedia(infoPerjumpaan.id);
+              // Kemaskini dropdown
+              muatPerjumpaan();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .simpanLaporan(data, gambarUpload, gambarBuang,
+            sessionStorage.getItem('token'));
+      }
+
+      function padamLaporanAdmin() {
+        if (!confirm('PADAM laporan perjumpaan ini?' +
+            '\n\nGambar dan PDF di Drive turut ' +
+            'dipadam. Tindakan ini tidak boleh ' +
+            'dipulihkan.')) return;
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Laporan dipadam.', 'berjaya');
+              if (infoPerjumpaan)
+                infoPerjumpaan.adaLaporan = false;
+              laporanSemasa = null;
+              tunjukBorangBaru();
+              muatPerjumpaan();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .padamLaporan(infoPerjumpaan.id,
+            sessionStorage.getItem('token'));
+      }
+
+      function bukaPDF() {
+        if (urlPDFSemasa) {
+          window.open(urlPDFSemasa, '_blank');
+        } else {
+          tunjukToast('URL PDF tidak dijumpai.', 'ralat');
+        }
+      }
+
+    </script>
+
+  </body>
+</html>

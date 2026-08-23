@@ -1,0 +1,207 @@
+<script>
+// ============================================
+// API SHIM (v2.4) — Kalis-cookie
+// Menggantikan transport google.script.run dengan
+// fetch POST ke /exec (doPost). Tidak bergantung
+// pada cookies pihak ketiga — berfungsi di Safari
+// iPhone, Chrome iOS, mod strict, dan multi-akaun.
+// Memerlukan window.URL_EXEC diset oleh halaman.
+// ============================================
+(function() {
+  if (!window.URL_EXEC) return;
+  if (typeof Proxy === 'undefined') return; // fallback
+
+  function bina(h) {
+    return new Proxy({}, {
+      get: function(sasar, nama) {
+        if (nama === 'withSuccessHandler') {
+          return function(f) {
+            return bina({ ok: f, err: h.err });
+          };
+        }
+        if (nama === 'withFailureHandler') {
+          return function(f) {
+            return bina({ ok: h.ok, err: f });
+          };
+        }
+        if (typeof nama !== 'string') return undefined;
+        return function() {
+          var args = Array.prototype.slice
+            .call(arguments);
+          fetch(window.URL_EXEC, {
+            method: 'POST',
+            redirect: 'follow',
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
+            body: JSON.stringify({ fn: nama, args: args })
+          })
+          .then(function(r) { return r.json(); })
+          .then(function(j) {
+            if (j && j.ok) {
+              if (h.ok) h.ok(j.hasil);
+            } else {
+              var ralat = new Error(
+                (j && j.ralat) || 'Ralat pelayan');
+              if (h.err) h.err(ralat);
+              else console.error(ralat);
+            }
+          })
+          .catch(function(e) {
+            if (h.err) h.err(e);
+            else console.error(e);
+          });
+        };
+      }
+    });
+  }
+
+  try {
+    if (!window.google) window.google = {};
+    if (!window.google.script) window.google.script = {};
+    window.google.script.run = bina({});
+  } catch (e) {
+    // Kekal guna transport asal jika gagal
+  }
+})();
+</script>
+
+
+<script>
+// Script.html — Fungsi Global
+// KEMASKINI: pergiHalaman/pergiLogin tunjuk loading
+// overlay & ada failure handler.
+
+function semakSesiAktif() {
+  var token = sessionStorage.getItem('token');
+  if (!token) {
+    pergiLogin();
+    return null;
+  }
+  return token;
+}
+
+function pergiLogin() {
+  sessionStorage.clear();
+  tunjukLoading(true);
+  if (window.URL_EXEC &&
+      window.URL_EXEC.indexOf('http') === 0) {
+    try {
+      window.top.location.href = window.URL_EXEC;
+      return;
+    } catch(e) {}
+  }
+  google.script.run
+    .withSuccessHandler(function(url) {
+      window.top.location.href = url;
+    })
+    .withFailureHandler(function() {
+      tunjukLoading(false);
+      tunjukToast('Ralat sambungan. Cuba lagi.', 'ralat');
+    })
+    .getScriptUrl();
+}
+
+function pergiHalaman(halaman) {
+  var token = sessionStorage.getItem('token');
+  if (!token) {
+    pergiLogin();
+    return false;
+  }
+  tunjukLoading(true);
+  if (window.URL_EXEC &&
+      window.URL_EXEC.indexOf('http') === 0) {
+    try {
+      window.top.location.href = window.URL_EXEC +
+        '?page=' + halaman + '&token=' + token;
+      return false;
+    } catch(e) {}
+  }
+  google.script.run
+    .withSuccessHandler(function(url) {
+      window.top.location.href = url +
+        '?page=' + halaman + '&token=' + token;
+    })
+    .withFailureHandler(function() {
+      tunjukLoading(false);
+      tunjukToast('Ralat sambungan. Cuba lagi.', 'ralat');
+    })
+    .getScriptUrl();
+  return false; // halang navigasi default href="#"
+}
+
+function logout() {
+  var token = sessionStorage.getItem('token');
+  tunjukLoading(true);
+  google.script.run
+    .withSuccessHandler(function() {
+      pergiLogin();
+    })
+    .withFailureHandler(function() {
+      pergiLogin();
+    })
+    .logout(token);
+}
+
+function formatTarikh(tarikh) {
+  if (!tarikh) return '-';
+  try {
+    var d = new Date(tarikh);
+    return d.toLocaleDateString('ms-MY');
+  } catch(e) {
+    return tarikh.toString();
+  }
+}
+
+function tunjukToast(mesej, jenis) {
+  jenis = jenis || 'berjaya';
+  var toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = mesej;
+  toast.className = 'toast ' + jenis + ' aktif';
+  setTimeout(function() {
+    toast.classList.remove('aktif');
+  }, 3000);
+}
+
+function tunjukLoading(tunjuk) {
+  var overlay = document.getElementById('loading-overlay');
+  if (!overlay) return;
+  overlay.style.display = tunjuk ? 'flex' : 'none';
+}
+
+function getPeranan() {
+  return sessionStorage.getItem('peranan');
+}
+
+function isAdmin() {
+  return getPeranan() === 'admin';
+}
+
+function togolSidebar() {
+  var sidebar = document.getElementById('sidebar');
+  if (sidebar) sidebar.classList.toggle('buka');
+}
+
+function initHalaman(namaNav) {
+  var token = semakSesiAktif();
+  if (!token) return null;
+
+  // Tanda nav aktif
+  if (namaNav) {
+    var nav = document.getElementById('nav-' + namaNav);
+    if (nav) nav.classList.add('aktif');
+  }
+
+  // Tunjuk menu admin
+  if (isAdmin()) {
+    var menuAdmin = document.getElementById('menu-admin');
+    if (menuAdmin) menuAdmin.style.display = 'block';
+  }
+
+  // Nama sekolah & tahun kini dijana terus oleh
+  // server dalam renderSidebar — tiada panggilan perlu
+
+  return token;
+}
+</script>

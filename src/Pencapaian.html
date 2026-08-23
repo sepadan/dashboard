@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+  </head>
+  <body class="dashboard-page">
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <?!= renderSidebar(token, peranan) ?>
+
+    <div class="kandungan">
+      <div class="halaman-header">
+        <h2>🏅 Pencapaian Murid</h2>
+        <p>Rekod pencapaian murid mewakili sekolah</p>
+      </div>
+
+      <!-- Butang tambah & tapis -->
+      <div class="flex-antara" style="margin-bottom:16px">
+        <div class="tapis-row">
+          <select id="tapis-peringkat" class="form-input-kecil"
+                  onchange="muatPencapaian()">
+            <option value="">Semua Peringkat</option>
+            <option>Sekolah</option>
+            <option>Daerah</option>
+            <option>Negeri</option>
+            <option>Kebangsaan</option>
+            <option>Antarabangsa</option>
+          </select>
+          <input type="text" id="tapis-cari"
+                 class="form-input-kecil"
+                 placeholder="🔍 Cari nama murid..."
+                 oninput="tapishPencapaian()">
+        </div>
+        <button class="btn-tambah"
+                onclick="tunjukFormTambah()">
+          + Tambah Pencapaian
+        </button>
+      </div>
+
+      <!-- Form Tambah Pencapaian -->
+      <div class="kad" id="form-tambah" style="display:none">
+        <h3 class="seksyen-tajuk">Tambah Pencapaian Baru</h3>
+
+        <div class="form-row-2">
+          <div class="form-group" style="grid-column:1/-1">
+            <label>Murid
+              <span class="wajib">*</span>
+              <span class="upload-sub">
+                (cari & tambah — boleh lebih seorang)
+              </span>
+            </label>
+            <input type="text" id="cari-murid"
+                   class="form-input"
+                   placeholder="🔍 Taip nama atau IC murid..."
+                   oninput="cariMurid()">
+            <div id="hasil-cari-murid" 
+                 class="dropdown-cari"></div>
+            <div id="chip-murid"
+                 style="display:flex; flex-wrap:wrap;
+                 gap:8px; margin-top:10px"></div>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Nama Pertandingan / Acara 
+              <span class="wajib">*</span>
+            </label>
+            <input type="text" id="tambah-nama"
+                   class="form-input"
+                   placeholder="cth: Pertandingan Olahraga Daerah">
+          </div>
+
+          <div class="form-group">
+            <label>Kategori Pertandingan</label>
+            <select id="tambah-kategori" class="form-input">
+              <option value="">-- Pilih --</option>
+              <option>Sukan</option>
+              <option>Kesenian</option>
+              <option>Akademik</option>
+              <option>Kokurikulum</option>
+              <option>Lain-lain</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Peringkat <span class="wajib">*</span></label>
+            <select id="tambah-peringkat" class="form-input">
+              <option value="">-- Pilih --</option>
+              <option>Sekolah</option>
+              <option>Daerah</option>
+              <option>Negeri</option>
+              <option>Kebangsaan</option>
+              <option>Antarabangsa</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tempat / Keputusan 
+              <span class="wajib">*</span>
+            </label>
+            <select id="tambah-tempat" class="form-input">
+              <option value="">-- Pilih --</option>
+              <option>Johan</option>
+              <option>Naib Johan</option>
+              <option>Ketiga</option>
+              <option>Keempat</option>
+              <option>Kelima</option>
+              <option>Penyertaan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Jenis Penglibatan</label>
+            <select id="tambah-penglibatan" class="form-input">
+              <option value="">-- Pilih --</option>
+              <option value="Penglibatan I">
+                Penglibatan I (Atlet/Peserta)
+              </option>
+              <option value="Penglibatan II">
+                Penglibatan II (Teknikal/AJK)
+              </option>
+              <option value="Penglibatan III">
+                Penglibatan III (Penyokong)
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Tarikh <span class="wajib">*</span></label>
+            <input type="date" id="tambah-tarikh"
+                   class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label>Guru Pengiring
+              <span class="upload-sub">
+                (boleh lebih seorang)
+              </span>
+            </label>
+            <div style="display:flex; gap:8px">
+              <select id="tambah-guru" class="form-input"
+                      style="flex:1">
+              <option value="">-- Pilih Guru --</option>
+            </select>
+              <button type="button" class="btn-kecil"
+                      onclick="tambahGuruPencapaian()">
+                + Tambah
+              </button>
+            </div>
+            <div id="chip-guru-pencapaian"
+                 style="display:flex; flex-wrap:wrap;
+                 gap:8px; margin-top:10px"></div>
+          </div>
+        </div>
+
+        <div class="butang-row">
+          <button class="btn-balik"
+                  onclick="batalFormTambah()">
+            Batal
+          </button>
+          <button class="btn-utama"
+                  onclick="simpanPencapaian()">
+            💾 Simpan Pencapaian
+          </button>
+        </div>
+      </div>
+
+      <!-- Senarai Pencapaian -->
+      <div class="kad">
+        <h3 class="seksyen-tajuk">
+          Senarai Pencapaian
+          <span id="bilangan-rekod" 
+                class="badge-bilangan"></span>
+        </h3>
+        <div id="senarai-pencapaian">
+          <p class="tiada-data">Memuatkan...</p>
+        </div>
+      </div>
+
+    </div>
+
+    <?!= include('Script') ?>
+    <script>
+
+      let senaraiPencapaianSemua = [];
+      let senaraiKelab = [];
+      let cariTimeout = null;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const token = semakSesiAktif();
+        if (!token) return;
+
+        const hari = new Date().toISOString().split('T')[0];
+        document.getElementById('tambah-tarikh').value = hari;
+
+        muatSenaraiGuru();
+        muatPencapaian();
+      });
+
+      function muatSenaraiGuru() {
+        google.script.run
+          .withSuccessHandler(function(data) {
+            const select = document.getElementById('tambah-guru');
+            (data || []).forEach(g => {
+              const opt = document.createElement('option');
+              opt.value = g.nama;
+              opt.textContent = g.nama;
+              select.appendChild(opt);
+            });
+          })
+          .getSenaraiGuru(sessionStorage.getItem('token'));
+      }
+
+      function muatPencapaian() {
+        const peringkat = document.getElementById('tapis-peringkat')
+                                  .value;
+        tunjukLoading(true);
+
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            senaraiPencapaianSemua = data || [];
+            tapishPencapaian();
+          })
+          .getSenaraiPencapaian(
+            { peringkat: peringkat },
+            sessionStorage.getItem('token')
+          );
+      }
+
+      function tapishPencapaian() {
+        const carian = document.getElementById('tapis-cari')
+                               .value.toLowerCase();
+
+        const data = senaraiPencapaianSemua.filter(p =>
+          !carian ||
+          String(p.namaMurid || '').toLowerCase()
+            .includes(carian) ||
+          String(p.ic || '').includes(carian) ||
+          String(p.namaPertandingan || '').toLowerCase()
+            .includes(carian)
+        );
+
+        document.getElementById('bilangan-rekod')
+                .textContent = data.length + ' rekod';
+
+        renderPencapaian(data);
+      }
+
+      function renderPencapaian(data) {
+        const div = document.getElementById('senarai-pencapaian');
+
+        if (data.length === 0) {
+          div.innerHTML = '<p class="tiada-data">' +
+            'Tiada rekod pencapaian.</p>';
+          return;
+        }
+
+        div.innerHTML = data.map(p => `
+          <div class="pencapaian-baris">
+            <div class="pencapaian-kiri">
+              <div class="pencapaian-nama">
+                ${p.namaMurid}
+                <span class="kelas-badge">${p.kelasMurid}</span>
+              </div>
+              <div class="pencapaian-pertandingan">
+                ${p.namaPertandingan}
+              </div>
+              <div class="pencapaian-meta">
+                📅 ${formatTarikh(p.tarikh)} &nbsp;|&nbsp;
+                👨‍🏫 ${p.guruPengiring || '-'}
+              </div>
+            </div>
+            <div class="pencapaian-kanan">
+              <span class="badge-peringkat ${p.peringkat.toLowerCase()}">
+                ${p.peringkat}
+              </span>
+              <span class="badge-tempat">
+                🏆 ${p.tempat}
+              </span>
+              ${isAdmin() ? `
+              <button class="btn-padam"
+                onclick="padamPencapaian('${p.id}', 
+                  '${p.namaMurid}')">
+                🗑️
+              </button>` : ''}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Cari murid
+      function cariMurid() {
+        clearTimeout(cariTimeout);
+        const carian = document.getElementById('cari-murid')
+                               .value.trim();
+
+        if (carian.length < 2) {
+          document.getElementById('hasil-cari-murid')
+                  .innerHTML = '';
+          return;
+        }
+
+        cariTimeout = setTimeout(function() {
+          google.script.run
+            .withSuccessHandler(function(data) {
+              const div = document.getElementById('hasil-cari-murid');
+
+              if (!data || data.length === 0) {
+                div.innerHTML = '<div class="dropdown-item tiada">' +
+                  'Tiada murid dijumpai.</div>';
+                return;
+              }
+
+              // Tapis Tahun 3-6 sahaja untuk pencapaian
+              const muridLayak = data.filter(m => 
+                parseInt(m.tahun) >= 3
+              );
+
+              div.innerHTML = muridLayak.map(m => `
+                <div class="dropdown-item"
+                     onclick="pilihMurid('${m.ic}', 
+                       '${m.nama}', '${m.kelasLabel}')">
+                  <strong>${m.nama}</strong>
+                  <span>${m.kelasLabel} | ${m.ic}</span>
+                </div>
+              `).join('');
+            })
+            .getSenaraiMurid(
+              { status: 'AKTIF', carian: carian },
+              sessionStorage.getItem('token')
+            );
+        }, 400);
+      }
+
+      // ===== Murid dipilih (chip, boleh ramai) =====
+      let muridPencapaian = [];
+      let guruPencapaian = [];
+
+      function renderChipMurid() {
+        document.getElementById('chip-murid').innerHTML =
+          muridPencapaian.map((m, i) => `
+            <span class="badge" style="display:inline-flex;
+                  align-items:center; gap:6px">
+              ${m.nama} (${m.kelas})
+              <a style="cursor:pointer; font-weight:bold"
+                 onclick="buangMuridPencapaian(${i})">✕</a>
+            </span>
+          `).join('');
+      }
+
+      function pilihMurid(ic, nama, kelas) {
+        document.getElementById('cari-murid').value = '';
+        document.getElementById('hasil-cari-murid').innerHTML = '';
+        if (muridPencapaian.some(m => m.ic === ic)) {
+          tunjukToast('Murid sudah dalam senarai.', 'ralat');
+          return;
+        }
+        muridPencapaian.push({ ic: ic, nama: nama, kelas: kelas });
+        renderChipMurid();
+      }
+
+      function buangMuridPencapaian(i) {
+        muridPencapaian.splice(i, 1);
+        renderChipMurid();
+      }
+
+      function renderChipGuruP() {
+        document.getElementById('chip-guru-pencapaian')
+          .innerHTML = guruPencapaian.map((n, i) => `
+            <span class="badge" style="display:inline-flex;
+                  align-items:center; gap:6px">
+              ${n}
+              <a style="cursor:pointer; font-weight:bold"
+                 onclick="buangGuruPencapaian(${i})">✕</a>
+            </span>
+          `).join('');
+      }
+
+      function tambahGuruPencapaian() {
+        const sel = document.getElementById('tambah-guru');
+        const nama = sel.value;
+        if (!nama) return;
+        if (guruPencapaian.includes(nama)) {
+          tunjukToast('Guru sudah dalam senarai.', 'ralat');
+          return;
+        }
+        guruPencapaian.push(nama);
+        sel.value = '';
+        renderChipGuruP();
+      }
+
+      function buangGuruPencapaian(i) {
+        guruPencapaian.splice(i, 1);
+        renderChipGuruP();
+      }
+
+      function batalPilihMurid() {
+        muridPencapaian = [];
+        guruPencapaian = [];
+        renderChipMurid();
+        renderChipGuruP();
+        document.getElementById('cari-murid').value = '';
+        document.getElementById('hasil-cari-murid').innerHTML = '';
+      }
+
+      function tunjukFormTambah() {
+        document.getElementById('form-tambah')
+                .style.display = 'block';
+        document.getElementById('form-tambah')
+                .scrollIntoView({ behavior: 'smooth' });
+      }
+
+      function batalFormTambah() {
+        document.getElementById('form-tambah')
+                .style.display = 'none';
+        batalPilihMurid();
+      }
+
+      function simpanPencapaian() {
+        const nama = document.getElementById('tambah-nama')
+                             .value.trim();
+        const peringkat = document.getElementById('tambah-peringkat')
+                                  .value;
+        const tempat = document.getElementById('tambah-tempat').value;
+        const tarikh = document.getElementById('tambah-tarikh').value;
+
+        if (muridPencapaian.length === 0 || !nama ||
+            !peringkat || !tempat || !tarikh) {
+          tunjukToast('Sila lengkapkan maklumat wajib (*) ' +
+            'termasuk sekurang-kurangnya seorang murid.',
+            'ralat');
+          return;
+        }
+
+        tunjukLoading(true);
+
+        const data = {
+          senaraiIC: muridPencapaian.map(m => m.ic),
+          namaPertandingan: nama,
+          kategori: document.getElementById('tambah-kategori').value,
+          peringkat: peringkat,
+          tempat: tempat,
+          jenispenglibatan: document.getElementById(
+            'tambah-penglibatan').value,
+          tarikh: tarikh,
+          guruPengiring: guruPencapaian.join(', '),
+          idKelab: ''
+        };
+
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Pencapaian berjaya disimpan!', 'berjaya');
+              batalFormTambah();
+              muatPencapaian();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .tambahPencapaian(data, sessionStorage.getItem('token'));
+      }
+
+      function padamPencapaian(id, nama) {
+        if (!confirm(`Padam pencapaian untuk ${nama}?`)) return;
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Rekod dipadam.', 'berjaya');
+              muatPencapaian();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .padamPencapaian(id, sessionStorage.getItem('token'));
+      }
+
+    </script>
+
+  </body>
+</html>

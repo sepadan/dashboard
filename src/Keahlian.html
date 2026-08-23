@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+    <style>
+      .jadual-senarai {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-top: 12px;
+      }
+      .jadual-senarai th {
+        background: #1a73e8;
+        color: #fff;
+        padding: 8px 10px;
+        text-align: left;
+        white-space: nowrap;
+      }
+      .jadual-senarai td {
+        padding: 6px 10px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .jadual-senarai tr:hover td {
+        background: #f8fbff;
+      }
+      .select-jawatan {
+        padding: 4px 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 12px;
+        background: #fff;
+      }
+      .hasil-carian {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-top: 8px;
+        max-height: 260px;
+        overflow-y: auto;
+      }
+      .hasil-carian .item-baris {
+        padding: 8px 12px;
+      }
+      .info-kelab-grid {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        color: #555;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body class="dashboard-page">
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <?!= renderSidebar(token, peranan) ?>
+
+    <div class="kandungan">
+      <div class="halaman-header">
+        <h2>👥 Keahlian</h2>
+        <p>Urus keahlian murid dalam kelab, unit,
+           sukan dan rumah sukan</p>
+      </div>
+
+      <div class="tab-bar" style="margin-bottom:16px">
+        <button class="tab aktif" id="tab-urus"
+                onclick="tukarModKeahlian('urus')">
+          👥 Urus Ahli
+        </button>
+        <button class="tab" id="tab-semakan"
+                style="display:none"
+                onclick="tukarModKeahlian('semakan')">
+          📋 Semakan
+        </button>
+      </div>
+
+      <div id="mod-urus">
+
+      <!-- Pilih Kelab -->
+      <div class="kad">
+        <h3 class="seksyen-tajuk">Sila Pilih</h3>
+
+        <div class="form-group">
+          <label>Kategori</label>
+          <select id="pilih-kategori" class="form-input"
+                  onchange="tapishKelab()">
+            <option value="">-- Semua Kategori --</option>
+            <option>Unit Beruniform</option>
+            <option>Kelab & Persatuan</option>
+            <option>Sukan & Permainan</option>
+            <option>Rumah Sukan</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label id="label-jenis">Semua Kategori</label>
+          <select id="pilih-kelab" class="form-input"
+                  onchange="muatAhli()">
+            <option value="">-- Pilih --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Panel Ahli -->
+      <div class="kad" id="panel-ahli" style="display:none">
+        <div class="flex-antara">
+          <div>
+            <h3 class="seksyen-tajuk"
+                style="margin-bottom:0">
+              <span id="tajuk-kelab"></span>
+              <span id="bil-ahli"
+                    class="badge-bilangan"></span>
+            </h3>
+            <div class="info-kelab-grid"
+                 id="info-kelab"></div>
+          </div>
+          <button class="btn-tambah"
+                  onclick="togolPanelTambah()">
+            + Tambah Ahli
+          </button>
+        </div>
+
+        <!-- Panel tambah ahli -->
+        <div id="panel-tambah" style="display:none;
+             margin-top:16px">
+          <div class="form-group">
+            <label>Cari Murid (nama / IC / kelas)</label>
+            <input type="text" id="input-carian"
+                   class="form-input"
+                   placeholder="Taip sekurang-kurangnya 2 huruf..."
+                   oninput="cariMuridDebounce()">
+          </div>
+          <div id="hasil-carian" class="hasil-carian"
+               style="display:none"></div>
+        </div>
+
+        <!-- Jadual ahli -->
+        <div id="jadual-ahli"></div>
+      </div>
+      </div><!-- /mod-urus -->
+
+      <!-- Mod Semakan -->
+      <div id="mod-semakan" style="display:none">
+        <div class="kad">
+          <h3 class="seksyen-tajuk">Semakan Keahlian</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Kelas</label>
+              <select id="semak-kelas" class="form-input"
+                      onchange="muatSemakan()">
+                <option value="">Semua Kelas</option>
+              </select>
+            </div>
+            <div class="form-group"
+                 style="display:flex; align-items:flex-end">
+              <label style="cursor:pointer; display:flex;
+                     align-items:center; gap:8px">
+                <input type="checkbox" id="semak-belum"
+                       checked onchange="renderSemakan()"
+                       style="width:17px; height:17px">
+                Belum lengkap sahaja
+              </label>
+            </div>
+          </div>
+
+          <div id="semak-info"
+               style="margin:4px 0 10px 0"></div>
+          <div style="overflow-x:auto">
+            <div id="jadual-semakan"></div>
+          </div>
+          <p class="upload-sub" style="margin-top:10px">
+            — = tidak berkenaan (ikut tetapan Tahun Ada
+            Koku). Tekan "+ Tiada" untuk daftar murid,
+            atau tekan ✓ untuk tukar kelab murid.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <?!= include('Script') ?>
+    <script>
+
+      // ===== AMBIL TOKEN DARI SERVER (WAJIB) =====
+      (function() {
+        try {
+          var t = '<?= token ?>';
+          var p = '<?= peranan ?>';
+          if (t && t !== 'undefined')
+            sessionStorage.setItem('token', t);
+          if (p && p !== 'undefined')
+            sessionStorage.setItem('peranan', p);
+        } catch(e) {}
+      })();
+
+      var semuaKelab = [];
+      var kelabSemasa = null;
+      var jawatanPilihan = [];
+      var timerCarian = null;
+
+      // ===== INIT =====
+      document.addEventListener('DOMContentLoaded',
+        function() {
+          var token = initHalaman('Keahlian');
+          if (!token) return;
+
+          if (isAdmin()) {
+            document.getElementById('tab-semakan')
+              .style.display = '';
+          }
+
+          google.script.run
+            .withSuccessHandler(function(data) {
+              semuaKelab = data || [];
+              tapishKelab();
+            })
+            .getSenaraiKelab(token);
+        }
+      );
+
+      var LABEL_KATEGORI = {
+        '': 'Semua Kategori',
+        'Unit Beruniform': 'Unit',
+        'Kelab & Persatuan': 'Kelab',
+        'Sukan & Permainan': 'Sukan',
+        'Rumah Sukan': 'Rumah Sukan'
+      };
+
+      function tapishKelab() {
+        var kategori = document.getElementById(
+          'pilih-kategori').value;
+        var select = document.getElementById(
+          'pilih-kelab');
+        var label = LABEL_KATEGORI[kategori] ||
+          'Semua Kategori';
+        document.getElementById('label-jenis')
+                .textContent = label;
+        select.innerHTML =
+          '<option value="">-- Pilih ' + label +
+          ' --</option>';
+
+        semuaKelab.filter(function(k) {
+          return !kategori || k.kategori === kategori;
+        }).forEach(function(k) {
+          var opt = document.createElement('option');
+          opt.value = k.id;
+          opt.textContent = k.nama +
+            (kategori ? '' : ' (' + k.kategori + ')');
+          select.appendChild(opt);
+        });
+
+        document.getElementById('panel-ahli')
+          .style.display = 'none';
+      }
+
+      // ===== MUAT AHLI =====
+      function muatAhli() {
+        var idKelab = document.getElementById(
+          'pilih-kelab').value;
+        if (!idKelab) {
+          document.getElementById('panel-ahli')
+            .style.display = 'none';
+          return;
+        }
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            if (!data) {
+              tunjukToast('Kelab tidak dijumpai.',
+                'ralat');
+              return;
+            }
+            kelabSemasa = data.info;
+            jawatanPilihan = data.jawatanPilihan || [];
+            paparAhli(data.ahli || []);
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .getDataKeahlianKelab(idKelab,
+            sessionStorage.getItem('token'));
+      }
+
+      function paparAhli(ahli) {
+        document.getElementById('panel-ahli')
+          .style.display = 'block';
+        document.getElementById('tajuk-kelab')
+          .textContent = kelabSemasa.nama;
+        document.getElementById('bil-ahli')
+          .textContent = ahli.length + ' ahli';
+
+        var info = [];
+        info.push('📁 ' + kelabSemasa.kategori);
+        if (kelabSemasa.guru1)
+          info.push('👨‍🏫 ' + kelabSemasa.guru1);
+        if (kelabSemasa.guru2)
+          info.push('👨‍🏫 ' + kelabSemasa.guru2);
+        document.getElementById('info-kelab')
+          .innerHTML = info.map(function(i) {
+            return '<span>' + i + '</span>';
+          }).join('');
+
+        var div = document.getElementById('jadual-ahli');
+        if (ahli.length === 0) {
+          div.innerHTML = '<p class="tiada-data">' +
+            'Tiada ahli lagi. Tambah ahli atau upload ' +
+            'template koku melalui Tetapan & Upload.</p>';
+          return;
+        }
+
+        var html = '<table class="jadual-senarai">' +
+          '<thead><tr><th>Bil</th><th>Nama</th>' +
+          '<th>Kelas</th><th>Jawatan</th>' +
+          '<th></th></tr></thead><tbody>';
+
+        ahli.forEach(function(a, i) {
+          var opts = jawatanPilihan.map(function(j) {
+            return '<option' +
+              (j === a.jawatan ? ' selected' : '') +
+              '>' + j + '</option>';
+          }).join('');
+          // Jika jawatan semasa tiada dalam senarai
+          if (a.jawatan &&
+              jawatanPilihan.indexOf(a.jawatan) === -1) {
+            opts = '<option selected>' + a.jawatan +
+              '</option>' + opts;
+          }
+
+          html += '<tr>' +
+            '<td>' + (i + 1) + '</td>' +
+            '<td>' + a.nama + '</td>' +
+            '<td>' + (a.kelas || '') + '</td>' +
+            '<td><select class="select-jawatan" ' +
+            'onchange="tukarJawatan(\'' + a.ic +
+            '\', this.value)">' + opts +
+            '</select></td>' +
+            '<td>' +
+            (isAdmin() ?
+              '<button class="btn-padam" ' +
+              'title="Padam keahlian (admin)" ' +
+              'onclick="padamAhliKekal(\'' + a.ic +
+              '\',\'' +
+              a.nama.replace(/'/g, "\\'") +
+              '\')">🗑️</button>' : '') +
+            '</td>' +
+            '</tr>';
+        });
+
+        html += '</tbody></table>';
+        div.innerHTML = html;
+      }
+
+      // ===== TUKAR JAWATAN =====
+      function tukarJawatan(ic, jawatan) {
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            if (hasil.berjaya) {
+              tunjukToast('Jawatan dikemaskini.',
+                'berjaya');
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+              muatAhli();
+            }
+          })
+          .tukarJawatanAhli(ic, kelabSemasa.id,
+            jawatan, sessionStorage.getItem('token'));
+      }
+
+      // ===== PADAM KEKAL (ADMIN) =====
+      function padamAhliKekal(ic, nama) {
+        if (!confirm('PADAM KEKAL keahlian ' + nama +
+            ' dari ' + kelabSemasa.nama +
+            '?\n\nRekod akan dipadam terus dari ' +
+            'sheet dan tidak boleh dipulihkan.')) return;
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Keahlian dipadam kekal.',
+                'berjaya');
+              muatAhli();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .padamKeahlianKekal(ic, kelabSemasa.id,
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== TAMBAH AHLI =====
+      function togolPanelTambah() {
+        var panel = document.getElementById(
+          'panel-tambah');
+        panel.style.display =
+          panel.style.display === 'none' ?
+          'block' : 'none';
+        if (panel.style.display === 'block') {
+          document.getElementById('input-carian')
+            .focus();
+        }
+      }
+
+      function cariMuridDebounce() {
+        clearTimeout(timerCarian);
+        timerCarian = setTimeout(cariMurid, 400);
+      }
+
+      function cariMurid() {
+        var q = document.getElementById(
+          'input-carian').value.trim();
+        var div = document.getElementById(
+          'hasil-carian');
+        if (q.length < 2) {
+          div.style.display = 'none';
+          return;
+        }
+
+        google.script.run
+          .withSuccessHandler(function(data) {
+            data = data || [];
+            div.style.display = 'block';
+            if (data.length === 0) {
+              div.innerHTML = '<p class="tiada-data">' +
+                'Tiada murid dijumpai.</p>';
+              return;
+            }
+            div.innerHTML = data.map(function(m) {
+              var kanan;
+              if (m.sudahAhli) {
+                kanan = '<span class="masa-text">' +
+                  'Sudah ahli: ' + m.sudahAhli +
+                  '</span>';
+              } else {
+                kanan = '<button class="btn-kecil" ' +
+                  'onclick="tambahAhli(\'' + m.ic +
+                  '\')">+ Tambah</button>';
+              }
+              return '<div class="item-baris">' +
+                '<div class="item-kiri">' +
+                '<strong>' + m.nama + '</strong>' +
+                '<span class="badge">' +
+                (m.kelas || '') + '</span></div>' +
+                '<div class="item-kanan">' + kanan +
+                '</div></div>';
+            }).join('');
+          })
+          .cariMuridUntukKeahlian(q, kelabSemasa.id,
+            sessionStorage.getItem('token'));
+      }
+
+      function tambahAhli(ic) {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Ahli ditambah!', 'berjaya');
+              document.getElementById('input-carian')
+                .value = '';
+              document.getElementById('hasil-carian')
+                .style.display = 'none';
+              muatAhli();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .tambahAhliKelab(ic, kelabSemasa.id,
+            sessionStorage.getItem('token'));
+      }
+
+      // ===== MOD SEMAKAN (v3.2) =====
+      var dataSemakan = [];
+      var senaraiSemakanPapar = [];
+      var kelasSemakanDimuat = false;
+      var KAT_SEMAK = [
+        ['Unit Beruniform', 'Unit'],
+        ['Kelab & Persatuan', 'Kelab'],
+        ['Sukan & Permainan', 'Sukan'],
+        ['Rumah Sukan', 'Rumah']
+      ];
+
+      function tukarModKeahlian(m) {
+        document.getElementById('tab-urus')
+          .classList.toggle('aktif', m === 'urus');
+        document.getElementById('tab-semakan')
+          .classList.toggle('aktif', m === 'semakan');
+        document.getElementById('mod-urus')
+          .style.display = m === 'urus' ? '' : 'none';
+        document.getElementById('mod-semakan')
+          .style.display = m === 'semakan' ? '' : 'none';
+        if (m === 'semakan' && !kelasSemakanDimuat) {
+          kelasSemakanDimuat = true;
+          google.script.run
+            .withSuccessHandler(function(data) {
+              var sel = document.getElementById(
+                'semak-kelas');
+              (data || []).forEach(function(k) {
+                var o = document.createElement('option');
+                o.value = k;
+                o.textContent = k;
+                sel.appendChild(o);
+              });
+            })
+            .getSenaraiKelasAktif(
+              sessionStorage.getItem('token'));
+          muatSemakan();
+        }
+      }
+
+      function muatSemakan() {
+        var kelas = document.getElementById(
+          'semak-kelas').value;
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            dataSemakan = data || [];
+            renderSemakan();
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .getSemakanKeahlian(kelas,
+            sessionStorage.getItem('token'));
+      }
+
+      function adaTiada(m) {
+        return KAT_SEMAK.some(function(k) {
+          return m.kat[k[0]].s === 'tiada';
+        });
+      }
+
+      function renderSemakan() {
+        var belumSahaja = document.getElementById(
+          'semak-belum').checked;
+        senaraiSemakanPapar = dataSemakan.filter(
+          function(m) {
+            return belumSahaja ? adaTiada(m) : true;
+          });
+        var bilBelum = dataSemakan.filter(adaTiada).length;
+
+        document.getElementById('semak-info').innerHTML =
+          '<span style="padding:4px 12px;' +
+          ' border-radius:12px; font-size:12px;' +
+          ' font-weight:600;' +
+          (bilBelum ?
+            ' background:#fdecea; color:#b3261e' :
+            ' background:#e6f4ea; color:#137333') + '">' +
+          bilBelum + ' murid belum lengkap</span> ' +
+          '<span class="masa-text">daripada ' +
+          dataSemakan.length + ' murid</span>';
+
+        var div = document.getElementById(
+          'jadual-semakan');
+        if (senaraiSemakanPapar.length === 0) {
+          div.innerHTML = '<p class="tiada-data">' +
+            (dataSemakan.length ?
+              '🌟 Semua murid lengkap keahliannya!' :
+              'Tiada murid.') + '</p>';
+          return;
+        }
+
+        var html = '<table class="jadual-senarai">' +
+          '<thead><tr><th>Nama</th><th>Kelas</th>';
+        KAT_SEMAK.forEach(function(k) {
+          html += '<th style="text-align:center">' +
+            k[1] + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+
+        senaraiSemakanPapar.forEach(function(m, i) {
+          html += '<tr><td>' + m.nama + '</td>' +
+            '<td>' + m.kelas + '</td>';
+          KAT_SEMAK.forEach(function(k, j) {
+            var c = m.kat[k[0]];
+            var idSel = 'sel-semak-' + i + '-' + j;
+            if (c.s === 'tb') {
+              html += '<td style="text-align:center;' +
+                ' color:#999">—</td>';
+            } else if (c.s === 'ada') {
+              html += '<td style="text-align:center;' +
+                ' color:#137333; cursor:pointer"' +
+                ' id="' + idSel + '"' +
+                ' title="Tekan untuk tukar kelab"' +
+                ' onclick="bukaEditKeahlian(' +
+                i + ',' + j + ',\'' + idSel + '\')">' +
+                '✓<br><span style="font-size:11px;' +
+                ' color:#666">' + c.nama +
+                ' ✏️</span></td>';
+            } else {
+              html += '<td style="text-align:center"' +
+                ' id="' + idSel + '">' +
+                '<span onclick="bukaDaftarTerus(' +
+                i + ',' + j + ',\'' + idSel + '\')"' +
+                ' style="display:inline-block;' +
+                ' padding:3px 10px; border-radius:12px;' +
+                ' background:#fdecea; color:#b3261e;' +
+                ' font-size:11px; font-weight:600;' +
+                ' cursor:pointer">+ Tiada</span></td>';
+            }
+          });
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+        div.innerHTML = html;
+      }
+
+      function bukaDaftarTerus(i, j, idSel) {
+        var kategori = KAT_SEMAK[j][0];
+        var pilihan = semuaKelab.filter(function(k) {
+          return k.kategori === kategori;
+        });
+        if (!pilihan.length) {
+          tunjukToast('Tiada ' + kategori +
+            ' berdaftar dalam sistem.', 'ralat');
+          return;
+        }
+        var sel = document.getElementById(idSel);
+        var html = '<select id="' + idSel + '-k"' +
+          ' class="form-input" style="font-size:12px;' +
+          ' padding:5px; max-width:150px">';
+        pilihan.forEach(function(k) {
+          html += '<option value="' + k.id + '">' +
+            k.nama + '</option>';
+        });
+        html += '</select><br>' +
+          '<button class="btn-kecil"' +
+          ' style="margin-top:4px"' +
+          ' onclick="sahkanDaftarTerus(' + i +
+          ',\'' + idSel + '\')">✓ Daftar</button>';
+        sel.innerHTML = html;
+      }
+
+      function bukaEditKeahlian(i, j, idSel) {
+        var kategori = KAT_SEMAK[j][0];
+        var m = senaraiSemakanPapar[i];
+        var semasa = m.kat[kategori];
+        var pilihan = semuaKelab.filter(function(k) {
+          return k.kategori === kategori;
+        });
+        if (pilihan.length < 2) {
+          tunjukToast('Tiada kelab lain dalam ' +
+            'kategori ini.', 'ralat');
+          return;
+        }
+        var sel = document.getElementById(idSel);
+        sel.onclick = null;
+        var html = '<select id="' + idSel + '-k"' +
+          ' class="form-input" style="font-size:12px;' +
+          ' padding:5px; max-width:150px">';
+        pilihan.forEach(function(k) {
+          html += '<option value="' + k.id + '"' +
+            (k.id === semasa.id ? ' selected' : '') +
+            '>' + k.nama + '</option>';
+        });
+        html += '</select><br>' +
+          '<button class="btn-kecil"' +
+          ' style="margin-top:4px"' +
+          ' onclick="sahkanTukarKelab(' + i +
+          ',\'' + idSel + '\')">✓ Tukar</button> ' +
+          '<button class="btn-kecil"' +
+          ' style="margin-top:4px"' +
+          ' onclick="renderSemakan()">✗</button>';
+        sel.innerHTML = html;
+      }
+
+      function sahkanTukarKelab(i, idSel) {
+        var m = senaraiSemakanPapar[i];
+        var idKelab = document.getElementById(
+          idSel + '-k').value;
+        if (!m || !idKelab) return;
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast(m.nama +
+                ' ditukar kelab!', 'berjaya');
+              muatSemakan();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .tukarKelabAhli(m.ic, idKelab,
+            sessionStorage.getItem('token'));
+      }
+
+      function sahkanDaftarTerus(i, idSel) {
+        var m = senaraiSemakanPapar[i];
+        var idKelab = document.getElementById(
+          idSel + '-k').value;
+        if (!m || !idKelab) return;
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast(m.nama +
+                ' didaftarkan!', 'berjaya');
+              muatSemakan();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .tambahAhliKelab(m.ic, idKelab,
+            sessionStorage.getItem('token'));
+      }
+
+    </script>
+
+  </body>
+</html>

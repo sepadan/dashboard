@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+  </head>
+  <body class="dashboard-page">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifikasi -->
+    <div id="toast" class="toast"></div>
+
+    <?!= renderSidebar(token, peranan) ?>
+
+    <!-- Kandungan Utama -->
+    <div class="kandungan" id="kandungan">
+
+      <!-- Panel Dashboard -->
+      <div id="panel-dashboard">
+
+        <div class="halaman-header">
+          <h2>Dashboard</h2>
+          <p id="tarikh-sekarang"></p>
+        </div>
+
+        <!-- Kad Statistik -->
+        <div class="grid-kad">
+          <div class="kad statistik">
+            <div class="kad-icon">🏫</div>
+            <div class="kad-info">
+              <p class="kad-label">Jumlah Kelab Aktif</p>
+              <h3 class="kad-nilai" id="stat-kelab">-</h3>
+            </div>
+          </div>
+          <div class="kad statistik">
+            <div class="kad-icon">👥</div>
+            <div class="kad-info">
+              <p class="kad-label">Jumlah Murid</p>
+              <h3 class="kad-nilai" id="stat-murid">-</h3>
+            </div>
+          </div>
+          <div class="kad statistik">
+            <div class="kad-icon">📅</div>
+            <div class="kad-info">
+              <p class="kad-label">Perjumpaan Bulan Ini</p>
+              <h3 class="kad-nilai" id="stat-perjumpaan">-</h3>
+            </div>
+          </div>
+          <div class="kad statistik amaran">
+            <div class="kad-icon">⚠️</div>
+            <div class="kad-info">
+              <p class="kad-label">Laporan Belum Diisi</p>
+              <h3 class="kad-nilai" id="stat-laporan">-</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amaran Kelengkapan Data -->
+        <div class="seksyen">
+          <h3 class="seksyen-tajuk">⚠️ Amaran Kelengkapan Data</h3>
+          <div id="senarai-amaran" class="senarai-amaran">
+            <p class="tiada-data">Memuatkan...</p>
+          </div>
+        </div>
+
+        <!-- Perjumpaan Terkini -->
+        <div class="seksyen">
+          <h3 class="seksyen-tajuk">📅 Perjumpaan Terkini</h3>
+          <div id="senarai-perjumpaan" class="senarai-item">
+            <p class="tiada-data">Memuatkan...</p>
+          </div>
+        </div>
+
+        <!-- Status Laporan -->
+        <div class="seksyen">
+          <h3 class="seksyen-tajuk">📝 Status Laporan Perjumpaan</h3>
+          <div id="status-laporan" class="senarai-item">
+            <p class="tiada-data">Memuatkan...</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <?!= include('Script') ?>
+    <script>
+// Ambil token yang dipass dari server (Code.gs)
+// <?= token ?> adalah template tag Apps Script
+(function() {
+  try {
+    const tokenDariServer = '<?= token ?>';
+    if (tokenDariServer && tokenDariServer !== 'undefined') {
+      sessionStorage.setItem('token', tokenDariServer);
+    }
+    const peranandariServer = '<?= peranan ?>';
+    if (peranandariServer && peranandariServer !== 'undefined') {
+      sessionStorage.setItem('peranan', peranandariServer);
+    }
+  } catch(e) {}
+})();
+      // Init dashboard
+      document.addEventListener('DOMContentLoaded', function() {
+        const token = semakSesiAktif();
+        if (!token) return;
+
+        // Tunjuk menu admin jika perlu
+        if (isAdmin()) {
+          document.getElementById('menu-admin')
+                  .style.display = 'block';
+        }
+
+        // Papar tarikh hari ini
+        const hari = new Date().toLocaleDateString('ms-MY', {
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric'
+        });
+        document.getElementById('tarikh-sekarang')
+                .textContent = hari;
+
+        // Nama sekolah & tahun dijana oleh
+        // renderSidebar — tiada panggilan perlu
+
+        // Muat statistik dashboard
+        muatDashboardSemua(token);
+      });
+
+      function muatDashboardSemua(token) {
+        google.script.run
+          .withSuccessHandler(function(semua) {
+            if (!semua) return;
+            paparStatistik(semua.statistik);
+            paparAmaran(semua.amaran);
+            paparPerjumpaanTerkini(semua.perjumpaan);
+            paparStatusLaporan(semua.laporan);
+          })
+          .getDashboardSemua(token);
+      }
+
+      function paparStatistik(data) {
+            if (!data) return;
+            document.getElementById('stat-kelab')
+                    .textContent = data.kelab || 0;
+            document.getElementById('stat-murid')
+                    .textContent = data.murid || 0;
+            document.getElementById('stat-perjumpaan')
+                    .textContent = data.perjumpaan || 0;
+            document.getElementById('stat-laporan')
+                    .textContent = data.laporanBelumIsi || 0;
+      }
+
+      function paparAmaran(amaran) {
+            const div = document.getElementById('senarai-amaran');
+            
+            if (!amaran || amaran.length === 0) {
+              div.innerHTML = '<p class="tiada-data hijau">' +
+                '✅ Tiada amaran. Semua data lengkap!</p>';
+              return;
+            }
+
+            div.innerHTML = amaran.map(a => `
+              <div class="amaran-item">
+                <span class="amaran-ikon">⚠️</span>
+                <span>${a}</span>
+              </div>
+            `).join('');
+      }
+
+      function paparPerjumpaanTerkini(senarai) {
+            const div = document.getElementById('senarai-perjumpaan');
+            
+            if (!senarai || senarai.length === 0) {
+              div.innerHTML = '<p class="tiada-data">' +
+                'Tiada perjumpaan bulan ini.</p>';
+              return;
+            }
+
+            div.innerHTML = senarai.map(p => `
+              <div class="item-baris">
+                <div class="item-kiri">
+                  <strong>${p.namaKelab}</strong>
+                  <span class="badge ${p.kategori}">${p.kategori}</span>
+                </div>
+                <div class="item-kanan">
+                  <span>${formatTarikh(p.tarikh)}</span>
+                  <span class="masa">${p.masa}</span>
+                </div>
+              </div>
+            `).join('');
+      }
+
+      function paparStatusLaporan(senarai) {
+            const div = document.getElementById('status-laporan');
+            
+            if (!senarai || senarai.length === 0) {
+              div.innerHTML = '<p class="tiada-data">' +
+                'Tiada rekod perjumpaan.</p>';
+              return;
+            }
+
+            div.innerHTML = senarai.map(l => `
+              <div class="item-baris">
+                <div class="item-kiri">
+                  <strong>${l.namaKelab}</strong>
+                  <span>${formatTarikh(l.tarikh)}</span>
+                </div>
+                <div class="item-kanan">
+                  <span class="status-badge ${l.status === 'Lengkap' ? 
+                    'hijau' : 'merah'}">
+                    ${l.status === 'Lengkap' ? '✅' : '⏳'} ${l.status}
+                  </span>
+                </div>
+              </div>
+            `).join('');
+      }
+
+      function togolSidebar() {
+        document.getElementById('sidebar')
+                .classList.toggle('buka');
+      }
+
+    </script>
+
+  </body>
+</html>

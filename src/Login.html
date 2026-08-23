@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+  </head>
+  <body class="login-page">
+
+    <div class="login-container">
+
+      <div class="login-header">
+        <div class="login-icon" id="login-icon">🏫</div>
+        <h1 id="nama-sekolah">AKSI</h1>
+        <p style="margin:2px 0 0 0; font-size:12px;
+           color:#888; letter-spacing:0.5px">
+          AKSI · Aplikasi Kokurikulum Sekolah
+          Integrasi</p>
+        <p>Sila log masuk untuk meneruskan</p>
+      </div>
+
+      <div class="form-group">
+        <label>ID Pengguna</label>
+        <input type="text" id="idPengguna"
+               class="form-input"
+               placeholder="admin / guru"
+               autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-password">
+          <input type="password" id="password"
+                 class="form-input"
+                 placeholder="Masukkan password"
+                 autocomplete="current-password">
+          <button class="tunjuk-password"
+                  onclick="togolPassword()"
+                  type="button">👁</button>
+        </div>
+      </div>
+
+      <div id="mesej-ralat" class="mesej-ralat"
+           style="display:none"></div>
+
+      <button class="btn-utama"
+              onclick="buatLogin()"
+              id="btn-login">
+        Log Masuk
+      </button>
+
+      <div class="login-footer">
+        <p id="tahun-akademik"></p>
+      </div>
+
+    </div>
+
+    <script>
+      window.URL_EXEC = '<?= url ?>';
+    </script>
+    <?!= include('ApiShim') ?>
+    <script>
+      // Muat nama sekolah
+      google.script.run
+        .withSuccessHandler(function(t) {
+          if (!t) return;
+          var elNama = document.getElementById('nama-sekolah');
+          var elTahun = document.getElementById('tahun-akademik');
+          if (elNama) elNama.textContent = t.NAMA_SEKOLAH;
+          if (t.LOGO) {
+            document.getElementById('login-icon')
+              .innerHTML = '<img src="' + t.LOGO +
+              '" style="width:72px;height:72px;' +
+              'object-fit:contain">';
+          }
+          if (elTahun) elTahun.textContent =
+            'Tahun Akademik ' + t.TAHUN_AKADEMIK;
+        })
+        .getTetapan();
+
+      function buatLogin() {
+        var id = document.getElementById('idPengguna')
+                         .value.trim();
+        var password = document.getElementById('password')
+                               .value;
+        var btn = document.getElementById('btn-login');
+        var ralat = document.getElementById('mesej-ralat');
+
+        ralat.style.display = 'none';
+
+        if (!id || !password) {
+          tunjukRalat('Sila masukkan ID dan password.');
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Sedang log masuk...';
+
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            if (hasil.berjaya) {
+              sessionStorage.setItem('token', hasil.token);
+              sessionStorage.setItem('peranan', hasil.peranan);
+              pergiDashboard(hasil.token);
+            } else {
+              btn.disabled = false;
+              btn.textContent = 'Log Masuk';
+              tunjukRalat(hasil.mesej);
+            }
+          })
+          .withFailureHandler(function(e) {
+            btn.disabled = false;
+            btn.textContent = 'Log Masuk';
+            tunjukRalat('Ralat sistem: ' + e.message);
+          })
+          .login(id, password);
+      }
+
+      function pergiDashboard(token) {
+        var pergi = function(url) {
+          var penuh = url + '?token=' + token;
+          try {
+            window.top.location.href = penuh;
+          } catch(e) {}
+          // Jika navigasi disekat pelayar, tunjuk
+          // pautan untuk pengguna tekan sendiri
+          setTimeout(function() {
+            tunjukPautanMasuk(penuh);
+          }, 1500);
+        };
+        if (window.URL_EXEC &&
+            window.URL_EXEC.indexOf('http') === 0) {
+          pergi(window.URL_EXEC);
+          return;
+        }
+        google.script.run
+          .withSuccessHandler(pergi)
+          .withFailureHandler(function(e) {
+            var btn = document.getElementById(
+              'btn-login');
+            btn.disabled = false;
+            btn.textContent = 'Log Masuk';
+            tunjukRalat('Ralat: ' + e.message);
+          })
+          .getScriptUrl();
+      }
+
+      function tunjukPautanMasuk(url) {
+        var ralat = document.getElementById(
+          'mesej-ralat');
+        ralat.innerHTML = '<a href="' + url +
+          '" target="_top" style="color:#137333;' +
+          ' font-weight:700; text-decoration:none">' +
+          '✅ Login berjaya — tekan di sini untuk ' +
+          'masuk</a>';
+        ralat.style.display = 'block';
+        ralat.style.background = '#e6f4ea';
+      }
+
+      function tunjukRalat(mesej) {
+        var ralat = document.getElementById('mesej-ralat');
+        ralat.textContent = mesej;
+        ralat.style.display = 'block';
+      }
+
+      function togolPassword() {
+        var input = document.getElementById('password');
+        input.type = input.type === 'password' ?
+          'text' : 'password';
+      }
+
+      document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') buatLogin();
+      });
+    </script>
+
+  </body>
+</html>

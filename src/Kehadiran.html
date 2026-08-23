@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Style') ?>
+  </head>
+  <body class="dashboard-page">
+
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <?!= renderSidebar(token, peranan) ?>
+
+    <div class="kandungan">
+      <div class="halaman-header">
+        <h2>📅 Kehadiran Perjumpaan</h2>
+        <p>Rekod kehadiran murid semasa perjumpaan</p>
+      </div>
+
+      <!-- Pilih Kelab -->
+      <div class="kad" id="panel-pilih-kelab">
+        <h3 class="seksyen-tajuk">Sila Pilih</h3>
+
+        <div class="form-group">
+          <label>Kategori</label>
+          <select id="pilih-kategori" class="form-input"
+                  onchange="tapishKelab()">
+            <option value="">-- Semua Kategori --</option>
+            <option>Unit Beruniform</option>
+            <option>Kelab & Persatuan</option>
+            <option>Sukan & Permainan</option>
+            <option>Rumah Sukan</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label id="label-jenis">Semua Kategori</label>
+          <select id="pilih-kelab" class="form-input"
+                  onchange="muatPerjumpaan()">
+            <option value="">-- Pilih --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Senarai Perjumpaan -->
+      <div class="kad" id="panel-perjumpaan" 
+           style="display:none">
+        <div class="flex-antara">
+          <h3 class="seksyen-tajuk" 
+              style="margin-bottom:0">
+            Senarai Perjumpaan
+          </h3>
+          <button class="btn-tambah" 
+                  onclick="tunjukFormPerjumpaan()">
+            + Perjumpaan Baru
+          </button>
+        </div>
+
+        <!-- Form perjumpaan baru -->
+        <div id="form-perjumpaan" 
+             class="form-inline" style="display:none">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tarikh</label>
+              <input type="date" id="tarikh-perjumpaan"
+                     class="form-input">
+            </div>
+            <div class="form-group">
+              <label>Tempat</label>
+              <input type="text" id="tempat-perjumpaan"
+                     class="form-input"
+                     placeholder="cth: Padang sekolah">
+            </div>
+          </div>
+          <div class="butang-row">
+            <button class="btn-balik"
+                    onclick="batalFormPerjumpaan()">
+              Batal
+            </button>
+            <button class="btn-utama"
+                    onclick="simpanPerjumpaanBaru()">
+              Simpan Perjumpaan
+            </button>
+          </div>
+        </div>
+
+        <div id="senarai-perjumpaan-kelab" 
+             class="senarai-item" style="margin-top:16px">
+          <p class="tiada-data">Pilih kelab dahulu.</p>
+        </div>
+      </div>
+
+      <!-- Panel ambil kehadiran -->
+      <div class="kad" id="panel-kehadiran"
+           style="display:none">
+        <div class="flex-antara">
+          <div>
+            <h3 class="seksyen-tajuk" style="margin-bottom:4px"
+                id="tajuk-kehadiran">
+              Kehadiran
+            </h3>
+            <p id="info-perjumpaan" class="info-perjumpaan"></p>
+          </div>
+          <div style="display:flex; gap:8px">
+            <button class="btn-tambah"
+                    id="btn-edit-kehadiran"
+                    onclick="mulaEditKehadiran()">
+              ✏️ Edit
+            </button>
+            <button class="btn-balik"
+                    onclick="balikSenaraiperjumpaan()">
+              ← Balik
+            </button>
+          </div>
+        </div>
+
+        <!-- Butang pantas (mod edit sahaja) -->
+        <div class="butang-pantas"
+             id="pantas-kehadiran" style="display:none">
+          <button class="btn-pantas hijau"
+                  onclick="tandakanSemua('Hadir')">
+            ✅ Semua Hadir
+          </button>
+          <button class="btn-pantas merah"
+                  onclick="tandakanSemua('Tidak Hadir')">
+            ❌ Semua Tidak Hadir
+          </button>
+        </div>
+
+        <!-- Senarai murid -->
+        <div id="senarai-kehadiran"></div>
+
+        <div class="butang-row"
+             id="baris-simpan-kehadiran"
+             style="margin-top:20px; display:none">
+          <button class="btn-balik"
+                  onclick="batalEditKehadiran()">
+            Batal
+          </button>
+          <button class="btn-utama" 
+                  onclick="simpanKehadiranSekarang()">
+            💾 Simpan Kehadiran
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <?!= include('Script') ?>
+    <script>
+
+      let senaraiKelab = [];
+      let idKelabDipilih = '';
+      let idPerjumpaanDipilih = '';
+      let dataKehadiranSemasa = [];
+      let modEditKehadiran = false;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const token = semakSesiAktif();
+        if (!token) return;
+        muatSenaraiKelab();
+      });
+
+      function muatSenaraiKelab() {
+        google.script.run
+          .withSuccessHandler(function(data) {
+            senaraiKelab = data || [];
+            tapishKelab();
+          })
+          .getSenaraiKelab(sessionStorage.getItem('token'));
+      }
+
+      const LABEL_KATEGORI = {
+        '': 'Semua Kategori',
+        'Unit Beruniform': 'Unit',
+        'Kelab & Persatuan': 'Kelab',
+        'Sukan & Permainan': 'Sukan',
+        'Rumah Sukan': 'Rumah Sukan'
+      };
+
+      function tapishKelab() {
+        const kategori = document.getElementById('pilih-kategori')
+                                 .value;
+        const select = document.getElementById('pilih-kelab');
+
+        const label = LABEL_KATEGORI[kategori] ||
+          'Semua Kategori';
+        document.getElementById('label-jenis')
+                .textContent = label;
+        select.innerHTML = '<option value="">-- Pilih ' +
+          label + ' --</option>';
+
+        senaraiKelab
+          .filter(k => !kategori || k.kategori === kategori)
+          .forEach(k => {
+            const opt = document.createElement('option');
+            opt.value = k.id;
+            opt.textContent = k.nama;
+            select.appendChild(opt);
+          });
+      }
+
+      function muatPerjumpaan() {
+        idKelabDipilih = document.getElementById('pilih-kelab').value;
+        if (!idKelabDipilih) {
+          document.getElementById('panel-perjumpaan')
+                  .style.display = 'none';
+          return;
+        }
+
+        document.getElementById('panel-perjumpaan')
+                .style.display = 'block';
+        document.getElementById('panel-kehadiran')
+                .style.display = 'none';
+
+        google.script.run
+          .withSuccessHandler(function(data) {
+            const div = document.getElementById(
+              'senarai-perjumpaan-kelab'
+            );
+
+            if (!data || data.length === 0) {
+              div.innerHTML = '<p class="tiada-data">' +
+                'Tiada perjumpaan. Buat perjumpaan baru.</p>';
+              return;
+            }
+
+            div.innerHTML = data.map(p => `
+              <div class="item-baris">
+                <div class="item-kiri">
+                  <strong>${formatTarikh(p.tarikh)}</strong>
+                  <span class="tempat-text">📍 ${p.tempat}</span>
+                  <span class="masa-text">👥 ${p.hadir}/${p.jumlah} hadir</span>
+                </div>
+                <div class="item-kanan">
+                  <span class="status-badge ${p.adaLaporan ? 
+                    'hijau' : 'kuning'}"
+                    style="cursor:pointer"
+                    title="${p.adaLaporan ?
+                      'Lihat laporan' : 'Isi laporan sekarang'}"
+                    onclick="pergiKeLaporan('${p.id}')">
+                    ${p.adaLaporan ? '📝 Ada Laporan' : 
+                      '⏳ Belum Ada Laporan'}
+                  </span>
+                  <button class="btn-kecil"
+                    onclick="bukaPerjumpaan('${p.id}', 
+                    '${formatTarikh(p.tarikh)}', 
+                    '${p.tempat}')">
+                    Kehadiran
+                  </button>
+                  ${isAdmin() ? `
+                  <button class="btn-padam"
+                    title="Padam perjumpaan (admin)"
+                    onclick="padamPerjumpaanAdmin('${p.id}',
+                    '${formatTarikh(p.tarikh)}')">
+                    🗑️
+                  </button>` : ''}
+                </div>
+              </div>
+            `).join('');
+          })
+          .getPerjumpaanKelab(idKelabDipilih,
+            sessionStorage.getItem('token'));
+      }
+
+      function padamPerjumpaanAdmin(id, tarikh) {
+        if (!confirm('PADAM perjumpaan ' + tarikh +
+            '?\n\nSemua rekod kehadiran, laporan, ' +
+            'gambar dan PDF perjumpaan ini akan ' +
+            'turut dipadam. Tindakan ini tidak boleh ' +
+            'dipulihkan.')) return;
+
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Perjumpaan dipadam.',
+                'berjaya');
+              document.getElementById('panel-kehadiran')
+                      .style.display = 'none';
+              muatPerjumpaan();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .withFailureHandler(function(e) {
+            tunjukLoading(false);
+            tunjukToast('Ralat: ' + e.message, 'ralat');
+          })
+          .padamPerjumpaan(id,
+            sessionStorage.getItem('token'));
+      }
+
+      // Klik badge laporan → terus ke halaman Laporan
+      // dengan kelab & perjumpaan ini dipilih automatik
+      function pergiKeLaporan(idPerjumpaan) {
+        sessionStorage.setItem('autoLaporKelab',
+          idKelabDipilih);
+        sessionStorage.setItem('autoLaporPerjumpaan',
+          idPerjumpaan);
+        pergiHalaman('Laporan');
+      }
+
+      function tunjukFormPerjumpaan() {
+        document.getElementById('form-perjumpaan')
+                .style.display = 'block';
+        // Set tarikh default hari ini
+        const hari = new Date().toISOString().split('T')[0];
+        document.getElementById('tarikh-perjumpaan').value = hari;
+      }
+
+      function batalFormPerjumpaan() {
+        document.getElementById('form-perjumpaan')
+                .style.display = 'none';
+      }
+
+      function simpanPerjumpaanBaru() {
+        const tarikh = document.getElementById('tarikh-perjumpaan')
+                               .value;
+        const masa = '';
+        const tempat = document.getElementById('tempat-perjumpaan')
+                               .value.trim();
+
+        if (!tarikh || !tempat) {
+          tunjukToast('Sila lengkapkan semua maklumat.', 'ralat');
+          return;
+        }
+
+        tunjukLoading(true);
+
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Perjumpaan berjaya dibuat!', 'berjaya');
+              batalFormPerjumpaan();
+              muatPerjumpaan();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .buatPerjumpaan({
+            idKelab: idKelabDipilih,
+            tarikh: tarikh,
+            masa: masa,
+            tempat: tempat
+          }, sessionStorage.getItem('token'));
+      }
+
+      function bukaPerjumpaan(id, tarikh, tempat) {
+        idPerjumpaanDipilih = id;
+
+        document.getElementById('panel-kehadiran')
+                .style.display = 'block';
+        document.getElementById('info-perjumpaan')
+                .textContent = `${tarikh} | ${tempat}`;
+
+        tunjukLoading(true);
+
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            dataKehadiranSemasa = data || [];
+            modEditKehadiran = false;
+            paparKehadiran();
+          })
+          .getKehadiran(id, sessionStorage.getItem('token'));
+      }
+
+      const LABEL_STATUS = {
+        'Hadir': '<span class="status-badge hijau">✅ Hadir</span>',
+        'Tidak Hadir Beralasan':
+          '<span class="status-badge kuning">⚠️ TH Beralasan</span>',
+        'Tidak Hadir':
+          '<span class="status-badge merah">❌ Tidak Hadir</span>'
+      };
+
+      function paparKehadiran() {
+        // Togol elemen ikut mod
+        document.getElementById('tajuk-kehadiran')
+          .textContent = modEditKehadiran ?
+          'Edit Kehadiran' : 'Kehadiran';
+        document.getElementById('btn-edit-kehadiran')
+          .style.display = modEditKehadiran ?
+          'none' : 'inline-block';
+        document.getElementById('pantas-kehadiran')
+          .style.display = modEditKehadiran ?
+          'flex' : 'none';
+        document.getElementById('baris-simpan-kehadiran')
+          .style.display = modEditKehadiran ?
+          'flex' : 'none';
+
+        if (modEditKehadiran) {
+          renderKehadiran();
+        } else {
+          renderKehadiranPapar();
+        }
+      }
+
+      function renderKehadiranPapar() {
+        const div = document.getElementById('senarai-kehadiran');
+
+        if (dataKehadiranSemasa.length === 0) {
+          div.innerHTML = '<p class="tiada-data">' +
+            'Tiada ahli untuk kelab ini (Tahun 4-6).</p>';
+          return;
+        }
+
+        const hadir = dataKehadiranSemasa
+          .filter(m => m.status === 'Hadir').length;
+
+        div.innerHTML = `
+          <div class="kehadiran-header">
+            <span>Nama Murid</span>
+            <span>Kelas</span>
+            <span style="text-align:center">Status</span>
+          </div>
+          ${dataKehadiranSemasa.map(m => `
+            <div class="kehadiran-baris">
+              <span class="murid-nama">${m.nama}</span>
+              <span class="murid-kelas">${m.kelas}</span>
+              <div style="text-align:center">
+                ${LABEL_STATUS[m.status] || m.status}
+              </div>
+            </div>
+          `).join('')}
+          <p class="upload-sub" style="margin-top:12px">
+            👥 ${hadir}/${dataKehadiranSemasa.length} hadir
+          </p>
+        `;
+      }
+
+      function mulaEditKehadiran() {
+        modEditKehadiran = true;
+        paparKehadiran();
+      }
+
+      function batalEditKehadiran() {
+        // Muat semula data asal & kembali ke paparan
+        bukaPerjumpaanSemula();
+      }
+
+      function bukaPerjumpaanSemula() {
+        tunjukLoading(true);
+        google.script.run
+          .withSuccessHandler(function(data) {
+            tunjukLoading(false);
+            dataKehadiranSemasa = data || [];
+            modEditKehadiran = false;
+            paparKehadiran();
+          })
+          .getKehadiran(idPerjumpaanDipilih,
+            sessionStorage.getItem('token'));
+      }
+
+      function renderKehadiran() {
+        const div = document.getElementById('senarai-kehadiran');
+
+        if (dataKehadiranSemasa.length === 0) {
+          div.innerHTML = '<p class="tiada-data">' +
+            'Tiada ahli untuk kelab ini (Tahun 4-6).</p>';
+          return;
+        }
+
+        div.innerHTML = `
+          <div class="kehadiran-header">
+            <span>Nama Murid</span>
+            <span>Kelas</span>
+            <span style="text-align:center">Status</span>
+          </div>
+          ${dataKehadiranSemasa.map((m, i) => `
+            <div class="kehadiran-baris">
+              <span class="murid-nama">${m.nama}</span>
+              <span class="murid-kelas">${m.kelas}</span>
+              <div class="status-toggle">
+                <button class="btn-status ${m.status === 'Hadir' ? 
+                  'aktif-hijau' : ''}"
+                  onclick="setStatus(${i}, 'Hadir')">
+                  ✅
+                </button>
+                <button class="btn-status ${m.status === 
+                  'Tidak Hadir Beralasan' ? 'aktif-kuning' : ''}"
+                  onclick="setStatus(${i}, 
+                    'Tidak Hadir Beralasan')">
+                  ⚠️
+                </button>
+                <button class="btn-status ${m.status === 
+                  'Tidak Hadir' ? 'aktif-merah' : ''}"
+                  onclick="setStatus(${i}, 'Tidak Hadir')">
+                  ❌
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        `;
+      }
+
+      function setStatus(index, status) {
+        dataKehadiranSemasa[index].status = status;
+        renderKehadiran();
+      }
+
+      function tandakanSemua(status) {
+        dataKehadiranSemasa.forEach(m => m.status = status);
+        renderKehadiran();
+      }
+
+      function simpanKehadiranSekarang() {
+        tunjukLoading(true);
+
+        google.script.run
+          .withSuccessHandler(function(hasil) {
+            tunjukLoading(false);
+            if (hasil.berjaya) {
+              tunjukToast('Kehadiran berjaya disimpan!', 'berjaya');
+              // Auto kembali ke senarai perjumpaan
+              document.getElementById('panel-kehadiran')
+                      .style.display = 'none';
+              muatPerjumpaan();
+            } else {
+              tunjukToast(hasil.mesej, 'ralat');
+            }
+          })
+          .simpanKehadiran(
+            idPerjumpaanDipilih,
+            dataKehadiranSemasa,
+            sessionStorage.getItem('token')
+          );
+      }
+
+      function balikSenaraiperjumpaan() {
+        document.getElementById('panel-kehadiran')
+                .style.display = 'none';
+      }
+
+    </script>
+
+  </body>
+</html>
