@@ -149,8 +149,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.95,
-        "peratus_lulus": 94.82,
+        "gps": 2.97,
+        "peratus_lulus": 94.88,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
@@ -172,15 +172,15 @@
           },
           {
             "mp": "B. MELAYU",
-            "gpmp": 2.87,
-            "peratus_a": 22.22,
+            "gpmp": 2.89,
+            "peratus_a": 20.63,
             "peratus_lulus": 95.24
           },
           {
             "mp": "SEJARAH",
-            "gpmp": 2.94,
-            "peratus_a": 5.66,
-            "peratus_lulus": 100
+            "gpmp": 3.07,
+            "peratus_a": 5.05,
+            "peratus_lulus": 97.98
           },
           {
             "mp": "MATEMATIK",
@@ -208,7 +208,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.95
+            "gps": 2.97
           }
         ],
         "pbd_tahap": [
@@ -232,7 +232,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 638,
+          "rekod": 684,
           "luar_main": 0
         }
       },
