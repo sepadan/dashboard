@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 2.6 · 24 Ogos 2026**
+**Versi 2.7 · 24 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -148,10 +148,17 @@ Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangu
 
 | Repo | Kandungan | Nota |
 |---|---|---|
-| `sepadan/semak` | `index.html` (iframe) + `src/` (5 fail) | Aplikasi SEMAK versi statik |
+| `sepadan/semak` | PWA di akar + `index.html` (iframe) + `src/` (5 fail) | SEMAK v1.0.0; backend Apps Script tidak berubah |
 | `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
 
-`sepadan/semak/index.html` ialah cangkerang 594 bait yang meng-*iframe* `src/App.html`. Ia menggunakan corak *shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos 2026.**
+`sepadan/semak/index.html` meng-*iframe* `src/App.html` dan menggunakan corak
+*shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos
+2026.** Pada 24 Ogos, PWA SEMAK v1.0.0 disiapkan secara tempatan dan menunggu
+penerbitan: ikon berasaskan lambang sekolah, manifest Android/iOS, Service
+Worker auto-kemas kini, halaman/panel luar talian dan versi paparan baharu.
+Cache mengandungi 15 fail statik sahaja; URL Apps Script, markah, token, sesi
+dan data murid tidak dicache. Auto-update tidak memuat semula halaman semasa
+secara paksa supaya markah yang sedang ditaip tidak hilang.
 
 ### 2.4 DASHBOARD — paparan
 
@@ -411,6 +418,7 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 16. ~~Senarai AKSI tidak dimuat dalam mod tetamu~~ — **selesai 24 Ogos 2026.** Semua halaman menggunakan token `TETAMU` melalui `AKSI.token()`. Kehadiran dan Laporan memaparkan senarai dahulu serta menggunakan dropdown sebagai penapis; Pencapaian memaparkan semua rekod pada permulaan. Produksi tetamu disahkan memuat 17 pilihan kelab dan 2 rekod Pencapaian dengan sifar kawalan tulis. Data perjumpaan/laporan kosong kerana tab `PERJUMPAAN` sememangnya belum berisi, bukan kerana ralat token. Laluan admin/guru berkongsi logik muatan yang sama; pengesahan visual menggunakan akaun sebenar masih disarankan
 17. ~~Menu AKSI mudah alih tidak boleh ditutup~~ — **selesai dan diterbitkan 24 Ogos 2026.** Sidebar kini mempunyai butang `×` 44×44 dan boleh ditutup melalui kawasan gelap, `Escape` atau pautan navigasi. GitHub Pages run #24 berjaya; produksi diuji pada viewport 390×844 bagi tiga cara tutup tanpa ralat JavaScript
 18. ~~PWA AKSI belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** Versi `AKSI v1.2.0 · PWA` menambah ikon AKSI berasaskan lambang sekolah, manifest, ikon 192/512 + maskable + Apple, Service Worker auto-kemas kini dan halaman luar talian. GitHub Pages run #26 berjaya; produksi mencapai status `sedia` dan semua 27 aset memberi HTTP 200. API, token dan data sekolah tidak dicache. Baki pengesahan pengguna hanyalah melihat rupa ikon melalui satu pemasangan iPhone sebenar
+19. **PWA SEMAK siap secara tempatan, menunggu produksi** — `SEMAK v1.0.0 · PWA` menambah ikon berasaskan lambang sekolah, manifest/ikon Android+iOS, Service Worker, auto-update selamat tanpa muat semula paksa dan paparan luar talian. Ujian 390×844 mencapai `sedia`; 15 aset HTTP 200; cache tidak mengandungi API/data. Fail `src/`, Apps Script versi 58 dan spreadsheet tidak berubah
 
 ---
 
@@ -429,6 +437,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 2.7 | 24 Ogos 2026 | PWA SEMAK v1.0.0 disiapkan secara tempatan: ikon aplikasi berasaskan logo sekolah, manifest/ikon Android+iOS, Service Worker auto-kemas kini tanpa mengganggu markah ditaip, dan paparan luar talian. Ujian 390×844 `sedia`; 15 aset sah; API/markah/data tidak dicache; penerbitan produksi masih perlu disahkan |
 | 2.6 | 24 Ogos 2026 | PWA AKSI v1.2.0 disiapkan dan diterbitkan melalui GitHub Pages run #26: ikon berasaskan logo sekolah, manifest/ikon Android+iOS, Service Worker auto-kemas kini, halaman luar talian dan versi sidebar baharu. Produksi 390×844 mencapai `sedia`; 11 halaman dan 27 aset sah; cache tidak mengandungi API/data; ujian luar talian lulus |
 | 2.5 | 24 Ogos 2026 | Menu mudah alih AKSI mendapat butang tutup, latar boleh tekan, sokongan `Escape` dan keadaan ARIA; GitHub Pages run #24 berjaya dan produksi 390×844 lulus tanpa ralat. Penilaian PWA: sesuai sebagai aplikasi boleh pasang, tetapi cache mesti dihadkan kepada aset statik dan tidak menyimpan data murid/API |
 | 2.4 | 24 Ogos 2026 | Isu senarai AKSI tetamu ditutup: token halaman diseragamkan kepada `AKSI.token()`, Kehadiran/Laporan memaparkan senarai sebelum ditapis, Pencapaian memuat semua rekod, dan kawalan tulis kekal tersembunyi. GitHub Pages run #22 berjaya; produksi memaparkan 17 pilihan kelab dan 2 rekod Pencapaian tanpa ralat |
