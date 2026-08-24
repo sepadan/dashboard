@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 2.7 · 24 Ogos 2026**
+**Versi 2.8 · 24 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -15,12 +15,16 @@ Empat sistem berasingan. Tiga mengumpul data, satu memaparkannya.
 ```mermaid
 flowchart TD
   G[Guru · bot Telegram] -->|doPost| KH[(KEHADIRAN<br/>Google Sheets)]
+  GW[Guru · PWA HADIR] -->|doPost mode=hadir| KH
   GM[Guru · web SEMAK] --> SM[(SEMAK<br/>Google Sheets)]
   GK[Guru · web AKSI] --> AK[(AKSI<br/>Google Sheets)]
 
   KH --> DGS[Dashboard.gs<br/>dalam projek KEHADIRAN]
   SM -.baca sahaja.-> DGS
   AK -.baca sahaja.-> DGS
+
+  KH -->|senarai murid rasmi| SM
+  KH -->|senarai murid rasmi| AK
 
   DGS -->|setiap 30 minit,<br/>hanya bila berubah| DJ[data.json]
   DJ --> GH[(GitHub<br/>sepadan/dashboard)]
@@ -48,6 +52,12 @@ flowchart TD
 
 Sistem ini menjadi **tuan rumah** bagi `Dashboard.gs`. Semua penjanaan `data.json` berlaku di sini.
 
+Mulai 24 Ogos 2026, projek yang sama turut menjadi backend bagi PWA **HADIR**.
+Penghala `doPost` membezakan muatan `mode=hadir` sebelum meneruskan logik bot
+Telegram; kedua-dua saluran menulis tab `kehadiran` yang sama. Fail
+`HadirWeb.gs` sudah disimpan dalam projek tetapi deployment aktif belum
+dikemas kini. Repo muka depan ialah `sepadan/hadir`.
+
 **Tab:**
 
 | Tab | Peranan |
@@ -72,6 +82,32 @@ Sistem ini menjadi **tuan rumah** bagi `Dashboard.gs`. Semua penjanaan `data.jso
 Lajur 11 ke atas datang dari MOEIS (JANTINA, KAUM, OKU, YATIM, pendapatan penjaga, dsb.) dan dipetakan mengikut **nama tajuk**, bukan kedudukan.
 
 > ⚠️ **Jangan sort tab `main` secara manual.** Skrip menyusunnya sendiri semasa upload dan menulis semula 11 lajur mengikut susunan itu. Pernah berlaku: nama bergerak tetapi lajur MOEIS kekal, menyebabkan 41% rekod tidak sejajar. Gunakan **🔍 Semak Sejajaran Tab Main** untuk mengesahkan.
+
+### 2.1b HADIR — PWA kehadiran dan penyelarasan murid
+
+| | |
+|---|---|
+| Repo | `sepadan/hadir` — awam, kod sahaja |
+| Laman | `https://sepadan.github.io/hadir/` selepas GitHub Pages diterbitkan |
+| Backend | Projek Apps Script KEHADIRAN yang sama |
+| Versi | `HADIR v1.0.0 · PWA` |
+
+HADIR menggunakan corak perbualan seperti Telegram: kelas menjadi senarai
+perbualan, semua murid dianggap hadir dan guru hanya menekan nama murid tidak
+hadir. Seluruh kelas ditulis melalui satu `setValues()` di bawah `ScriptLock`.
+Ia ialah saluran sandaran/pantas; bot Telegram kekal berfungsi.
+
+Admin boleh mengemas kini murid dalam HADIR. Tab `main` KEHADIRAN kekal sumber
+rasmi, kemudian backend memanggil API `importMurid` AKSI dan `apiUploadMurid`
+SEMAK. API rasmi dipilih supaya cache serta calon peperiksaan aktif disegarkan.
+Markah dan data kokurikulum tidak disentuh. Kemas kini murid dalam AKSI/SEMAK
+masih tersedia; penyelarasan HADIR seterusnya boleh menyamakan semula medan
+murid dengan `main`.
+
+PWA mencache cangkerang statik sahaja. Nama, IC, kehadiran, sesi dan jawapan API
+tidak dicache. Ikon menggunakan lambang sekolah dan lencana biru `HADIR` seperti
+AKSI/SEMAK. Status semasa: frontend/backend siap dan kod backend sudah disimpan;
+PIN/akaun perkhidmatan, deployment serta ujian produksi masih belum dibuat.
 
 ### 2.2 SEMAK — markah peperiksaan
 
@@ -150,6 +186,7 @@ Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangu
 |---|---|---|
 | `sepadan/semak` | PWA di akar + `index.html` (iframe) + `src/` (5 fail) | SEMAK v1.0.0; backend Apps Script tidak berubah |
 | `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
+| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.0.0; berkongsi backend KEHADIRAN |
 
 `sepadan/semak/index.html` meng-*iframe* `src/App.html` dan menggunakan corak
 *shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos
@@ -279,6 +316,19 @@ Ada ujian dalam `uji-pasang.js` yang gagal kalau mana-mana pengenal itu muncul s
 ### 3.9 Manual sentiasa menang
 
 Nilai yang diisi manual dalam `tetapan_dashboard` atau tab `dash_*` **menindih** nilai dari sistem luar. Kosongkan untuk kembali kepada automatik. Ini memberi jalan keluar bila sistem luar tersilap.
+
+### 3.10 Satu sumber rasmi bagi identiti murid
+
+Tab `main` KEHADIRAN ialah sumber rasmi bagi identiti, status dan kelas murid.
+HADIR boleh menghantar salinan senarai aktif kepada AKSI dan SEMAK, tetapi tidak
+boleh menyalin balik markah, keahlian atau data domain lain. IC/MyKid ialah kunci
+stabil; perubahan IC dibuat sebagai arkib rekod lama + murid baharu, bukan edit
+di tempat.
+
+Kawalan kemas kini murid dalam AKSI/SEMAK dikekalkan sebagai jalan operasi.
+Namun, sync HADIR seterusnya boleh menindih medan murid dengan `main`. Setiap
+sync mesti menggunakan API rasmi sasaran, memulangkan status setiap aplikasi dan
+merekod bilangan sahaja tanpa nama/IC dalam `HADIR_LOG`.
 
 ---
 
@@ -419,6 +469,7 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 17. ~~Menu AKSI mudah alih tidak boleh ditutup~~ — **selesai dan diterbitkan 24 Ogos 2026.** Sidebar kini mempunyai butang `×` 44×44 dan boleh ditutup melalui kawasan gelap, `Escape` atau pautan navigasi. GitHub Pages run #24 berjaya; produksi diuji pada viewport 390×844 bagi tiga cara tutup tanpa ralat JavaScript
 18. ~~PWA AKSI belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** Versi `AKSI v1.2.0 · PWA` menambah ikon AKSI berasaskan lambang sekolah, manifest, ikon 192/512 + maskable + Apple, Service Worker auto-kemas kini dan halaman luar talian. GitHub Pages run #26 berjaya; produksi mencapai status `sedia` dan semua 27 aset memberi HTTP 200. API, token dan data sekolah tidak dicache. Baki pengesahan pengguna hanyalah melihat rupa ikon melalui satu pemasangan iPhone sebenar
 19. ~~PWA SEMAK belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** `SEMAK v1.0.0 · PWA` menambah ikon berasaskan lambang sekolah, manifest/ikon Android+iOS, Service Worker, auto-update selamat tanpa muat semula paksa dan paparan luar talian. GitHub Pages run #35 berjaya untuk commit `485bf96`; produksi telefon 390×844 mencapai status `sedia`, dikawal Service Worker dan tiada ralat JavaScript. Semua aset PWA memberi HTTP 200 dan cache tidak mengandungi API/data. Fail `src/`, Apps Script versi 58 dan spreadsheet tidak berubah
+20. **HADIR v1.0.0 siap dibina, belum diaktifkan** — repo `sepadan/hadir` mempunyai PWA gaya Telegram, ikon HADIR, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. `HadirWeb.gs` serta penghala `doPost` sudah disimpan dalam projek KEHADIRAN tanpa menukar deployment aktif. Baki: tetapkan hash PIN dan akaun perkhidmatan dalam Script Properties, deploy versi baharu pada URL sama, terbitkan GitHub Pages dan uji satu kelas/sync tanpa mengubah data sebenar
 
 ---
 
@@ -437,6 +488,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 2.8 | 24 Ogos 2026 | HADIR v1.0.0 dibina sebagai PWA kehadiran pantas bergaya Telegram dan pusat penyelarasan murid. Ikon HADIR/manifest/Service Worker, simpanan kelompok, pengurusan murid admin, sync API rasmi AKSI/SEMAK dan backend serasi bot Telegram siap. Kod backend sudah disimpan dalam projek KEHADIRAN; deployment/Script Properties/ujian produksi masih menunggu pengaktifan |
 | 2.7 | 24 Ogos 2026 | PWA SEMAK v1.0.0 disiapkan dan diterbitkan melalui GitHub Pages run #35 untuk commit `485bf96`: ikon aplikasi berasaskan logo sekolah, manifest/ikon Android+iOS, Service Worker auto-kemas kini tanpa mengganggu markah ditaip, dan paparan luar talian. Produksi telefon 390×844 mencapai `sedia` tanpa ralat; semua aset PWA HTTP 200; API/markah/data tidak dicache |
 | 2.6 | 24 Ogos 2026 | PWA AKSI v1.2.0 disiapkan dan diterbitkan melalui GitHub Pages run #26: ikon berasaskan logo sekolah, manifest/ikon Android+iOS, Service Worker auto-kemas kini, halaman luar talian dan versi sidebar baharu. Produksi 390×844 mencapai `sedia`; 11 halaman dan 27 aset sah; cache tidak mengandungi API/data; ujian luar talian lulus |
 | 2.5 | 24 Ogos 2026 | Menu mudah alih AKSI mendapat butang tutup, latar boleh tekan, sokongan `Escape` dan keadaan ARIA; GitHub Pages run #24 berjaya dan produksi 390×844 lulus tanpa ralat. Penilaian PWA: sesuai sebagai aplikasi boleh pasang, tetapi cache mesti dihadkan kepada aset statik dan tidak menyimpan data murid/API |
