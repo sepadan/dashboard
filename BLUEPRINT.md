@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 2.8 · 24 Ogos 2026**
+**Versi 2.9 · 24 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -55,8 +55,8 @@ Sistem ini menjadi **tuan rumah** bagi `Dashboard.gs`. Semua penjanaan `data.jso
 Mulai 24 Ogos 2026, projek yang sama turut menjadi backend bagi PWA **HADIR**.
 Penghala `doPost` membezakan muatan `mode=hadir` sebelum meneruskan logik bot
 Telegram; kedua-dua saluran menulis tab `kehadiran` yang sama. Fail
-`HadirWeb.gs` sudah disimpan dalam projek tetapi deployment aktif belum
-dikemas kini. Repo muka depan ialah `sepadan/hadir`.
+`HadirWeb.gs` sudah disimpan dan deployment aktif dinaikkan ke versi 95 pada
+URL yang sama. Repo muka depan ialah `sepadan/hadir`.
 
 **Tab:**
 
@@ -88,7 +88,7 @@ Lajur 11 ke atas datang dari MOEIS (JANTINA, KAUM, OKU, YATIM, pendapatan penjag
 | | |
 |---|---|
 | Repo | `sepadan/hadir` — awam, kod sahaja |
-| Laman | `https://sepadan.github.io/hadir/` selepas GitHub Pages diterbitkan |
+| Laman | `https://sepadan.github.io/hadir/` |
 | Backend | Projek Apps Script KEHADIRAN yang sama |
 | Versi | `HADIR v1.0.0 · PWA` |
 
@@ -106,8 +106,10 @@ murid dengan `main`.
 
 PWA mencache cangkerang statik sahaja. Nama, IC, kehadiran, sesi dan jawapan API
 tidak dicache. Ikon menggunakan lambang sekolah dan lencana biru `HADIR` seperti
-AKSI/SEMAK. Status semasa: frontend/backend siap dan kod backend sudah disimpan;
-PIN/akaun perkhidmatan, deployment serta ujian produksi masih belum dibuat.
+AKSI/SEMAK. GitHub Pages run #1 berjaya untuk commit `0382449`; Apps Script
+deployment versi 95, Script Properties, manifest, Service Worker, paparan telefon
+390×844 dan laluan log masuk produksi sudah disahkan. Ujian teknikal menggunakan
+PIN salah sahaja, jadi tiada kehadiran atau data murid sebenar diubah.
 
 ### 2.2 SEMAK — markah peperiksaan
 
@@ -469,7 +471,7 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 17. ~~Menu AKSI mudah alih tidak boleh ditutup~~ — **selesai dan diterbitkan 24 Ogos 2026.** Sidebar kini mempunyai butang `×` 44×44 dan boleh ditutup melalui kawasan gelap, `Escape` atau pautan navigasi. GitHub Pages run #24 berjaya; produksi diuji pada viewport 390×844 bagi tiga cara tutup tanpa ralat JavaScript
 18. ~~PWA AKSI belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** Versi `AKSI v1.2.0 · PWA` menambah ikon AKSI berasaskan lambang sekolah, manifest, ikon 192/512 + maskable + Apple, Service Worker auto-kemas kini dan halaman luar talian. GitHub Pages run #26 berjaya; produksi mencapai status `sedia` dan semua 27 aset memberi HTTP 200. API, token dan data sekolah tidak dicache. Baki pengesahan pengguna hanyalah melihat rupa ikon melalui satu pemasangan iPhone sebenar
 19. ~~PWA SEMAK belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** `SEMAK v1.0.0 · PWA` menambah ikon berasaskan lambang sekolah, manifest/ikon Android+iOS, Service Worker, auto-update selamat tanpa muat semula paksa dan paparan luar talian. GitHub Pages run #35 berjaya untuk commit `485bf96`; produksi telefon 390×844 mencapai status `sedia`, dikawal Service Worker dan tiada ralat JavaScript. Semua aset PWA memberi HTTP 200 dan cache tidak mengandungi API/data. Fail `src/`, Apps Script versi 58 dan spreadsheet tidak berubah
-20. **HADIR v1.0.0 siap dibina, belum diaktifkan** — repo `sepadan/hadir` mempunyai PWA gaya Telegram, ikon HADIR, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. `HadirWeb.gs` serta penghala `doPost` sudah disimpan dalam projek KEHADIRAN tanpa menukar deployment aktif. Baki: tetapkan hash PIN dan akaun perkhidmatan dalam Script Properties, deploy versi baharu pada URL sama, terbitkan GitHub Pages dan uji satu kelas/sync tanpa mengubah data sebenar
+20. **HADIR v1.0.0 diaktifkan; pengesahan operasi sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA gaya Telegram, ikon HADIR, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. GitHub Pages run #1 berjaya untuk commit `0382449`; `HadirWeb.gs`, penghala `doPost`, hash PIN dan akaun perkhidmatan telah dipasang dalam Apps Script deployment versi 95 pada URL lama. Produksi telefon, manifest, Service Worker dan respons log masuk telah disahkan tanpa ralat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
 
 ---
 
@@ -488,6 +490,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 2.9 | 24 Ogos 2026 | HADIR v1.0.0 diaktifkan: GitHub Pages run #1 untuk commit `0382449`, Apps Script deployment versi 95 pada URL sama, Script Properties sulit, manifest/Service Worker dan sambungan log masuk produksi disahkan. Ujian menggunakan PIN salah sahaja; data sebenar tidak diubah |
 | 2.8 | 24 Ogos 2026 | HADIR v1.0.0 dibina sebagai PWA kehadiran pantas bergaya Telegram dan pusat penyelarasan murid. Ikon HADIR/manifest/Service Worker, simpanan kelompok, pengurusan murid admin, sync API rasmi AKSI/SEMAK dan backend serasi bot Telegram siap. Kod backend sudah disimpan dalam projek KEHADIRAN; deployment/Script Properties/ujian produksi masih menunggu pengaktifan |
 | 2.7 | 24 Ogos 2026 | PWA SEMAK v1.0.0 disiapkan dan diterbitkan melalui GitHub Pages run #35 untuk commit `485bf96`: ikon aplikasi berasaskan logo sekolah, manifest/ikon Android+iOS, Service Worker auto-kemas kini tanpa mengganggu markah ditaip, dan paparan luar talian. Produksi telefon 390×844 mencapai `sedia` tanpa ralat; semua aset PWA HTTP 200; API/markah/data tidak dicache |
 | 2.6 | 24 Ogos 2026 | PWA AKSI v1.2.0 disiapkan dan diterbitkan melalui GitHub Pages run #26: ikon berasaskan logo sekolah, manifest/ikon Android+iOS, Service Worker auto-kemas kini, halaman luar talian dan versi sidebar baharu. Produksi 390×844 mencapai `sedia`; 11 halaman dan 27 aset sah; cache tidak mengandungi API/data; ujian luar talian lulus |
