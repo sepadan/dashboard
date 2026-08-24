@@ -149,8 +149,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.96,
-        "peratus_lulus": 94.44,
+        "gps": 3,
+        "peratus_lulus": 94.7,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
@@ -166,8 +166,8 @@
           },
           {
             "mp": "SEJARAH",
-            "gpmp": 2.33,
-            "peratus_a": 14.29,
+            "gpmp": 2.94,
+            "peratus_a": 5.66,
             "peratus_lulus": 100
           },
           {
@@ -175,6 +175,12 @@
             "gpmp": 3.03,
             "peratus_a": 12.9,
             "peratus_lulus": 100
+          },
+          {
+            "mp": "MATEMATIK",
+            "gpmp": 3.28,
+            "peratus_a": 10.34,
+            "peratus_lulus": 93.1
           },
           {
             "mp": "SAINS",
@@ -196,7 +202,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.96
+            "gps": 3
           }
         ],
         "pbd_tahap": [
@@ -219,8 +225,8 @@
         ],
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
-          "murid": 200,
-          "rekod": 486,
+          "murid": 202,
+          "rekod": 547,
           "luar_main": 0
         }
       },
@@ -284,7 +290,7 @@
           },
           {
             "rumah": "Hijau",
-            "murid": 45
+            "murid": 47
           },
           {
             "rumah": "Kuning",
@@ -302,7 +308,7 @@
           "pencapaian": 2,
           "asas": "murid Tahun 3-6 dalam tab main",
           "luar_main": 5,
-          "rumah_sukan": 202,
+          "rumah_sukan": 204,
           "bukan_layak": 0,
           "layak": 129
         }
