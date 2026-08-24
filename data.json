@@ -149,9 +149,15 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 3,
-        "peratus_lulus": 94.7,
+        "gps": 2.89,
+        "peratus_lulus": 94.91,
         "mata_pelajaran": [
+          {
+            "mp": "B. MELAYU",
+            "gpmp": 1.67,
+            "peratus_a": 52.38,
+            "peratus_lulus": 95.24
+          },
           {
             "mp": "B. ARAB",
             "gpmp": 2.27,
@@ -165,15 +171,15 @@
             "peratus_lulus": 100
           },
           {
-            "mp": "SEJARAH",
-            "gpmp": 2.94,
-            "peratus_a": 5.66,
+            "mp": "RBT",
+            "gpmp": 2.38,
+            "peratus_a": 32.69,
             "peratus_lulus": 100
           },
           {
-            "mp": "RBT",
-            "gpmp": 3.03,
-            "peratus_a": 12.9,
+            "mp": "SEJARAH",
+            "gpmp": 2.94,
+            "peratus_a": 5.66,
             "peratus_lulus": 100
           },
           {
@@ -202,7 +208,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 3
+            "gps": 2.89
           }
         ],
         "pbd_tahap": [
@@ -226,7 +232,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 202,
-          "rekod": 547,
+          "rekod": 589,
           "luar_main": 0
         }
       },
