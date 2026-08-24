@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 2.3 · 24 Ogos 2026**
+**Versi 2.4 · 24 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -106,6 +106,15 @@ MARKAH:  0 PEPERIKSAAN · 1 KELAS · 2 NAMA MURID · 3 SUBJEK · 4 MARKAH
 | Antara muka web | `sepadan/aksi` → `docs/` di GitHub Pages |
 
 **Antara muka web AKSI sudah dibina dan BERFUNGSI DALAM PRODUKSI.** Log masuk dari `https://sepadan.github.io/aksi/` disahkan berjaya pada 23 Ogos 2026 — bermakna patch Apps Script (`Auth.gs`, `WebBackend.gs`, dan `getIdentitiAwam`/`getSidebarData` dalam `API_DIBENARKAN`) semuanya sudah masuk ke deployment sebenar, dan CORS merentas asal berfungsi seperti dirancang. Sepuluh halaman statik dalam `docs/`, dengan `js/api.js` sebagai *shim*: ia menggantikan `google.script.run` dengan `fetch` POST ke `/exec` menggunakan `Proxy`, `Content-Type: text/plain` (elak preflight CORS) dan `redirect: follow`. Halaman-halaman itu memanggil `google.script.run` seperti biasa tanpa perlu diubah — corak yang kemas.
+
+Mulai 24 Ogos 2026, halaman baca AKSI menggunakan `AKSI.token()` supaya sesi
+kosong dihantar sebagai `TETAMU`. Tetamu, guru dan admin melihat senarai yang
+sama; dropdown di atas senarai ialah penapis, bukan syarat untuk memuatkan data.
+Tetamu tidak melihat kawalan tambah, edit atau padam, dan backend tetap menolak
+panggilan tulis. Pencapaian produksi memaparkan 2 rekod, manakala Kehadiran dan
+Laporan memuat 17 pilihan kelab. Tab `PERJUMPAAN` memang kosong, selaras dengan
+isu 2b, jadi kedua-dua senarai perjumpaan/laporan memaparkan keadaan kosong yang
+betul. Penerbitan akhir kod ialah GitHub Pages run #22.
 
 `docs/js/config.js` ialah satu-satunya tempat URL `/exec` ditetapkan.
 
@@ -388,6 +397,7 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 13. ~~Projek Apps Script "AKSI" bertindih~~ — **selesai 23 Ogos 2026.** Projek `1ABvFq…` sudah dinamakan semula
 14. **Operasi tulis AKSI separa disahkan** — `laporan.html` **disahkan berfungsi 23 Ogos 2026**: laporan tersimpan bersama satu gambar, nama guru dan tarikh betul. Ini membuktikan laluan tulis dan muat naik fail menerusi ApiShim memang berfungsi, iaitu operasi paling berisiko dalam senarai. Masih belum diuji: `keahlian`, `kehadiran`, `pencapaian`, `penilaian`, dan sama ada `PDF_URL` benar-benar terisi. Senarai semak ada dalam `PELAN-MIGRASI.md`; **`kehadiran.html` ialah keutamaan tertinggi** kerana ia yang mengisi tab `PERJUMPAAN`. **Fasa 6 tidak boleh bermula sebelum ini selesai** — deployment lama ialah satu-satunya jaring keselamatan
 15. ~~Logout AKSI boleh tergantung~~ — **pembaikan diterbitkan 24 Ogos 2026.** Sesi pelayar kini dipadam serta-merta tanpa menunggu jawapan Apps Script; pembatalan token dihantar dengan `keepalive`, permintaan API mempunyai had masa, dan URL aset diberi versi supaya cache GitHub Pages tidak mengekalkan kod lama. GitHub Pages run #19 berjaya dan ujian automatik lulus. **Masih perlu satu pengesahan manual menggunakan akaun guru sebenar** bahawa sidebar bertukar kepada *Mod lihat sahaja* selepas logout
+16. ~~Senarai AKSI tidak dimuat dalam mod tetamu~~ — **selesai 24 Ogos 2026.** Semua halaman menggunakan token `TETAMU` melalui `AKSI.token()`. Kehadiran dan Laporan memaparkan senarai dahulu serta menggunakan dropdown sebagai penapis; Pencapaian memaparkan semua rekod pada permulaan. Produksi tetamu disahkan memuat 17 pilihan kelab dan 2 rekod Pencapaian dengan sifar kawalan tulis. Data perjumpaan/laporan kosong kerana tab `PERJUMPAAN` sememangnya belum berisi, bukan kerana ralat token. Laluan admin/guru berkongsi logik muatan yang sama; pengesahan visual menggunakan akaun sebenar masih disarankan
 
 ---
 
@@ -406,6 +416,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 2.4 | 24 Ogos 2026 | Isu senarai AKSI tetamu ditutup: token halaman diseragamkan kepada `AKSI.token()`, Kehadiran/Laporan memaparkan senarai sebelum ditapis, Pencapaian memuat semua rekod, dan kawalan tulis kekal tersembunyi. GitHub Pages run #22 berjaya; produksi memaparkan 17 pilihan kelab dan 2 rekod Pencapaian tanpa ralat |
 | 2.3 | 24 Ogos 2026 | Isu logout AKSI yang tergantung dibaiki: sesi tempatan tamat serta-merta, pembatalan token menggunakan `keepalive`, API/loading mempunyai had masa, dan URL aset diberi versi untuk memintas cache. GitHub Pages run #19 berjaya; ujian automatik lulus; pengesahan akaun guru sebenar masih perlu |
 | 2.2 | 23 Ogos 2026 | Keputusan: tapak Firebase dipadam terus tanpa halaman ubah hala; pautan baharu diumumkan kepada guru. Fail ubah hala dikekalkan sebagai simpanan |
 | 2.1 | 23 Ogos 2026 | Firebase CLI tidak boleh dipasang (tiada Node di komputer sekolah). Ubah hala SEMAK dialihkan ke `doGet()` Apps Script — tiada pemasangan diperlukan, dan ia turut menangkap pautan `/exec` terus |
