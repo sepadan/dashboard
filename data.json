@@ -146,7 +146,61 @@
             "peratus": 90.2
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-08-24",
+          "dikemaskini": "20:46",
+          "hadir": 192,
+          "tidak_hadir": 31,
+          "ditanda": 223,
+          "peratus": 86.1,
+          "ikut_kelas": [
+            {
+              "kelas": "1 BIJAK",
+              "tidak_hadir": 6,
+              "ditanda": 28
+            },
+            {
+              "kelas": "2 BIJAK",
+              "tidak_hadir": 3,
+              "ditanda": 23
+            },
+            {
+              "kelas": "2 CERDIK",
+              "tidak_hadir": 3,
+              "ditanda": 24
+            },
+            {
+              "kelas": "3 BIJAK",
+              "tidak_hadir": 3,
+              "ditanda": 29
+            },
+            {
+              "kelas": "4 BIJAK",
+              "tidak_hadir": 3,
+              "ditanda": 32
+            },
+            {
+              "kelas": "5 BIJAK",
+              "tidak_hadir": 4,
+              "ditanda": 21
+            },
+            {
+              "kelas": "5 CERDIK",
+              "tidak_hadir": 2,
+              "ditanda": 19
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 2,
+              "ditanda": 28
+            },
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 5,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
         "gps": 2.97,
