@@ -6,12 +6,29 @@ Fail ini mengikat cara kerja pada repo ini. Ia terpakai kepada Claude, ChatGPT, 
 
 ## 1. Sebelum mula
 
-**Baca [`BLUEPRINT.md`](BLUEPRINT.md) dahulu. Ia sumber rujukan utama.**
+**Baca [`BLUEPRINT.md`](BLUEPRINT.md) dahulu. Ia HAB dokumentasi ekosistem.**
+
+Repo ini memegang hab. Tiga repo lain memegang **jejari** — dokumentasi dalaman
+sistem masing-masing:
+
+| Repo | Jejari |
+|---|---|
+| `sepadan/aksi` | `BLUEPRINT-AKSI.md` |
+| `sepadan/hadir` | `BLUEPRINT.md` |
+| `sepadan/semak` | `docs/SEMAK-Blueprint.md` |
+
+Jejari menerangkan *bagaimana* satu sistem berfungsi. Hab menerangkan *apa* yang
+mengikat kesemuanya — dan memegang **daftar isu tunggal** (bahagian 8).
 
 Jangan mula menulis kod sebelum membacanya. Khususnya:
 
 - **Bahagian 3 — Peraturan yang tidak boleh dilanggar.** Setiap peraturan di situ ialah pepijat yang pernah berlaku dan sudah dibetulkan. Beberapa daripadanya kelihatan seperti kesilapan tetapi sebenarnya betul
-- **Bahagian 8 — Perkara yang belum selesai.** Sambung dari situ, bukan dari andaian sendiri
+- **Bahagian 8 — Daftar isu.** Ini satu-satunya senarai isu dalam seluruh
+  ekosistem. Sambung dari situ, bukan dari andaian sendiri. Kalau tuan jumpa
+  senarai isu dalam repo jejari, pindahkan ke sini dan buang dari sana
+- **Peraturan 3.12 — cara menyemak keadaan sebenar.** `raw.githubusercontent.com`
+  dan folder peti masuk Drive kedua-duanya pernah memulangkan salinan seminggu
+  lapuk dan menyesatkan sesi penuh
 
 Kalau maklumat dalam `BLUEPRINT.md` bercanggah dengan kod, **kod yang betul**. Betulkan dokumen, jangan andaikan kod salah.
 
@@ -53,6 +70,7 @@ Kemudian:
 - [ ] Tiada token atau kata laluan dalam mana-mana fail
 - [ ] Semua ujian lulus
 - [ ] Peraturan domain baharu ada ujiannya
+- [ ] Isu dicatat di bahagian 8 fail hab, bukan dalam repo jejari
 
 ---
 

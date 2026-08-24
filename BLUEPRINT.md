@@ -1,16 +1,52 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 3.2 · 24 Ogos 2026**
+**Versi 4.0 · 24 Ogos 2026**
 
-Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
+Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
-> **Kepada AI yang membaca ini:** [`CLAUDE.md`](CLAUDE.md) mengikat cara kerja pada repo ini — baca sekali. Kemudian baca bahagian *Peraturan yang tidak boleh dilanggar* di bawah sebelum menulis sebarang kod. Beberapa keputusan di sini kelihatan seperti kesilapan tetapi sebenarnya betul, dan pernah dibetulkan sekali. Kemas kini dokumen ini setiap kali sistem berubah — lihat *Protokol penyelenggaraan* di hujung.
+---
+
+## Peta dokumentasi — baca ini dahulu
+
+Ekosistem ini mempunyai **empat dokumen blueprint**, dan setiap satu ada peranan berbeza. Ia bukan salinan antara satu sama lain.
+
+| Dokumen | Peranan | Alamat |
+|---|---|---|
+| **Fail ini** — hab | Peta ekosistem · peraturan merentas sistem · kontrak data · akaun · **daftar isu** | `sepadan/dashboard/BLUEPRINT.md` |
+| `BLUEPRINT-AKSI.md` — jejari | Dalaman AKSI sahaja | `sepadan/aksi` |
+| `BLUEPRINT.md` — jejari | Dalaman HADIR sahaja | `sepadan/hadir` |
+| `docs/SEMAK-Blueprint.md` — jejari | Dalaman SEMAK sahaja | `sepadan/semak` |
+
+### Tiga peraturan yang mengikat keempat-empatnya
+
+**1. Daftar isu hanya wujud di sini.**
+Bahagian 8 fail ini ialah **satu-satunya** senarai perkara yang belum selesai dalam seluruh ekosistem. Jejari **tidak boleh** menyimpan senarai isu, senarai "langkah seterusnya", atau senarai status sendiri. Jumpa satu di sana? Pindahkan ke sini, kemudian buang dari sana.
+
+> Sebabnya: empat senarai isu bermakna empat versi kebenaran. Satu berkata isu sudah ditutup, satu lagi berkata masih terbuka, dan sesi seterusnya mempercayai mana-mana yang dibacanya dahulu. Percanggahan itu senyap — tiada apa yang gagal, cuma kerja yang salah dibuat.
+
+**2. Jejari menerangkan *bagaimana*, hab menerangkan *apa dan kenapa*.**
+Skema tab, kontrak API, langkah deployment, perangkap yang sudah dicuba — semua itu milik jejari, dekat dengan kodnya. Peraturan yang mengikat lebih daripada satu sistem, kontrak antara sistem, dan keputusan yang menjejaskan ekosistem — milik hab.
+
+Jejari **tidak boleh** membuat kenyataan status tentang sistem lain. "AKSI sudah siap" dalam blueprint HADIR ialah maklumat yang akan menjadi palsu tanpa sesiapa perasan.
+
+**3. Setiap jejari mesti membawa blok kepala yang menunjuk ke sini.**
+Supaya sesi yang dibuka terus dalam repo jejari — dan itulah yang biasa berlaku — tahu hab ini wujud.
+
+### Kepada AI yang membaca ini
+
+1. Baca [`CLAUDE.md`](CLAUDE.md) dalam repo yang tuan sedang kerjakan
+2. Baca **Peraturan yang tidak boleh dilanggar** (bahagian 3) di bawah — setiap satu ialah pepijat yang pernah berlaku
+3. Baca **bahagian 8** dan sambung dari situ, bukan dari andaian sendiri
+4. Kalau bekerja pada satu sistem sahaja, baca jejarinya juga
+5. Selepas selesai: kemas kini fail ini **dalam commit yang sama**
+
+Kalau dokumen bercanggah dengan kod, **kod yang betul**. Betulkan dokumen.
 
 ---
 
 ## 1. Gambaran keseluruhan
 
-Empat sistem berasingan. Tiga mengumpul data, satu memaparkannya.
+Tiga sistem mengumpul data, satu memaparkannya. HADIR ialah muka depan kedua bagi KEHADIRAN, bukan simpanan berasingan.
 
 ```mermaid
 flowchart TD
@@ -354,6 +390,28 @@ pilihan tetapi, jika wujud, mesti sepadan dengan tahun semasa.
 
 ---
 
+### 3.12 Cara menyemak keadaan sebenar sistem
+
+Tiga sumber ini **berbohong**, dan ketiga-tiganya pernah menyesatkan sesi sebenar pada 24 Ogos 2026:
+
+| Sumber | Masalah |
+|---|---|
+| `raw.githubusercontent.com` | Memulangkan salinan **seminggu lapuk**. Menunjukkan `BLUEPRINT.md` v1.0 sedangkan yang sebenar v3.2 |
+| Paparan HTML `github.com` | Senarai fail lapuk — menunjukkan fail yang sudah lama dibuang |
+| Folder peti masuk Google Drive | Cerminan sehala. Boleh berbulan ketinggalan |
+
+Gunakan ini:
+
+| Perlu tahu | Cara |
+|---|---|
+| Isi fail yang diterbitkan | `https://sepadan.github.io/<repo>/<fail>` |
+| Fail apa dalam repo | `git ls-files` dalam klon selepas `git pull` |
+| Keadaan data langsung | `https://sepadan.github.io/dashboard/data.json` |
+
+> Kesan sebenar: satu sesi hampir menyalin `BLUEPRINT.md` v2.2 dari peti masuk ke repo yang sudah v3.2. Itu akan memadam sepuluh versi kerja, termasuk seluruh sistem HADIR, dan `git` tidak akan membantah kerana ia kelihatan seperti suntingan biasa.
+
+---
+
 ## 4. Kontrak data
 
 ### 4.1 `tetapan_dashboard`
@@ -463,7 +521,11 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 
 ---
 
-## 8. Perkara yang belum selesai
+## 8. Daftar isu — satu-satunya dalam ekosistem
+
+**Ini tempat setiap isu terbuka dicatat, bagi kelima-lima komponen.** Blueprint AKSI, HADIR dan SEMAK tidak menyimpan senarai isu sendiri; kalau satu muncul di sana, pindahkan ke sini dan buang dari sana.
+
+Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan datang tidak "membaiki" semula perkara yang memang sengaja begitu.
 
 1. ~~Carta bidang kokurikulum tidak bermakna~~ — **selesai 23 Ogos 2026.** Digantikan dengan **Kehadiran perjumpaan mengikut kelab**, dikira dari `PERJUMPAAN.BIL_HADIR` dan `BIL_AHLI`. Carta bidang dikekalkan sebagai jadual dengan nota menerangkan kenapa ketiga-tiga angka sepatutnya sama. Ditambah tile *Perjumpaan diadakan* dan *Laporan belum dihantar* (muncul hanya bila > 0)
 2. ~~Lima ahli AKSI tiada dalam tab `main`~~ — **selesai 23 Ogos 2026.** IC dikenal pasti melalui **🏃 Uji Sambungan AKSI** dan disahkan oleh pengguna: kelima-lima murid **memang sudah berpindah keluar**. Data betul, bukan pepijat. Angka dashboard sudah pun mengecualikan mereka. Kemas kini pilihan: buang baris mereka dari tab `KEAHLIAN` AKSI supaya amaran `luar_main` kembali kosong dan tidak menjadi bunyi bising yang diabaikan. **IC hanya dipaparkan dalam dialog — tidak pernah masuk ke `data.json`**, dan ada ujian khusus yang membuktikannya
@@ -504,13 +566,16 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 2. **Naikkan nombor versi dan tarikh** di bahagian atas
 3. **Tambah entri dalam log perubahan** di bawah
 4. **Jangan buang bahagian 3** tanpa menyatakan sebab dalam log. Setiap peraturan di situ ialah pepijat yang pernah berlaku
-5. **Bila menambah sistem keempat**, tambah satu sub-bahagian di 2.x, satu kontrak di 4.x, dan ujiannya di 7
+5. **Bila menambah sistem baharu**, tambah satu sub-bahagian di 2.x, satu kontrak di 4.x, ujiannya di 7, dan satu baris dalam *Peta dokumentasi* di atas
+5b. **Isu dicatat di bahagian 8 sahaja.** Kalau jejari mula menumbuhkan senarai isu sendiri, pindahkan kandungannya ke sini dan buang dari sana — itu bukan kerja tambahan, itu menghalang percanggahan senyap
+5c. **Jangan percaya `raw.githubusercontent.com` atau peti masuk Drive** untuk mengetahui keadaan sebenar. Lihat peraturan 3.12
 6. Kalau maklumat di sini bercanggah dengan kod, **kod yang betul** — betulkan dokumen ini, jangan andaikan kod salah
 
 ### Log perubahan
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 4.0 | 24 Ogos 2026 | **Struktur dokumentasi hab & jejari ditetapkan.** Fail ini menjadi hab: peta ekosistem, peraturan merentas sistem, kontrak, akaun, dan **satu-satunya daftar isu**. Tiga blueprint sistem menjadi jejari — dalaman sahaja, tiada senarai isu, dengan blok kepala menunjuk ke sini. Peraturan 3.12 ditambah selepas tiga kali disesatkan oleh `raw.githubusercontent` dan peti masuk Drive yang lapuk |
 | 3.2 | 24 Ogos 2026 | Baiki pengesanan “Kehadiran hari ini”: tajuk `24/08` kini dibandingkan secara angka dan turut menerima `24/8` atau tarikh bertahun. Mesej kosong Dashboard kini menyebut HADIR serta bot Telegram. Data awam kekal bilangan agregat sahaja tanpa nama/IC |
 | 3.1 | 24 Ogos 2026 | HADIR v1.2.0 membaiki senarai yang tidak boleh discroll dan limpahan nama panjang, mengekalkan sidebar desktop seperti AKSI, mengekalkan menu buka/tutup pada telefon, serta memaparkan kelas dipilih dalam menu. GitHub Pages run #5 (`8284fa6`) lulus; produksi 1440×900 dan 390×844 disahkan tanpa ralat atau perubahan data |
 | 3.0 | 24 Ogos 2026 | HADIR v1.1.0 diterbitkan: satu muka mudah alih dengan dropdown kelas, guru tanpa login, admin dalam menu, nama + kunci harian legap tanpa IC. GitHub Pages run #3 (`ea910fb`) dan Apps Script v96 berjaya; produksi 390×844 memuat data, PWA `sedia`, menu lulus dan tiada ralat. Tiada kehadiran atau sync sebenar dijalankan |
