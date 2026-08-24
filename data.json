@@ -143,20 +143,20 @@
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 90.4
+            "peratus": 90.1
           }
         ],
         "hari_ini": null
       },
       "akademik": {
         "gps": 3.07,
-        "peratus_lulus": 94.4,
+        "peratus_lulus": 94.42,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
-            "gpmp": 2.26,
-            "peratus_a": 34,
-            "peratus_lulus": 98
+            "gpmp": 2.27,
+            "peratus_a": 33.33,
+            "peratus_lulus": 98.04
           },
           {
             "mp": "PEND. ISLAM",
@@ -184,7 +184,7 @@
           },
           {
             "mp": "B. INGGERIS",
-            "gpmp": 3.92,
+            "gpmp": 3.9,
             "peratus_a": 7.04,
             "peratus_lulus": 87.32
           }
@@ -202,25 +202,25 @@
         "pbd_tahap": [
           {
             "tahap": "TP3",
-            "bilangan": 1
+            "bilangan": 7
           },
           {
             "tahap": "TP4",
-            "bilangan": 2
+            "bilangan": 12
           },
           {
             "tahap": "TP5",
-            "bilangan": 11
+            "bilangan": 16
           },
           {
             "tahap": "TP6",
-            "bilangan": 9
+            "bilangan": 12
           }
         ],
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
-          "murid": 171,
-          "rekod": 411,
+          "murid": 172,
+          "rekod": 412,
           "luar_main": 0
         }
       },
