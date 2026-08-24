@@ -148,7 +148,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-08-24",
-          "dikemaskini": "20:46",
+          "dikemaskini": "23:16",
           "hadir": 192,
           "tidak_hadir": 31,
           "ditanda": 223,
@@ -361,6 +361,19 @@
             "murid": 52
           }
         ],
+        "perjumpaan": {
+          "bil": 1,
+          "purata_kehadiran": null,
+          "kelab_aktif": 1,
+          "laporan_belum": 1,
+          "ikut_kelab": [
+            {
+              "kelab": "Pengakap",
+              "perjumpaan": 1,
+              "peratus_hadir": null
+            }
+          ]
+        },
         "sumber_aksi": {
           "tahun": "2026",
           "ahli": 129,
