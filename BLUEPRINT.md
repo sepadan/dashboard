@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 3.1 · 24 Ogos 2026**
+**Versi 3.2 · 24 Ogos 2026**
 
 Dokumen ini ialah **sumber kebenaran tunggal** bagi seluruh ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja pada sistem ini tanpa perlu membaca sejarah perbualan.
 
@@ -340,6 +340,18 @@ Namun, sync HADIR seterusnya boleh menindih medan murid dengan `main`. Setiap
 sync mesti menggunakan API rasmi sasaran, memulangkan status setiap aplikasi dan
 merekod bilangan sahaja tanpa nama/IC dalam `HADIR_LOG`.
 
+### 3.11 Tajuk tarikh kehadiran mesti dibandingkan secara angka
+
+Tab `kehadiran` memaparkan tajuk tarikh menggunakan format dua digit seperti
+`24/08`, sedangkan format lama atau sumber lain boleh menghasilkan `24/8` atau
+`24/08/2026`. `kehadiranHariIni_()` tidak boleh membandingkan teks secara tepat.
+Ia mesti membaca bahagian hari, bulan dan tahun sebagai nombor; tahun adalah
+pilihan tetapi, jika wujud, mesti sepadan dengan tahun semasa.
+
+> Pepijat asal membina sasaran `24/8` lalu gagal menemui tajuk sebenar `24/08`.
+> Semua kelas sudah ditanda, tetapi `hari_ini` menjadi `null` dan Dashboard
+> memaparkan “Belum ditanda”.
+
 ---
 
 ## 4. Kontrak data
@@ -480,6 +492,7 @@ Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skr
 18. ~~PWA AKSI belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** Versi `AKSI v1.2.0 · PWA` menambah ikon AKSI berasaskan lambang sekolah, manifest, ikon 192/512 + maskable + Apple, Service Worker auto-kemas kini dan halaman luar talian. GitHub Pages run #26 berjaya; produksi mencapai status `sedia` dan semua 27 aset memberi HTTP 200. API, token dan data sekolah tidak dicache. Baki pengesahan pengguna hanyalah melihat rupa ikon melalui satu pemasangan iPhone sebenar
 19. ~~PWA SEMAK belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** `SEMAK v1.0.0 · PWA` menambah ikon berasaskan lambang sekolah, manifest/ikon Android+iOS, Service Worker, auto-update selamat tanpa muat semula paksa dan paparan luar talian. GitHub Pages run #35 berjaya untuk commit `485bf96`; produksi telefon 390×844 mencapai status `sedia`, dikawal Service Worker dan tiada ralat JavaScript. Semua aset PWA memberi HTTP 200 dan cache tidak mengandungi API/data. Fail `src/`, Apps Script versi 58 dan spreadsheet tidak berubah
 20. **HADIR v1.2.0 diaktifkan; pengesahan operasi sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. GitHub Pages run #5 berjaya untuk commit `8284fa6`; Apps Script deployment versi 96 kekal. Desktop mempunyai sidebar kekal dan dua lajur; telefon mempunyai menu buka/tutup dan satu lajur. Produksi memuat nama tanpa IC, scroll berfungsi, tiada limpahan mendatar, PWA `sedia` dan tiada ralat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
+21. ~~Kehadiran hari ini kosong walaupun sudah ditanda~~ — **punca dikenal pasti 24 Ogos 2026.** Tajuk tab sebenar ialah `24/08`, tetapi penjana membandingkannya dengan teks `24/8`. `kehadiranHariIni_()` dibaiki supaya menerima `D/M`, `DD/MM` dan tarikh yang turut mempunyai tahun. Mesej kosong Dashboard turut menyebut HADIR dan bot Telegram. Penjana perlu dijalankan semula untuk menggantikan `hari_ini: null` dalam `data.json` awam
 
 ---
 
@@ -498,6 +511,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 3.2 | 24 Ogos 2026 | Baiki pengesanan “Kehadiran hari ini”: tajuk `24/08` kini dibandingkan secara angka dan turut menerima `24/8` atau tarikh bertahun. Mesej kosong Dashboard kini menyebut HADIR serta bot Telegram. Data awam kekal bilangan agregat sahaja tanpa nama/IC |
 | 3.1 | 24 Ogos 2026 | HADIR v1.2.0 membaiki senarai yang tidak boleh discroll dan limpahan nama panjang, mengekalkan sidebar desktop seperti AKSI, mengekalkan menu buka/tutup pada telefon, serta memaparkan kelas dipilih dalam menu. GitHub Pages run #5 (`8284fa6`) lulus; produksi 1440×900 dan 390×844 disahkan tanpa ralat atau perubahan data |
 | 3.0 | 24 Ogos 2026 | HADIR v1.1.0 diterbitkan: satu muka mudah alih dengan dropdown kelas, guru tanpa login, admin dalam menu, nama + kunci harian legap tanpa IC. GitHub Pages run #3 (`ea910fb`) dan Apps Script v96 berjaya; produksi 390×844 memuat data, PWA `sedia`, menu lulus dan tiada ralat. Tiada kehadiran atau sync sebenar dijalankan |
 | 2.9 | 24 Ogos 2026 | HADIR v1.0.0 diaktifkan: GitHub Pages run #1 untuk commit `0382449`, Apps Script deployment versi 95 pada URL sama, Script Properties sulit, manifest/Service Worker dan sambungan log masuk produksi disahkan. Ujian menggunakan PIN salah sahaja; data sebenar tidak diubah |
