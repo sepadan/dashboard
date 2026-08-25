@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 4.2 · 25 Ogos 2026**
+**Versi 4.3 · 25 Ogos 2026**
 
 Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
@@ -126,7 +126,7 @@ Lajur 11 ke atas datang dari MOEIS (JANTINA, KAUM, OKU, YATIM, pendapatan penjag
 | Repo | `sepadan/hadir` — awam, kod sahaja |
 | Laman | `https://sepadan.github.io/hadir/` |
 | Backend | Projek Apps Script KEHADIRAN yang sama |
-| Versi | `HADIR v1.3.1 · PWA` |
+| Versi | `HADIR v1.4.0 · PWA` |
 
 HADIR menggunakan satu muka mesra telefon. Dropdown kelas di bahagian atas
 memudahkan guru menapis kelas, kelas pertama dimuat automatik, semua murid
@@ -134,6 +134,13 @@ dianggap hadir dan guru hanya menekan nama murid tidak hadir. Guru tidak perlu
 log masuk; sesiapa yang mengetahui URL boleh membaca nama dan mengisi
 kehadiran. Seluruh kelas ditulis melalui satu `setValues()` di bawah
 `ScriptLock`. Ia ialah saluran sandaran/pantas; bot Telegram kekal berfungsi.
+
+Semak Kehadiran membenarkan guru tanpa login memilih tarikh dalam tahun semasa
+dan kelas. Atas keputusan pemilik sistem, nama murid tidak hadir bagi tarikh
+terdahulu boleh dibaca melalui URL HADIR; nama murid hadir, IC/MyKid dan status
+RMT individu tidak dihantar. Bilangan RMT hadir dikira di backend sebagai angka
+agregat kelas. Oleh sebab tab `rmt` hanya menyimpan status semasa, kiraan pada
+tarikh lalu menggunakan kelayakan RMT semasa, bukan snapshot sejarah.
 
 Log masuk PIN hanya untuk admin dan terletak dalam menu sisi. Admin boleh
 mengemas kini murid dalam HADIR. Tab `main` KEHADIRAN kekal sumber
@@ -232,7 +239,7 @@ Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangu
 |---|---|---|
 | `sepadan/semak` | PWA di akar + `index.html` (iframe) + `src/` (5 fail) | SEMAK v1.0.0; backend Apps Script tidak berubah |
 | `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
-| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.3.1; guru tanpa login, sidebar desktop kekal, menu telefon boleh tutup; berkongsi backend KEHADIRAN |
+| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.4.0; guru tanpa login boleh isi hari ini dan semak tarikh tahun semasa; kiraan RMT hadir agregat; berkongsi backend KEHADIRAN |
 
 `sepadan/semak/index.html` meng-*iframe* `src/App.html` dan menggunakan corak
 *shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos
@@ -579,6 +586,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 4.3 | 25 Ogos 2026 | HADIR v1.4.0 menambah Semak Kehadiran mengikut tarikh bagi tahun semasa untuk guru tanpa login dan bilangan agregat RMT hadir. Respons sejarah mengehadkan nama kepada murid tidak hadir serta tidak menghantar IC, nama murid hadir atau status RMT individu. Versi aset/cache PWA dinaikkan serentak |
 | 4.2 | 25 Ogos 2026 | Isu #22 ditutup: token sesi sebenar AKSI kini dihantar pada sampul RPC, pembaca respons SEMAK menerima pembungkus `HtmlService` Google dan menyemak sumber/ID, ujian regresi lulus, commit HADIR `3ce24f9` ditolak dan Apps Script versi 98 diterbitkan pada URL sedia ada. Satu sync sebenar kekal sebagai pengesahan pengguna dalam isu #20 |
 | 4.1 | 25 Ogos 2026 | HADIR v1.3.1: pepijat "kosong dibaca sebagai sifar" dibaiki — seluruh kelas tidak lagi bermula sebagai tidak hadir pada pagi hari baru (peraturan 3.6 dilanggar dalam `app.js`). Isu #21 dan #22 dibuka bagi kegagalan import CSV idME dan penyelarasan AKSI/SEMAK |
 | 4.0 | 24 Ogos 2026 | **Struktur dokumentasi hab & jejari ditetapkan.** Fail ini menjadi hab: peta ekosistem, peraturan merentas sistem, kontrak, akaun, dan **satu-satunya daftar isu**. Tiga blueprint sistem menjadi jejari — dalaman sahaja, tiada senarai isu, dengan blok kepala menunjuk ke sini. Peraturan 3.12 ditambah selepas tiga kali disesatkan oleh `raw.githubusercontent` dan peti masuk Drive yang lapuk |
