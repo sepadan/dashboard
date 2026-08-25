@@ -150,7 +150,7 @@
       },
       "akademik": {
         "gps": 2.97,
-        "peratus_lulus": 94.88,
+        "peratus_lulus": 94.92,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
@@ -172,9 +172,9 @@
           },
           {
             "mp": "B. MELAYU",
-            "gpmp": 2.89,
-            "peratus_a": 20.63,
-            "peratus_lulus": 95.24
+            "gpmp": 2.94,
+            "peratus_a": 18.84,
+            "peratus_lulus": 95.65
           },
           {
             "mp": "SEJARAH",
@@ -232,7 +232,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 684,
+          "rekod": 690,
           "luar_main": 0
         }
       },
