@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 4.0 · 24 Ogos 2026**
+**Versi 4.2 · 25 Ogos 2026**
 
 Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
@@ -126,7 +126,7 @@ Lajur 11 ke atas datang dari MOEIS (JANTINA, KAUM, OKU, YATIM, pendapatan penjag
 | Repo | `sepadan/hadir` — awam, kod sahaja |
 | Laman | `https://sepadan.github.io/hadir/` |
 | Backend | Projek Apps Script KEHADIRAN yang sama |
-| Versi | `HADIR v1.2.0 · PWA` |
+| Versi | `HADIR v1.3.1 · PWA` |
 
 HADIR menggunakan satu muka mesra telefon. Dropdown kelas di bahagian atas
 memudahkan guru menapis kelas, kelas pertama dimuat automatik, semua murid
@@ -232,7 +232,7 @@ Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangu
 |---|---|---|
 | `sepadan/semak` | PWA di akar + `index.html` (iframe) + `src/` (5 fail) | SEMAK v1.0.0; backend Apps Script tidak berubah |
 | `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
-| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.2.0; guru tanpa login, sidebar desktop kekal, menu telefon boleh tutup; berkongsi backend KEHADIRAN |
+| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.3.1; guru tanpa login, sidebar desktop kekal, menu telefon boleh tutup; berkongsi backend KEHADIRAN |
 
 `sepadan/semak/index.html` meng-*iframe* `src/App.html` dan menggunakan corak
 *shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos
@@ -554,10 +554,10 @@ Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan 
 18. ~~PWA AKSI belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** Versi `AKSI v1.2.0 · PWA` menambah ikon AKSI berasaskan lambang sekolah, manifest, ikon 192/512 + maskable + Apple, Service Worker auto-kemas kini dan halaman luar talian. GitHub Pages run #26 berjaya; produksi mencapai status `sedia` dan semua 27 aset memberi HTTP 200. API, token dan data sekolah tidak dicache. Baki pengesahan pengguna hanyalah melihat rupa ikon melalui satu pemasangan iPhone sebenar
 19. ~~PWA SEMAK belum lengkap~~ — **selesai dan diterbitkan 24 Ogos 2026.** `SEMAK v1.0.0 · PWA` menambah ikon berasaskan lambang sekolah, manifest/ikon Android+iOS, Service Worker, auto-update selamat tanpa muat semula paksa dan paparan luar talian. GitHub Pages run #35 berjaya untuk commit `485bf96`; produksi telefon 390×844 mencapai status `sedia`, dikawal Service Worker dan tiada ralat JavaScript. Semua aset PWA memberi HTTP 200 dan cache tidak mengandungi API/data. Fail `src/`, Apps Script versi 58 dan spreadsheet tidak berubah
 21. **Import CSV idME HADIR ditolak** — `Fungsi tidak dibenarkan.` Muka depan HADIR v1.3.0 mempunyai butang *Update Data Murid CSV idME*, tetapi fungsi backendnya sama ada tiada dalam senarai izin projek KEHADIRAN, atau deployment Apps Script belum dibuat semula selepas kod ditampal. **Tiada data terjejas** — penolakan berlaku sebelum sebarang penulisan. Diagnosis: bandingkan nama fungsi yang dipanggil `app.js` dengan senarai izin dalam `HadirWeb.gs`, kemudian sahkan versi deployment
-22. **Penyelarasan HADIR → AKSI ditolak, → SEMAK memulangkan bukan-JSON** — dua punca berbeza:
-    - **AKSI:** mesej *"Sesi tamat. Sila log masuk semula."* datang dari `Kebenaran.gs` baris 153. Sebelum 23 Ogos, AKSI tidak menyemak token di peringkat penghala, jadi HADIR boleh memanggil endpoint penyelarasan tanpa sesi. Lubang itu memang patut ditutup — tanpanya sesiapa di internet boleh menulis ke data kokurikulum — tetapi HADIR belum diberi laluan sah menggantikannya. **Cadangan:** peranan `sistem` yang disahkan melalui kunci kongsi dalam Script Properties, dengan senarai izin kecil yang mengandungi fungsi penyelarasan sahaja. Kunci tidak pernah masuk ke repo
-    - **SEMAK:** *"SEMAK tidak memulangkan respons RPC yang sah"* bermakna SEMAK memulangkan HTML, bukan JSON. Perlu disemak sama ada `doPost` SEMAK mengenali fungsi itu, dan sama ada deployment memerlukan kebenaran semula
-20. **HADIR v1.2.0 diaktifkan; pengesahan operasi sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. GitHub Pages run #5 berjaya untuk commit `8284fa6`; Apps Script deployment versi 96 kekal. Desktop mempunyai sidebar kekal dan dua lajur; telefon mempunyai menu buka/tutup dan satu lajur. Produksi memuat nama tanpa IC, scroll berfungsi, tiada limpahan mendatar, PWA `sedia` dan tiada ralat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
+22. ~~Penyelarasan HADIR → AKSI ditolak, → SEMAK memulangkan respons RPC tidak sah~~ — **pembaikan diterbitkan 25 Ogos 2026 pada Apps Script versi 98.** Dua punca sebenar dibaiki dalam penghubung HADIR:
+    - **AKSI:** login perkhidmatan sebenarnya berjaya, tetapi sampul RPC import masih membawa token rekaan `SISTEM_HADIR`. Penghala AKSI mengutamakan token sampul itu lalu menganggap sesi tiada. HADIR kini menghantar token sesi sebenar yang baru dipulangkan oleh login pada sampul dan argumen import/logout. Kebenaran admin AKSI kekal dikuatkuasakan; tiada laluan tulis awam ditambah
+    - **SEMAK:** `HtmlService` Google membungkus HTML pengguna dan mengekod tanda petik sebagai `\x27`. Respons mengandungi muatan `semak-rpc`, tetapi pencari lama hanya menerima bentuk langsung `atob('...')`. Pembaca baharu menerima kedua-dua bentuk dan mengesahkan `sumber` serta ID permintaan sebelum menggunakan hasil
+20. **HADIR v1.3.1 diaktifkan; pengesahan operasi sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. Pembaikan sync ialah commit `3ce24f9` dan Apps Script deployment versi 98 pada URL yang sama. Desktop mempunyai sidebar kekal dan dua lajur; telefon mempunyai menu buka/tutup dan satu lajur. Produksi memuat nama tanpa IC, scroll berfungsi, tiada limpahan mendatar, PWA `sedia` dan tiada ralat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
 21. ~~Kehadiran hari ini kosong walaupun sudah ditanda~~ — **punca dikenal pasti 24 Ogos 2026.** Tajuk tab sebenar ialah `24/08`, tetapi penjana membandingkannya dengan teks `24/8`. `kehadiranHariIni_()` dibaiki supaya menerima `D/M`, `DD/MM` dan tarikh yang turut mempunyai tahun. Mesej kosong Dashboard turut menyebut HADIR dan bot Telegram. Penjana perlu dijalankan semula untuk menggantikan `hari_ini: null` dalam `data.json` awam
 
 ---
@@ -579,6 +579,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 4.2 | 25 Ogos 2026 | Isu #22 ditutup: token sesi sebenar AKSI kini dihantar pada sampul RPC, pembaca respons SEMAK menerima pembungkus `HtmlService` Google dan menyemak sumber/ID, ujian regresi lulus, commit HADIR `3ce24f9` ditolak dan Apps Script versi 98 diterbitkan pada URL sedia ada. Satu sync sebenar kekal sebagai pengesahan pengguna dalam isu #20 |
 | 4.1 | 25 Ogos 2026 | HADIR v1.3.1: pepijat "kosong dibaca sebagai sifar" dibaiki — seluruh kelas tidak lagi bermula sebagai tidak hadir pada pagi hari baru (peraturan 3.6 dilanggar dalam `app.js`). Isu #21 dan #22 dibuka bagi kegagalan import CSV idME dan penyelarasan AKSI/SEMAK |
 | 4.0 | 24 Ogos 2026 | **Struktur dokumentasi hab & jejari ditetapkan.** Fail ini menjadi hab: peta ekosistem, peraturan merentas sistem, kontrak, akaun, dan **satu-satunya daftar isu**. Tiga blueprint sistem menjadi jejari — dalaman sahaja, tiada senarai isu, dengan blok kepala menunjuk ke sini. Peraturan 3.12 ditambah selepas tiga kali disesatkan oleh `raw.githubusercontent` dan peti masuk Drive yang lapuk |
 | 3.2 | 24 Ogos 2026 | Baiki pengesanan “Kehadiran hari ini”: tajuk `24/08` kini dibandingkan secara angka dan turut menerima `24/8` atau tarikh bertahun. Mesej kosong Dashboard kini menyebut HADIR serta bot Telegram. Data awam kekal bilangan agregat sahaja tanpa nama/IC |
