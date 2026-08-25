@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 4.3 · 25 Ogos 2026**
+**Versi 4.4 · 25 Ogos 2026**
 
 Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
@@ -564,7 +564,7 @@ Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan 
 22. ~~Penyelarasan HADIR → AKSI ditolak, → SEMAK memulangkan respons RPC tidak sah~~ — **pembaikan diterbitkan 25 Ogos 2026 pada Apps Script versi 98.** Dua punca sebenar dibaiki dalam penghubung HADIR:
     - **AKSI:** login perkhidmatan sebenarnya berjaya, tetapi sampul RPC import masih membawa token rekaan `SISTEM_HADIR`. Penghala AKSI mengutamakan token sampul itu lalu menganggap sesi tiada. HADIR kini menghantar token sesi sebenar yang baru dipulangkan oleh login pada sampul dan argumen import/logout. Kebenaran admin AKSI kekal dikuatkuasakan; tiada laluan tulis awam ditambah
     - **SEMAK:** `HtmlService` Google membungkus HTML pengguna dan mengekod tanda petik sebagai `\x27`. Respons mengandungi muatan `semak-rpc`, tetapi pencari lama hanya menerima bentuk langsung `atob('...')`. Pembaca baharu menerima kedua-dua bentuk dan mengesahkan `sumber` serta ID permintaan sebelum menggunakan hasil
-20. **HADIR v1.3.1 diaktifkan; pengesahan operasi sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. Pembaikan sync ialah commit `3ce24f9` dan Apps Script deployment versi 98 pada URL yang sama. Desktop mempunyai sidebar kekal dan dua lajur; telefon mempunyai menu buka/tutup dan satu lajur. Produksi memuat nama tanpa IC, scroll berfungsi, tiada limpahan mendatar, PWA `sedia` dan tiada ralat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
+20. **HADIR v1.4.0 diaktifkan; pengesahan operasi tulis sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. Apps Script deployment versi 100 pada URL sama menambah semakan tarikh serta kiraan RMT hadir agregat. Produksi 24 Ogos memuat 9 kelas, 31 tidak hadir dan 26 RMT hadir; penapis kelas serta Bahasa Melayu lulus tanpa ralat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
 21. ~~Kehadiran hari ini kosong walaupun sudah ditanda~~ — **punca dikenal pasti 24 Ogos 2026.** Tajuk tab sebenar ialah `24/08`, tetapi penjana membandingkannya dengan teks `24/8`. `kehadiranHariIni_()` dibaiki supaya menerima `D/M`, `DD/MM` dan tarikh yang turut mempunyai tahun. Mesej kosong Dashboard turut menyebut HADIR dan bot Telegram. Penjana perlu dijalankan semula untuk menggantikan `hari_ini: null` dalam `data.json` awam
 
 ---
@@ -586,6 +586,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 4.4 | 25 Ogos 2026 | HADIR v1.4.0 diterbitkan melalui commit `8641245` dan Apps Script versi 100. Produksi disahkan membaca 24 Ogos: 9 kelas selesai, 31 tidak hadir, 26 RMT hadir, penapis 1 BIJAK satu kelas dan sifar ralat konsol. Ujian tidak menyimpan kehadiran |
 | 4.3 | 25 Ogos 2026 | HADIR v1.4.0 menambah Semak Kehadiran mengikut tarikh bagi tahun semasa untuk guru tanpa login dan bilangan agregat RMT hadir. Respons sejarah mengehadkan nama kepada murid tidak hadir serta tidak menghantar IC, nama murid hadir atau status RMT individu. Versi aset/cache PWA dinaikkan serentak |
 | 4.2 | 25 Ogos 2026 | Isu #22 ditutup: token sesi sebenar AKSI kini dihantar pada sampul RPC, pembaca respons SEMAK menerima pembungkus `HtmlService` Google dan menyemak sumber/ID, ujian regresi lulus, commit HADIR `3ce24f9` ditolak dan Apps Script versi 98 diterbitkan pada URL sedia ada. Satu sync sebenar kekal sebagai pengesahan pengguna dalam isu #20 |
 | 4.1 | 25 Ogos 2026 | HADIR v1.3.1: pepijat "kosong dibaca sebagai sifar" dibaiki — seluruh kelas tidak lagi bermula sebagai tidak hadir pada pagi hari baru (peraturan 3.6 dilanggar dalam `app.js`). Isu #21 dan #22 dibuka bagi kegagalan import CSV idME dan penyelarasan AKSI/SEMAK |
