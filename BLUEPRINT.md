@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 4.4 · 25 Ogos 2026**
+**Versi 4.5 · 25 Ogos 2026**
 
 Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
@@ -126,7 +126,7 @@ Lajur 11 ke atas datang dari MOEIS (JANTINA, KAUM, OKU, YATIM, pendapatan penjag
 | Repo | `sepadan/hadir` — awam, kod sahaja |
 | Laman | `https://sepadan.github.io/hadir/` |
 | Backend | Projek Apps Script KEHADIRAN yang sama |
-| Versi | `HADIR v1.4.0 · PWA` |
+| Versi | `HADIR v1.5.0` (PWA) |
 
 HADIR menggunakan satu muka mesra telefon. Dropdown kelas di bahagian atas
 memudahkan guru menapis kelas, kelas pertama dimuat automatik, semua murid
@@ -138,8 +138,8 @@ kehadiran. Seluruh kelas ditulis melalui satu `setValues()` di bawah
 Semak Kehadiran membenarkan guru tanpa login memilih tarikh dalam tahun semasa
 dan kelas. Atas keputusan pemilik sistem, nama murid tidak hadir bagi tarikh
 terdahulu boleh dibaca melalui URL HADIR; nama murid hadir, IC/MyKid dan status
-RMT individu tidak dihantar. Bilangan RMT hadir dikira di backend sebagai angka
-agregat kelas. Oleh sebab tab `rmt` hanya menyimpan status semasa, kiraan pada
+RMT individu tidak dihantar. Bilangan RMT hadir dikira di backend sebagai nisbah
+agregat kelas `hadir/jumlah`, contohnya `27/30`. Oleh sebab tab `rmt` hanya menyimpan status semasa, kiraan pada
 tarikh lalu menggunakan kelayakan RMT semasa, bukan snapshot sejarah.
 
 Log masuk PIN hanya untuk admin dan terletak dalam menu sisi. Admin boleh
@@ -149,6 +149,13 @@ SEMAK. API rasmi dipilih supaya cache serta calon peperiksaan aktif disegarkan.
 Markah dan data kokurikulum tidak disentuh. Kemas kini murid dalam AKSI/SEMAK
 masih tersedia; penyelarasan HADIR seterusnya boleh menyamakan semula medan
 murid dengan `main`.
+
+Mulai v1.5.0, admin mempunyai **Tetapan Murid** mengikut kelas. Status RMT
+ditulis ke tab `rmt`; jawatan Pengawas/Pengawas Perpustakaan/Ketua Kelas/
+Penolong Ketua Kelas/Murid Biasa ditulis pada lajur tambahan bertajuk
+`JAWATAN MURID` dalam `main`. Data Murid dibuka melalui kad nama baca sahaja;
+butang Edit mengaktifkan medan. Kelas dipaparkan sebagai `1 Bijak`, manakala
+tahun dan jantina dilengkapkan daripada sumber data sedia ada.
 
 PWA mencache cangkerang statik sahaja. Nama, IC, kehadiran, sesi dan jawapan API
 tidak dicache. Paparan guru menerima nama serta kunci harian legap; IC/MyKid
@@ -239,7 +246,7 @@ Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangu
 |---|---|---|
 | `sepadan/semak` | PWA di akar + `index.html` (iframe) + `src/` (5 fail) | SEMAK v1.0.0; backend Apps Script tidak berubah |
 | `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
-| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.4.0; guru tanpa login boleh isi hari ini dan semak tarikh tahun semasa; kiraan RMT hadir agregat; berkongsi backend KEHADIRAN |
+| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.5.0; guru tanpa login boleh isi hari ini dan semak tarikh tahun semasa; nisbah RMT hadir/jumlah; tetapan RMT/jawatan admin; berkongsi backend KEHADIRAN |
 
 `sepadan/semak/index.html` meng-*iframe* `src/App.html` dan menggunakan corak
 *shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos
@@ -564,7 +571,7 @@ Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan 
 22. ~~Penyelarasan HADIR → AKSI ditolak, → SEMAK memulangkan respons RPC tidak sah~~ — **pembaikan diterbitkan 25 Ogos 2026 pada Apps Script versi 98.** Dua punca sebenar dibaiki dalam penghubung HADIR:
     - **AKSI:** login perkhidmatan sebenarnya berjaya, tetapi sampul RPC import masih membawa token rekaan `SISTEM_HADIR`. Penghala AKSI mengutamakan token sampul itu lalu menganggap sesi tiada. HADIR kini menghantar token sesi sebenar yang baru dipulangkan oleh login pada sampul dan argumen import/logout. Kebenaran admin AKSI kekal dikuatkuasakan; tiada laluan tulis awam ditambah
     - **SEMAK:** `HtmlService` Google membungkus HTML pengguna dan mengekod tanda petik sebagai `\x27`. Respons mengandungi muatan `semak-rpc`, tetapi pencari lama hanya menerima bentuk langsung `atob('...')`. Pembaca baharu menerima kedua-dua bentuk dan mengesahkan `sumber` serta ID permintaan sebelum menggunakan hasil
-20. **HADIR v1.4.0 diaktifkan; pengesahan operasi tulis sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid dan sync API AKSI/SEMAK. Apps Script deployment versi 100 pada URL sama menambah semakan tarikh serta kiraan RMT hadir agregat. Produksi 24 Ogos memuat 9 kelas, 31 tidak hadir dan 26 RMT hadir; penapis kelas serta Bahasa Melayu lulus tanpa ralat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
+20. **HADIR v1.5.0 dibina; pengesahan operasi tulis sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid, Tetapan Murid RMT/jawatan dan sync API AKSI/SEMAK. Backend baharu menambah nisbah RMT hadir/jumlah dan medan pentadbiran murid. Produksi v1.4.0 pada 24 Ogos memuat 9 kelas, 31 tidak hadir dan 26 RMT hadir; penapis kelas serta Bahasa Melayu lulus tanpa ralat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
 21. ~~Kehadiran hari ini kosong walaupun sudah ditanda~~ — **punca dikenal pasti 24 Ogos 2026.** Tajuk tab sebenar ialah `24/08`, tetapi penjana membandingkannya dengan teks `24/8`. `kehadiranHariIni_()` dibaiki supaya menerima `D/M`, `DD/MM` dan tarikh yang turut mempunyai tahun. Mesej kosong Dashboard turut menyebut HADIR dan bot Telegram. Penjana perlu dijalankan semula untuk menggantikan `hari_ini: null` dalam `data.json` awam
 
 ---
@@ -586,6 +593,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 4.5 | 25 Ogos 2026 | HADIR v1.5.0 menambah Tetapan Murid admin untuk RMT/jawatan, kad Data Murid baca sahaja sebelum Edit, kelas `1 Bijak`, pelengkapan tahun/jantina, Log Keluar di kaki menu dan nisbah RMT hadir/jumlah. Status RMT kekal dalam tab `rmt`; jawatan menggunakan lajur tambahan `JAWATAN MURID` dalam `main` |
 | 4.4 | 25 Ogos 2026 | HADIR v1.4.0 diterbitkan melalui commit `8641245` dan Apps Script versi 100. Produksi disahkan membaca 24 Ogos: 9 kelas selesai, 31 tidak hadir, 26 RMT hadir, penapis 1 BIJAK satu kelas dan sifar ralat konsol. Ujian tidak menyimpan kehadiran |
 | 4.3 | 25 Ogos 2026 | HADIR v1.4.0 menambah Semak Kehadiran mengikut tarikh bagi tahun semasa untuk guru tanpa login dan bilangan agregat RMT hadir. Respons sejarah mengehadkan nama kepada murid tidak hadir serta tidak menghantar IC, nama murid hadir atau status RMT individu. Versi aset/cache PWA dinaikkan serentak |
 | 4.2 | 25 Ogos 2026 | Isu #22 ditutup: token sesi sebenar AKSI kini dihantar pada sampul RPC, pembaca respons SEMAK menerima pembungkus `HtmlService` Google dan menyemak sumber/ID, ujian regresi lulus, commit HADIR `3ce24f9` ditolak dan Apps Script versi 98 diterbitkan pada URL sedia ada. Satu sync sebenar kekal sebagai pengesahan pengguna dalam isu #20 |
