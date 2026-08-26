@@ -148,7 +148,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-08-26",
-          "dikemaskini": "13:16",
+          "dikemaskini": "13:46",
           "hadir": 203,
           "tidak_hadir": 20,
           "ditanda": 223,
@@ -340,11 +340,11 @@
         "pencapaian": [
           {
             "peringkat": "Daerah",
-            "bilangan": 15
+            "bilangan": 16
           },
           {
             "peringkat": "Negeri",
-            "bilangan": 7
+            "bilangan": 8
           }
         ],
         "rumah_sukan": [
@@ -382,7 +382,7 @@
           "tahun": "2026",
           "ahli": 129,
           "kelab": 12,
-          "pencapaian": 22,
+          "pencapaian": 24,
           "asas": "murid Tahun 3-6 dalam tab main",
           "luar_main": 5,
           "rumah_sukan": 204,
