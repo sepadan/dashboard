@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 4.8 · 26 Ogos 2026**
+**Versi 4.9 · 26 Ogos 2026**
 
 Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
@@ -91,7 +91,7 @@ Sistem ini menjadi **tuan rumah** bagi `Dashboard.gs`. Semua penjanaan `data.jso
 Mulai 24 Ogos 2026, projek yang sama turut menjadi backend bagi PWA **HADIR**.
 Penghala `doPost` membezakan muatan `mode=hadir` sebelum meneruskan logik bot
 Telegram; kedua-dua saluran menulis tab `kehadiran` yang sama. Fail
-`HadirWeb.gs` sudah disimpan dan deployment aktif dinaikkan ke versi 103 pada
+`HadirWeb.gs` sudah disimpan dan deployment aktif dinaikkan ke versi 104 pada
 URL yang sama. Repo muka depan ialah `sepadan/hadir`.
 
 **Tab:**
@@ -126,7 +126,7 @@ Lajur 11 ke atas datang dari MOEIS (JANTINA, KAUM, OKU, YATIM, pendapatan penjag
 | Repo | `sepadan/hadir` — awam, kod sahaja |
 | Laman | `https://sepadan.github.io/hadir/` |
 | Backend | Projek Apps Script KEHADIRAN yang sama |
-| Versi | `HADIR v1.6.2` (PWA) |
+| Versi | `HADIR v1.6.3` (PWA) |
 
 HADIR menggunakan satu muka mesra telefon. Dropdown kelas di bahagian atas
 memudahkan guru menapis kelas, kelas pertama dimuat automatik, semua murid
@@ -141,8 +141,11 @@ terdahulu boleh dibaca melalui URL HADIR; nama murid hadir, IC/MyKid dan status
 RMT individu tidak dihantar. Bilangan RMT hadir dikira di backend sebagai nisbah
 agregat kelas `hadir/jumlah`, contohnya `27/30`. Oleh sebab tab `rmt` hanya menyimpan status semasa, kiraan pada
 tarikh lalu menggunakan kelayakan RMT semasa, bukan snapshot sejarah.
-Mulai v1.6.0, Semak Kehadiran ialah muka depan. Kad kelas boleh ditekan untuk
-membuka pengisian hari ini dengan kelas tersebut terus dipilih.
+Mulai v1.6.0, Semak Kehadiran ialah muka depan. Mulai v1.6.3, Semak Kehadiran
+sentiasa kembali ke hari semasa apabila menu dibuka semula. Seluruh kad kelas
+boleh ditekan tanpa footer tindakan. Tarikh terdahulu masih boleh diubah selepas
+amaran; backend memuat satu kelas sahaja dengan kunci legap khusus tarikh dan
+menyimpan ke lajur tarikh yang dipilih.
 
 Log masuk PIN hanya untuk admin dan terletak dalam menu sisi. Admin boleh
 mengemas kini murid dalam HADIR. Tab `main` KEHADIRAN kekal sumber
@@ -252,7 +255,7 @@ Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangu
 |---|---|---|
 | `sepadan/semak` | PWA di akar + `index.html` (iframe) + `src/` (5 fail) | SEMAK v1.0.0; backend Apps Script tidak berubah |
 | `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
-| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.6.2; Semak Kehadiran muka depan; paparan segera data hari semasa + segar semula latar; guru tanpa login boleh isi hari ini dan semak tarikh tahun semasa; nisbah RMT hadir/jumlah; tetapan RMT/jawatan admin; berkongsi backend KEHADIRAN |
+| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.6.3; Semak Kehadiran muka depan dan sentiasa kembali ke hari semasa; kad kelas penuh boleh ditekan; guru tanpa login boleh mengisi hari ini serta mengubah tarikh tahun semasa selepas amaran; nisbah RMT hadir/jumlah; tetapan RMT/jawatan admin; berkongsi backend KEHADIRAN |
 
 `sepadan/semak/index.html` meng-*iframe* `src/App.html` dan menggunakan corak
 *shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos
@@ -578,7 +581,7 @@ Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan 
     - **AKSI:** login perkhidmatan sebenarnya berjaya, tetapi sampul RPC import masih membawa token rekaan `SISTEM_HADIR`. Penghala AKSI mengutamakan token sampul itu lalu menganggap sesi tiada. HADIR kini menghantar token sesi sebenar yang baru dipulangkan oleh login pada sampul dan argumen import/logout. Kebenaran admin AKSI kekal dikuatkuasakan; tiada laluan tulis awam ditambah
     - **SEMAK:** `HtmlService` Google membungkus HTML pengguna dan mengekod tanda petik sebagai `\x27`. Respons mengandungi muatan `semak-rpc`, tetapi pencari lama hanya menerima bentuk langsung `atob('...')`. Pembaca baharu menerima kedua-dua bentuk dan mengesahkan `sumber` serta ID permintaan sebelum menggunakan hasil
 23. ~~Sesetengah nama murid tidak boleh dipilih dalam Pencapaian AKSI~~ — **selesai dan diterbitkan 26 Ogos 2026.** Puncanya nama berapostrof dimasukkan terus ke `onclick`, lalu memutuskan rentetan JavaScript; nama tanpa apostrof kelihatan normal. AKSI v1.2.1 membina cadangan/cip/paparan dengan `textContent` dan `addEventListener`, menghapus pola sama pada tindakan padam, serta memuat senarai murid sekali sahaja untuk guru/admin dan menapisnya setempat tanpa sela 400 ms. Ujian regresi kedua-dua salinan dan semua JavaScript `docs/` lulus. GitHub Pages commit `526e884`, Apps Script Version 6, halaman dan Service Worker produksi HTTP 200; ujian tidak membuat rekod pencapaian sebenar
-20. **HADIR v1.6.2 diterbitkan; pengesahan operasi tulis sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, Semak Kehadiran sebagai muka depan, kad kelas yang membuka pengisian, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid, Tetapan Murid RMT/jawatan dan sync API AKSI/SEMAK. Backend Apps Script versi 103 menggunakan cache pelayan 60 saat tanpa kerja tulis pada `init`; frontend memaparkan salinan data hari ini dalam 0.265–0.446 saat pada lima muatan produksi berturut-turut dan menyegarkan data di latar. Lima panggilan cache backend selesai dalam 0.505–0.866 saat. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
+20. **HADIR v1.6.3 diterbitkan; pengesahan operasi tulis sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, Semak Kehadiran sebagai muka depan, kad kelas penuh yang membuka pengisian, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid, Tetapan Murid RMT/jawatan dan sync API AKSI/SEMAK. Semakan kembali ke hari semasa setiap kali dibuka; tarikh terdahulu boleh diedit selepas amaran dan disimpan kepada tarikh dipilih. Backend Apps Script versi 104 menggunakan cache pelayan 60 saat tanpa kerja tulis pada `init`; frontend memaparkan salinan data hari ini dalam 0.265–0.446 saat pada lima muatan produksi berturut-turut dan menyegarkan data di latar. Laluan tarikh lama dan aset/cache v1.6.3 sudah disahkan di produksi secara baca sahaja. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
 21. ~~Kehadiran hari ini kosong walaupun sudah ditanda~~ — **punca dikenal pasti 24 Ogos 2026.** Tajuk tab sebenar ialah `24/08`, tetapi penjana membandingkannya dengan teks `24/8`. `kehadiranHariIni_()` dibaiki supaya menerima `D/M`, `DD/MM` dan tarikh yang turut mempunyai tahun. Mesej kosong Dashboard turut menyebut HADIR dan bot Telegram. Penjana perlu dijalankan semula untuk menggantikan `hari_ini: null` dalam `data.json` awam
 
 ---
@@ -600,6 +603,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 4.9 | 26 Ogos 2026 | HADIR v1.6.3 mengemas Semak Kehadiran: Semak diletakkan sebelum Kehadiran, input tarikh telefon tidak lagi melimpah, kad kelas penuh boleh ditekan tanpa footer teks/anak panah, dan menu semakan sentiasa kembali ke hari semasa. Tarikh terdahulu memberi amaran sebelum membuka satu kelas dan simpanan dihantar ke tarikh dipilih. GitHub `4cf3c0a`, dokumentasi `e06cbf8`, Apps Script versi 104 dan cache PWA v1.6.3 disahkan di produksi; pengesahan baca sahaja tidak mengubah rekod sekolah |
 | 4.8 | 26 Ogos 2026 | Isu #23 ditutup: AKSI Pencapaian v1.2.1 tidak lagi gagal pada nama berapostrof/aksara khas. Data dinamik menggunakan `textContent` + event listener, carian memuat senarai sekali dan menapis setempat tanpa sela 400 ms, serta kegagalan pelayan diberi mesej. Ujian regresi/sintaks lulus; GitHub `526e884`, Apps Script Version 6, halaman dan Service Worker produksi disahkan HTTP 200 |
 | 4.7 | 26 Ogos 2026 | HADIR v1.6.2 menyelesaikan muatan awal yang tidak konsisten. `init` tidak lagi menjalankan kerja tulis, cache Apps Script dilanjutkan kepada 60 saat, dan salinan data hari semasa dipaparkan terus daripada `localStorage` sambil kemas kini rangkaian berjalan di latar. Salinan tidak membawa IC/PIN/token/hak admin dan kekal baca sahaja sehingga segar. Produksi: 9 kelas muncul dalam 0.265–0.446 saat bagi lima muatan; lima eksekusi cache backend 0.505–0.866 saat. GitHub `6d02adf`, dokumentasi `4f8191a`, Apps Script versi 103 |
 | 4.6 | 26 Ogos 2026 | HADIR v1.6.0 menjadikan Semak Kehadiran muka depan dan kad kelas sebagai laluan terus ke pengisian dengan kelas dipilih. Paparan telefon dipadatkan, keadaan memuat/gagal diletakkan pada muka depan, dan versi aset/cache PWA dinaikkan serentak. Ujian 390×844 memuat 9 kelas; klik 1 BIJAK memuat 28 murid tanpa ralat konsol. GitHub `70b74ad`; tiada rekod disimpan dan Apps Script kekal versi 101 |
