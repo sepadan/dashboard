@@ -148,7 +148,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-08-26",
-          "dikemaskini": "09:46",
+          "dikemaskini": "11:16",
           "hadir": 203,
           "tidak_hadir": 20,
           "ditanda": 223,
@@ -203,20 +203,20 @@
         }
       },
       "akademik": {
-        "gps": 3,
-        "peratus_lulus": 94.52,
+        "gps": 2.98,
+        "peratus_lulus": 94.61,
         "mata_pelajaran": [
-          {
-            "mp": "B. ARAB",
-            "gpmp": 2.3,
-            "peratus_a": 37.86,
-            "peratus_lulus": 95.15
-          },
           {
             "mp": "PEND. ISLAM",
             "gpmp": 2.33,
             "peratus_a": 29.86,
             "peratus_lulus": 100
+          },
+          {
+            "mp": "B. ARAB",
+            "gpmp": 2.35,
+            "peratus_a": 36.09,
+            "peratus_lulus": 95.49
           },
           {
             "mp": "RBT",
@@ -262,7 +262,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 3
+            "gps": 2.98
           }
         ],
         "pbd_tahap": [
@@ -290,7 +290,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 713,
+          "rekod": 743,
           "luar_main": 0
         }
       },
@@ -340,11 +340,11 @@
         "pencapaian": [
           {
             "peringkat": "Daerah",
-            "bilangan": 1
+            "bilangan": 15
           },
           {
             "peringkat": "Negeri",
-            "bilangan": 1
+            "bilangan": 7
           }
         ],
         "rumah_sukan": [
@@ -382,7 +382,7 @@
           "tahun": "2026",
           "ahli": 129,
           "kelab": 12,
-          "pencapaian": 2,
+          "pencapaian": 22,
           "asas": "murid Tahun 3-6 dalam tab main",
           "luar_main": 5,
           "rumah_sukan": 204,
