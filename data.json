@@ -148,7 +148,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-08-26",
-          "dikemaskini": "12:16",
+          "dikemaskini": "13:16",
           "hadir": 203,
           "tidak_hadir": 20,
           "ditanda": 223,
@@ -369,10 +369,10 @@
           "bil": 1,
           "purata_kehadiran": null,
           "kelab_aktif": 1,
-          "laporan_belum": 1,
+          "laporan_belum": 0,
           "ikut_kelab": [
             {
-              "kelab": "Pengakap",
+              "kelab": "Kadet Remaja Sekolah",
               "perjumpaan": 1,
               "peratus_hadir": null
             }
