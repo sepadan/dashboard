@@ -221,7 +221,7 @@ Laporan memuat 17 pilihan kelab. Tab `PERJUMPAAN` memang kosong, selaras dengan
 isu 2b, jadi kedua-dua senarai perjumpaan/laporan memaparkan keadaan kosong yang
 betul. Penerbitan akhir kod ialah GitHub Pages run #22.
 
-AKSI kini mempunyai PWA v1.2.0 yang lengkap dan sudah diterbitkan: ikon
+AKSI kini mempunyai PWA v1.3.0 yang lengkap dan sudah diterbitkan: ikon
 aplikasi berasaskan lambang sekolah dengan lencana
 `AKSI`, Web App Manifest, ikon Android/iOS, Service Worker, halaman luar talian
 dan kemas kini automatik setiap kali aplikasi dibuka. Strategi cache ialah
@@ -229,8 +229,18 @@ cangkerang statik sahaja; permintaan Apps Script, token dan data sekolah tidak
 dipintas atau disimpan. GitHub Pages run #26 berjaya untuk commit `3906178`.
 Ujian produksi 390×844 mencapai status PWA `sedia`, semua 11 halaman membawa
 manifest + pendaftaran PWA, dan 27 aset cache produksi memberi HTTP 200 tanpa
-alamat API. Versi pada sidebar ialah `AKSI v1.2.0 · PWA`; ujian tanpa pelayan
+alamat API. Versi pada sidebar ialah `AKSI v1.3.0 · PWA`; ujian tanpa pelayan
 turut mengesahkan rangka cache dan halaman luar talian.
+
+Mulai 26 Ogos 2026, backend Apps Script Version 7 menambah normalisasi IC
+berpusat, `LockService` pada laluan tulis kehadiran/penilaian/PAJSK, ID
+perjumpaan maksimum + 1, tulisan penilaian pukal dan pengawal `NaN`/`Infinity`.
+Penilaian mengambil anggaran satu kelas sekali, menyimpannya 120 saat dalam
+cache pelayan dan dalam memori halaman, kemudian menukar murid tanpa panggilan
+rangkaian. Pemilihan nama selepas muatan kelas disasarkan bawah satu saat;
+cold start Google tidak boleh dijamin bawah tiga saat. Apps Script Version 7,
+GitHub `bcbfa08` dan Pages run #33 disahkan di produksi sebagai AKSI v1.3.0
+dengan cache aset `20260826-8`.
 
 `docs/js/config.js` ialah satu-satunya tempat URL `/exec` ditetapkan.
 
@@ -581,6 +591,7 @@ Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan 
     - **AKSI:** login perkhidmatan sebenarnya berjaya, tetapi sampul RPC import masih membawa token rekaan `SISTEM_HADIR`. Penghala AKSI mengutamakan token sampul itu lalu menganggap sesi tiada. HADIR kini menghantar token sesi sebenar yang baru dipulangkan oleh login pada sampul dan argumen import/logout. Kebenaran admin AKSI kekal dikuatkuasakan; tiada laluan tulis awam ditambah
     - **SEMAK:** `HtmlService` Google membungkus HTML pengguna dan mengekod tanda petik sebagai `\x27`. Respons mengandungi muatan `semak-rpc`, tetapi pencari lama hanya menerima bentuk langsung `atob('...')`. Pembaca baharu menerima kedua-dua bentuk dan mengesahkan `sumber` serta ID permintaan sebelum menggunakan hasil
 23. ~~Sesetengah nama murid tidak boleh dipilih dalam Pencapaian AKSI~~ — **selesai dan diterbitkan 26 Ogos 2026.** Puncanya nama berapostrof dimasukkan terus ke `onclick`, lalu memutuskan rentetan JavaScript; nama tanpa apostrof kelihatan normal. AKSI v1.2.1 membina cadangan/cip/paparan dengan `textContent` dan `addEventListener`, menghapus pola sama pada tindakan padam, serta memuat senarai murid sekali sahaja untuk guru/admin dan menapisnya setempat tanpa sela 400 ms. Ujian regresi kedua-dua salinan dan semua JavaScript `docs/` lulus. GitHub Pages commit `526e884`, Apps Script Version 6, halaman dan Service Worker produksi HTTP 200; ujian tidak membuat rekod pencapaian sebenar
+24. ~~Audit kestabilan dan kelajuan Penilaian AKSI~~ — **selesai dan diterbitkan 26 Ogos 2026.** Audit Gemini/Claude disemak terhadap kod sebenar: enam dakwaan berpunca daripada seni bina JSON yang tidak digunakan; risiko nyata ialah format/sifar awal IC, tiada kunci tulis, nilai PAJSK tidak sah dan lapan bacaan tab berulang setiap kali nama dipilih. AKSI v1.3.0 menambah normalisasi IC, `LockService`, ID perjumpaan maksimum + 1, tulisan pukal, pengawal nombor, cache kelas pelayan 120 saat dan cache memori halaman. Apps Script Version 7, GitHub `bcbfa08` dan Pages run #33 disahkan. Respons pilihan nama selepas kelas dimuat tidak menggunakan rangkaian; operasi tulis sebenar masih berada dalam isu #14
 20. **HADIR v1.6.3 diterbitkan; pengesahan operasi tulis sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, Semak Kehadiran sebagai muka depan, kad kelas penuh yang membuka pengisian, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid, Tetapan Murid RMT/jawatan dan sync API AKSI/SEMAK. Semakan kembali ke hari semasa setiap kali dibuka; tarikh terdahulu boleh diedit selepas amaran dan disimpan kepada tarikh dipilih. Backend Apps Script versi 104 menggunakan cache pelayan 60 saat tanpa kerja tulis pada `init`; frontend memaparkan salinan data hari ini dalam 0.265–0.446 saat pada lima muatan produksi berturut-turut dan menyegarkan data di latar. Laluan tarikh lama dan aset/cache v1.6.3 sudah disahkan di produksi secara baca sahaja. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
 21. ~~Kehadiran hari ini kosong walaupun sudah ditanda~~ — **punca dikenal pasti 24 Ogos 2026.** Tajuk tab sebenar ialah `24/08`, tetapi penjana membandingkannya dengan teks `24/8`. `kehadiranHariIni_()` dibaiki supaya menerima `D/M`, `DD/MM` dan tarikh yang turut mempunyai tahun. Mesej kosong Dashboard turut menyebut HADIR dan bot Telegram. Penjana perlu dijalankan semula untuk menggantikan `hari_ini: null` dalam `data.json` awam
 
@@ -603,6 +614,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 5.0 | 26 Ogos 2026 | Isu #24 ditutup: AKSI v1.3.0 menambah normalisasi IC, kunci tulis Kehadiran/Penilaian/PAJSK, ID perjumpaan stabil, tulisan pukal, pengawal NaN dan satu muatan anggaran kelas. Apps Script Version 7, GitHub `bcbfa08`, Pages run #33 dan cache `20260826-8` disahkan di produksi; dua suite regresi lulus. Pemilihan nama selepas muatan kelas berlaku setempat bawah satu saat secara reka bentuk; cold start Google kekal berubah-ubah |
 | 4.9 | 26 Ogos 2026 | HADIR v1.6.3 mengemas Semak Kehadiran: Semak diletakkan sebelum Kehadiran, input tarikh telefon tidak lagi melimpah, kad kelas penuh boleh ditekan tanpa footer teks/anak panah, dan menu semakan sentiasa kembali ke hari semasa. Tarikh terdahulu memberi amaran sebelum membuka satu kelas dan simpanan dihantar ke tarikh dipilih. GitHub `4cf3c0a`, dokumentasi `e06cbf8`, Apps Script versi 104 dan cache PWA v1.6.3 disahkan di produksi; pengesahan baca sahaja tidak mengubah rekod sekolah |
 | 4.8 | 26 Ogos 2026 | Isu #23 ditutup: AKSI Pencapaian v1.2.1 tidak lagi gagal pada nama berapostrof/aksara khas. Data dinamik menggunakan `textContent` + event listener, carian memuat senarai sekali dan menapis setempat tanpa sela 400 ms, serta kegagalan pelayan diberi mesej. Ujian regresi/sintaks lulus; GitHub `526e884`, Apps Script Version 6, halaman dan Service Worker produksi disahkan HTTP 200 |
 | 4.7 | 26 Ogos 2026 | HADIR v1.6.2 menyelesaikan muatan awal yang tidak konsisten. `init` tidak lagi menjalankan kerja tulis, cache Apps Script dilanjutkan kepada 60 saat, dan salinan data hari semasa dipaparkan terus daripada `localStorage` sambil kemas kini rangkaian berjalan di latar. Salinan tidak membawa IC/PIN/token/hak admin dan kekal baca sahaja sehingga segar. Produksi: 9 kelas muncul dalam 0.265–0.446 saat bagi lima muatan; lima eksekusi cache backend 0.505–0.866 saat. GitHub `6d02adf`, dokumentasi `4f8191a`, Apps Script versi 103 |
