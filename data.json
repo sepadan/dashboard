@@ -148,7 +148,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-08-26",
-          "dikemaskini": "08:46",
+          "dikemaskini": "09:46",
           "hadir": 203,
           "tidak_hadir": 20,
           "ditanda": 223,
@@ -203,8 +203,8 @@
         }
       },
       "akademik": {
-        "gps": 2.99,
-        "peratus_lulus": 94.51,
+        "gps": 3,
+        "peratus_lulus": 94.52,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
@@ -214,8 +214,8 @@
           },
           {
             "mp": "PEND. ISLAM",
-            "gpmp": 2.32,
-            "peratus_a": 30.07,
+            "gpmp": 2.33,
+            "peratus_a": 29.86,
             "peratus_lulus": 100
           },
           {
@@ -262,7 +262,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.99
+            "gps": 3
           }
         ],
         "pbd_tahap": [
@@ -290,7 +290,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 712,
+          "rekod": 713,
           "luar_main": 0
         }
       },
