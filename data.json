@@ -148,16 +148,21 @@
         ],
         "hari_ini": {
           "tarikh": "2026-08-26",
-          "dikemaskini": "08:16",
-          "hadir": 182,
-          "tidak_hadir": 18,
-          "ditanda": 200,
+          "dikemaskini": "08:46",
+          "hadir": 203,
+          "tidak_hadir": 20,
+          "ditanda": 223,
           "peratus": 91,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
               "tidak_hadir": 4,
               "ditanda": 28
+            },
+            {
+              "kelas": "2 BIJAK",
+              "tidak_hadir": 2,
+              "ditanda": 23
             },
             {
               "kelas": "2 CERDIK",
@@ -210,7 +215,7 @@
           {
             "mp": "PEND. ISLAM",
             "gpmp": 2.32,
-            "peratus_a": 30.28,
+            "peratus_a": 30.07,
             "peratus_lulus": 100
           },
           {
@@ -285,7 +290,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 711,
+          "rekod": 712,
           "luar_main": 0
         }
       },
