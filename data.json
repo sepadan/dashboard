@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-08-26"
+    "dikemaskini": "2026-08-27"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -146,65 +146,11 @@
             "peratus": 90.2
           }
         ],
-        "hari_ini": {
-          "tarikh": "2026-08-26",
-          "dikemaskini": "20:17",
-          "hadir": 203,
-          "tidak_hadir": 20,
-          "ditanda": 223,
-          "peratus": 91,
-          "ikut_kelas": [
-            {
-              "kelas": "1 BIJAK",
-              "tidak_hadir": 4,
-              "ditanda": 28
-            },
-            {
-              "kelas": "2 BIJAK",
-              "tidak_hadir": 2,
-              "ditanda": 23
-            },
-            {
-              "kelas": "2 CERDIK",
-              "tidak_hadir": 1,
-              "ditanda": 24
-            },
-            {
-              "kelas": "3 BIJAK",
-              "tidak_hadir": 1,
-              "ditanda": 29
-            },
-            {
-              "kelas": "4 BIJAK",
-              "tidak_hadir": 1,
-              "ditanda": 32
-            },
-            {
-              "kelas": "5 BIJAK",
-              "tidak_hadir": 3,
-              "ditanda": 21
-            },
-            {
-              "kelas": "5 CERDIK",
-              "tidak_hadir": 4,
-              "ditanda": 19
-            },
-            {
-              "kelas": "6 BIJAK",
-              "tidak_hadir": 3,
-              "ditanda": 28
-            },
-            {
-              "kelas": "PRASEKOLAH",
-              "tidak_hadir": 1,
-              "ditanda": 19
-            }
-          ]
-        }
+        "hari_ini": null
       },
       "akademik": {
         "gps": 2.97,
-        "peratus_lulus": 94.62,
+        "peratus_lulus": 94.63,
         "mata_pelajaran": [
           {
             "mp": "PEND. ISLAM",
@@ -221,7 +167,7 @@
           {
             "mp": "RBT",
             "gpmp": 2.38,
-            "peratus_a": 32.69,
+            "peratus_a": 32.08,
             "peratus_lulus": 100
           },
           {
@@ -290,7 +236,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 745,
+          "rekod": 747,
           "luar_main": 0
         }
       },
