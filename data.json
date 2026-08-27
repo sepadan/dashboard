@@ -115,7 +115,7 @@
           },
           {
             "kelas": "2 BIJAK",
-            "peratus": 94.4
+            "peratus": 94.3
           },
           {
             "kelas": "2 CERDIK",
@@ -131,7 +131,7 @@
           },
           {
             "kelas": "5 BIJAK",
-            "peratus": 92.7
+            "peratus": 92.6
           },
           {
             "kelas": "5 CERDIK",
@@ -139,18 +139,57 @@
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 91.9
+            "peratus": 92
           },
           {
             "kelas": "PRASEKOLAH",
             "peratus": 90.2
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-08-27",
+          "dikemaskini": "08:16",
+          "hadir": 138,
+          "tidak_hadir": 14,
+          "ditanda": 152,
+          "peratus": 90.8,
+          "ikut_kelas": [
+            {
+              "kelas": "2 BIJAK",
+              "tidak_hadir": 4,
+              "ditanda": 23
+            },
+            {
+              "kelas": "3 BIJAK",
+              "tidak_hadir": 2,
+              "ditanda": 29
+            },
+            {
+              "kelas": "4 BIJAK",
+              "tidak_hadir": 1,
+              "ditanda": 32
+            },
+            {
+              "kelas": "5 BIJAK",
+              "tidak_hadir": 4,
+              "ditanda": 21
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 1,
+              "ditanda": 28
+            },
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 2,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
-        "gps": 2.97,
-        "peratus_lulus": 94.63,
+        "gps": 2.94,
+        "peratus_lulus": 94.47,
         "mata_pelajaran": [
           {
             "mp": "PEND. ISLAM",
@@ -171,16 +210,16 @@
             "peratus_lulus": 100
           },
           {
+            "mp": "B. MELAYU",
+            "gpmp": 2.92,
+            "peratus_a": 19.47,
+            "peratus_lulus": 93.81
+          },
+          {
             "mp": "SEJARAH",
             "gpmp": 3.07,
             "peratus_a": 5.05,
             "peratus_lulus": 97.98
-          },
-          {
-            "mp": "B. MELAYU",
-            "gpmp": 3.11,
-            "peratus_a": 18.89,
-            "peratus_lulus": 92.22
           },
           {
             "mp": "MATEMATIK",
@@ -189,16 +228,16 @@
             "peratus_lulus": 93.1
           },
           {
+            "mp": "B. INGGERIS",
+            "gpmp": 3.47,
+            "peratus_a": 17.8,
+            "peratus_lulus": 88.14
+          },
+          {
             "mp": "SAINS",
             "gpmp": 3.87,
             "peratus_a": 10.57,
             "peratus_lulus": 88.62
-          },
-          {
-            "mp": "B. INGGERIS",
-            "gpmp": 3.9,
-            "peratus_a": 6.94,
-            "peratus_lulus": 87.5
           }
         ],
         "trend_gps": [
@@ -208,7 +247,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.97
+            "gps": 2.94
           }
         ],
         "pbd_tahap": [
@@ -218,15 +257,15 @@
           },
           {
             "tahap": "TP3",
-            "bilangan": 13
+            "bilangan": 16
           },
           {
             "tahap": "TP4",
-            "bilangan": 21
+            "bilangan": 33
           },
           {
             "tahap": "TP5",
-            "bilangan": 21
+            "bilangan": 29
           },
           {
             "tahap": "TP6",
@@ -236,7 +275,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 747,
+          "rekod": 816,
           "luar_main": 0
         }
       },
