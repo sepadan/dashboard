@@ -111,7 +111,7 @@
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 87.1
+            "peratus": 87.2
           },
           {
             "kelas": "2 BIJAK",
@@ -148,12 +148,17 @@
         ],
         "hari_ini": {
           "tarikh": "2026-08-27",
-          "dikemaskini": "08:16",
-          "hadir": 138,
-          "tidak_hadir": 14,
-          "ditanda": 152,
-          "peratus": 90.8,
+          "dikemaskini": "08:46",
+          "hadir": 163,
+          "tidak_hadir": 17,
+          "ditanda": 180,
+          "peratus": 90.6,
           "ikut_kelas": [
+            {
+              "kelas": "1 BIJAK",
+              "tidak_hadir": 3,
+              "ditanda": 28
+            },
             {
               "kelas": "2 BIJAK",
               "tidak_hadir": 4,
