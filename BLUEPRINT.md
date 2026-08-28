@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 5.2 · 28 Ogos 2026**
+**Versi 5.3 · 28 Ogos 2026**
 
 Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
@@ -126,7 +126,7 @@ Lajur 11 ke atas datang dari MOEIS (JANTINA, KAUM, OKU, YATIM, pendapatan penjag
 | Repo | `sepadan/hadir` — awam, kod sahaja |
 | Laman | `https://sepadan.github.io/hadir/` |
 | Backend | Projek Apps Script KEHADIRAN yang sama |
-| Versi | `HADIR v1.7.0` (PWA) |
+| Versi | `HADIR v1.8.0` (PWA) |
 
 HADIR menggunakan satu muka mesra telefon. Dropdown kelas di bahagian atas
 memudahkan guru menapis kelas, kelas pertama dimuat automatik, semua murid
@@ -291,9 +291,9 @@ Lajur dibaca **mengikut nama tajuk**, bukan kedudukan. AKSI masih dalam pembangu
 
 | Repo | Kandungan | Nota |
 |---|---|---|
-| `sepadan/semak` | PWA di akar + `index.html` (iframe) + `src/` (5 fail) | SEMAK v1.0.0; backend Apps Script Version 59 menerima import guru merge-only |
+| `sepadan/semak` | PWA di akar + `index.html` (iframe) + `src/` (5 fail) | SEMAK v1.1.0; Apps Script Version 60 relay murid/guru tanpa menyentuh markah/kata laluan |
 | `sepadan/aksi` | kod Apps Script di akar + `docs/` | Lihat 2.3 |
-| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.7.0; Semak Kehadiran muka depan; tetapan murid dan guru admin; penyelarasan guru merge-only; berkongsi backend KEHADIRAN |
+| `sepadan/hadir` | PWA di akar + backend pemasangan dalam `apps-script/` | HADIR v1.8.0; Semak Kehadiran muka depan; relay induk murid/guru; berkongsi backend KEHADIRAN |
 
 `sepadan/semak/index.html` meng-*iframe* `src/App.html` dan menggunakan corak
 *shim* yang sama seperti AKSI. **Log masuk disahkan berfungsi pada 23 Ogos
@@ -433,9 +433,11 @@ stabil; perubahan IC dibuat sebagai arkib rekod lama + murid baharu, bukan edit
 di tempat.
 
 Kawalan kemas kini murid dalam AKSI/SEMAK dikekalkan sebagai jalan operasi.
-Namun, sync HADIR seterusnya boleh menindih medan murid dengan `main`. Setiap
-sync mesti menggunakan API rasmi sasaran, memulangkan status setiap aplikasi dan
-merekod bilangan sahaja tanpa nama/IC dalam `HADIR_LOG`.
+Upload dalam mana-mana sistem menghantar data asas melalui relay HADIR dan API
+rasmi sasaran. Data dari AKSI/SEMAK masuk ke `main` sebagai `merge` sahaja;
+pengarkiban/pembuangan hanya autoritatif dari HADIR kerana sistem sasaran boleh
+sengaja tidak membawa PRA/PPKI. Setiap sync memulangkan status setiap aplikasi
+dan merekod bilangan sahaja tanpa nama/IC dalam `HADIR_LOG`.
 
 ### 3.10b Senarai guru diselaras secara gabung-sahaja
 
@@ -444,6 +446,16 @@ penghapus autoritatif. CSV guru hanya menambah nama baharu dan mengemas kini
 jawatan tidak kosong. Guru yang tiada dalam fail, kata laluan dan perubahan
 tempatan AKSI/SEMAK mesti kekal. Ini membolehkan pengurusan guru dalam setiap
 aplikasi terus digunakan tanpa penyelarasan seterusnya memusnahkan tetapan itu.
+
+### 3.10c Data sama, peraturan sistem kekal
+
+Relay hanya menyelaraskan medan asas identiti murid dan senarai guru. Ia tidak
+menyalin kehadiran, markah, peperiksaan, tugasan, keahlian, pencapaian, PAJSK,
+akaun atau kata laluan. Setiap penerima mesti menggunakan API rasminya sendiri,
+jadi pengecualian kelas AKSI, calon/cache SEMAK dan peraturan KEHADIRAN terus
+dipatuhi. Rahsia bersama `SEPADAN_SYNC_SECRET` hanya berada dalam Script
+Properties ketiga-tiga projek. Penanda asal `HADIR`/`AKSI`/`SEMAK` wajib supaya
+penerima tidak menghantar semula muatan yang sama dan mencipta gelung.
 
 ### 3.11 Tajuk tarikh kehadiran mesti dibandingkan secara angka
 
@@ -630,6 +642,7 @@ Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan 
 24. ~~Audit kestabilan dan kelajuan Penilaian AKSI~~ — **selesai dan diterbitkan 26 Ogos 2026.** Audit Gemini/Claude disemak terhadap kod sebenar: enam dakwaan berpunca daripada seni bina JSON yang tidak digunakan; risiko nyata ialah format/sifar awal IC, tiada kunci tulis, nilai PAJSK tidak sah dan lapan bacaan tab berulang setiap kali nama dipilih. AKSI v1.3.0 menambah normalisasi IC, `LockService`, ID perjumpaan maksimum + 1, tulisan pukal, pengawal nombor, cache kelas pelayan 120 saat dan cache memori halaman. Apps Script Version 7, GitHub `bcbfa08` dan Pages run #33 disahkan. Respons pilihan nama selepas kelas dimuat tidak menggunakan rangkaian; operasi tulis sebenar masih berada dalam isu #14
 25. ~~Kestabilan menyeluruh AKSI dan sandaran automatik~~ — **selesai dan diterbitkan 27 Ogos 2026.** AKSI v1.3.1 mengunci semua laluan mutasi yang diaudit, menjadikan import murid/keahlian atomik, menstabilkan ID Laporan/Pencapaian/gambar, memukalkan tulisan Auth/Laporan dan mengosongkan cache anggaran selepas data rujukan berubah. Apps Script Version 8 diterbitkan pada URL sama; endpoint identiti `ok:true`; semua fail GS dan dua suite regresi lulus. `backupAutoTrigger` aktif setiap Ahad 2–3 pagi, sementara `cuciSesiLama` kekal harian dengan kadar ralat terakhir 0%. GitHub `06092e8`, Pages run #35 dan cache produksi `20260826-9` disahkan. Pengesahan operasi tulis data sebenar kekal di isu #14
 26. ~~Tetapan Guru pusat dalam HADIR~~ — **selesai dan diterbitkan 28 Ogos 2026.** HADIR v1.7.0 menambah senarai/carian, tambah seorang, upload CSV dan selaras semula. Import gabung-sahaja mengekalkan guru, jawatan kosong, kata laluan serta fungsi kemas kini tempatan. Backend HADIR Version 106, AKSI Version 9 dan SEMAK Version 59 diterbitkan pada URL sedia ada. Ujian sintaks/parser/merge/kunci lulus; endpoint produksi disahkan dengan token/kata laluan palsu supaya tiada data guru sebenar ditulis
+27. ~~Upload data murid/guru dari mana-mana sistem~~ — **selesai dan diterbitkan 28 Ogos 2026.** HADIR v1.8.0 menjadi relay berahsia; AKSI v1.4.0 dan SEMAK v1.1.0 menghantar upload tempatan ke HADIR, yang menggabung sumber induk lalu menyelaras aplikasi ketiga. Penanda asal menghalang gelung. Hanya data asas diselaraskan; semua peraturan, markah, kehadiran, kokurikulum, tugasan dan kata laluan kekal tempatan. Apps Script HADIR 107, AKSI 10 dan SEMAK 60 menggunakan URL sedia ada
 20. **HADIR v1.6.3 diterbitkan; pengesahan operasi tulis sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, Semak Kehadiran sebagai muka depan, kad kelas penuh yang membuka pengisian, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid, Tetapan Murid RMT/jawatan dan sync API AKSI/SEMAK. Semakan kembali ke hari semasa setiap kali dibuka; tarikh terdahulu boleh diedit selepas amaran dan disimpan kepada tarikh dipilih. Backend Apps Script versi 104 menggunakan cache pelayan 60 saat tanpa kerja tulis pada `init`; frontend memaparkan salinan data hari ini dalam 0.265–0.446 saat pada lima muatan produksi berturut-turut dan menyegarkan data di latar. Laluan tarikh lama dan aset/cache v1.6.3 sudah disahkan di produksi secara baca sahaja. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
 21. ~~Kehadiran hari ini kosong walaupun sudah ditanda~~ — **punca dikenal pasti 24 Ogos 2026.** Tajuk tab sebenar ialah `24/08`, tetapi penjana membandingkannya dengan teks `24/8`. `kehadiranHariIni_()` dibaiki supaya menerima `D/M`, `DD/MM` dan tarikh yang turut mempunyai tahun. Mesej kosong Dashboard turut menyebut HADIR dan bot Telegram. Penjana perlu dijalankan semula untuk menggantikan `hari_ini: null` dalam `data.json` awam
 
@@ -652,6 +665,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 5.3 | 28 Ogos 2026 | Isu #27 ditutup: upload murid/guru boleh dibuat pada HADIR, AKSI atau SEMAK dan data asas diselaraskan melalui relay HADIR berahsia. API rasmi sasaran dan penanda asal mengekalkan syarat sistem serta mencegah gelung; pengarkiban murid hanya autoritatif dari HADIR. Versi paparan/cache: HADIR v1.8.0, AKSI v1.4.0, SEMAK v1.1.0; Apps Script 107/10/60 |
 | 5.2 | 28 Ogos 2026 | Isu #26 ditutup: HADIR v1.7.0 menambah Tetapan Guru dan kontrak penyelarasan merge-only. AKSI mengekalkan rekod/jawatan kosong/akaun lama; SEMAK mengekalkan guru/kata laluan lama; kedua-duanya masih boleh dikemas kini terus. Apps Script HADIR 106, AKSI 9 dan SEMAK 59 diterbitkan. Pembaca RPC HADIR turut menerima padding Base64 Google `\x3d`. Ujian teknikal menggunakan kelayakan palsu sahaja dan tidak mengubah data produksi |
 | 5.1 | 27 Ogos 2026 | Isu #25 ditutup: AKSI v1.3.1 meluaskan kunci kepada semua laluan mutasi, menjadikan import atomik, menstabilkan ID dan tulisan kelompok, membuang cache selepas perubahan serta mengaktifkan sandaran Ahad 2–3 pagi. Apps Script Version 8, endpoint produksi `ok:true`, GitHub `06092e8`, Pages run #35 dan cache `20260826-9` disahkan; semua fail GS dan dua suite regresi lulus. Isu #14 kekal untuk ujian tulis data sebenar |
 | 5.0 | 26 Ogos 2026 | Isu #24 ditutup: AKSI v1.3.0 menambah normalisasi IC, kunci tulis Kehadiran/Penilaian/PAJSK, ID perjumpaan stabil, tulisan pukal, pengawal NaN dan satu muatan anggaran kelas. Apps Script Version 7, GitHub `bcbfa08`, Pages run #33 dan cache `20260826-8` disahkan di produksi; dua suite regresi lulus. Pemilihan nama selepas muatan kelas berlaku setempat bawah satu saat secara reka bentuk; cold start Google kekal berubah-ubah |
