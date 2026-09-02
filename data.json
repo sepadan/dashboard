@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-08-29"
+    "dikemaskini": "2026-09-02"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -77,7 +77,7 @@
         "bulanan": [
           {
             "bulan": "Jan",
-            "murid": 95.5
+            "murid": 95.3
           },
           {
             "bulan": "Feb",
@@ -89,29 +89,33 @@
           },
           {
             "bulan": "Apr",
-            "murid": 92.3
+            "murid": 92.5
           },
           {
             "bulan": "Mei",
-            "murid": 94.3
+            "murid": 94.6
           },
           {
             "bulan": "Jun",
-            "murid": 90.5
+            "murid": 90.6
           },
           {
             "bulan": "Jul",
-            "murid": 90.3
+            "murid": 90.7
           },
           {
             "bulan": "Ogos",
-            "murid": 89.7
+            "murid": 89.8
+          },
+          {
+            "bulan": "Sep",
+            "murid": 0
           }
         ],
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 87.1
+            "peratus": 88.4
           },
           {
             "kelas": "2 BIJAK",
@@ -127,7 +131,7 @@
           },
           {
             "kelas": "4 BIJAK",
-            "peratus": 94.7
+            "peratus": 94.6
           },
           {
             "kelas": "5 BIJAK",
@@ -135,7 +139,7 @@
           },
           {
             "kelas": "5 CERDIK",
-            "peratus": 88.1
+            "peratus": 87.9
           },
           {
             "kelas": "6 BIJAK",
@@ -150,7 +154,7 @@
       },
       "akademik": {
         "gps": 2.94,
-        "peratus_lulus": 94.49,
+        "peratus_lulus": 94.51,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -178,15 +182,15 @@
           },
           {
             "mp": "B. MELAYU",
-            "gpmp": 2.92,
-            "peratus_a": 19.47,
-            "peratus_lulus": 93.81
+            "gpmp": 2.93,
+            "peratus_a": 19.3,
+            "peratus_lulus": 93.86
           },
           {
             "mp": "SEJARAH",
             "gpmp": 3.07,
-            "peratus_a": 5.05,
-            "peratus_lulus": 97.98
+            "peratus_a": 5,
+            "peratus_lulus": 98
           },
           {
             "mp": "MATEMATIK",
@@ -242,7 +246,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 819,
+          "rekod": 821,
           "luar_main": 0
         }
       },
