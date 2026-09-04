@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-09-02"
+    "dikemaskini": "2026-09-04"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -153,8 +153,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.94,
-        "peratus_lulus": 94.51,
+        "gps": 2.87,
+        "peratus_lulus": 94.73,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -182,9 +182,9 @@
           },
           {
             "mp": "B. MELAYU",
-            "gpmp": 2.93,
-            "peratus_a": 19.3,
-            "peratus_lulus": 93.86
+            "gpmp": 2.69,
+            "peratus_a": 28.89,
+            "peratus_lulus": 94.81
           },
           {
             "mp": "SEJARAH",
@@ -199,16 +199,16 @@
             "peratus_lulus": 93.1
           },
           {
+            "mp": "SAINS",
+            "gpmp": 3.45,
+            "peratus_a": 18.39,
+            "peratus_lulus": 90.8
+          },
+          {
             "mp": "B. INGGERIS",
             "gpmp": 3.47,
             "peratus_a": 17.8,
             "peratus_lulus": 88.14
-          },
-          {
-            "mp": "SAINS",
-            "gpmp": 3.87,
-            "peratus_a": 10.57,
-            "peratus_lulus": 88.62
           }
         ],
         "trend_gps": [
@@ -218,7 +218,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.94
+            "gps": 2.87
           }
         ],
         "pbd_tahap": [
@@ -246,7 +246,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 821,
+          "rekod": 894,
           "luar_main": 0
         }
       },
