@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-09-04"
+    "dikemaskini": "2026-09-05"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -153,8 +153,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.88,
-        "peratus_lulus": 94.66,
+        "gps": 2.9,
+        "peratus_lulus": 94.44,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -199,16 +199,16 @@
             "peratus_lulus": 93.1
           },
           {
+            "mp": "B. INGGERIS",
+            "gpmp": 3.41,
+            "peratus_a": 17.92,
+            "peratus_lulus": 89.02
+          },
+          {
             "mp": "SAINS",
             "gpmp": 3.45,
             "peratus_a": 18.39,
             "peratus_lulus": 90.8
-          },
-          {
-            "mp": "B. INGGERIS",
-            "gpmp": 3.47,
-            "peratus_a": 17.8,
-            "peratus_lulus": 88.14
           }
         ],
         "trend_gps": [
@@ -218,7 +218,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.88
+            "gps": 2.9
           }
         ],
         "pbd_tahap": [
@@ -246,7 +246,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 902,
+          "rekod": 957,
           "luar_main": 0
         }
       },
