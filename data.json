@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-09-05"
+    "dikemaskini": "2026-09-06"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -153,8 +153,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.9,
-        "peratus_lulus": 94.44,
+        "gps": 2.84,
+        "peratus_lulus": 94.72,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -163,16 +163,16 @@
             "peratus_lulus": 100
           },
           {
-            "mp": "PEND. ISLAM",
-            "gpmp": 2.34,
-            "peratus_a": 29.66,
-            "peratus_lulus": 100
+            "mp": "B. ARAB",
+            "gpmp": 2.19,
+            "peratus_a": 42.31,
+            "peratus_lulus": 96.15
           },
           {
-            "mp": "B. ARAB",
-            "gpmp": 2.35,
-            "peratus_a": 35.56,
-            "peratus_lulus": 95.56
+            "mp": "PEND. ISLAM",
+            "gpmp": 2.3,
+            "peratus_a": 32.18,
+            "peratus_lulus": 100
           },
           {
             "mp": "RBT",
@@ -218,7 +218,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.9
+            "gps": 2.84
           }
         ],
         "pbd_tahap": [
@@ -228,15 +228,15 @@
           },
           {
             "tahap": "TP3",
-            "bilangan": 16
+            "bilangan": 25
           },
           {
             "tahap": "TP4",
-            "bilangan": 33
+            "bilangan": 41
           },
           {
             "tahap": "TP5",
-            "bilangan": 29
+            "bilangan": 41
           },
           {
             "tahap": "TP6",
@@ -246,7 +246,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 957,
+          "rekod": 1007,
           "luar_main": 0
         }
       },
