@@ -110,7 +110,7 @@ Jumlah murid **tidak** dimasukkan secara manual — ia dikira daripada `ikut_tah
 
 | Medan | Kegunaan |
 |---|---|
-| `kepimpinan` | Badan kepimpinan murid — pengawas sekolah, pengawas perpustakaan, SLB, PRS, ketua & penolong ketua kelas, ketua rumah sukan, dan mana-mana jawatan lain. Tambah baris = tambah bar, tiada had bilangan |
+| `kepimpinan` | Badan kepimpinan murid. Di SK Paya Redan ia bermaksud **empat jawatan**: Pengawas, Pengawas Perpustakaan, Ketua Kelas dan Penolong Ketua Kelas — sama seperti senarai izin Tetapan Murid HADIR, yang menjadi sumbernya. Format `data.json` sendiri tidak mengehadkan bilangan baris; tambah baris = tambah bar |
 | `bantuan` | Bantuan & kebajikan — BAP, RMT, KWAPM, susu sekolah, biasiswa |
 | `profil_murid` | Maklumat latar belakang murid — dipaparkan sebagai jadual dengan peratus enrolmen dan perbandingan sesi sebelum |
 
