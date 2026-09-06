@@ -153,8 +153,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.85,
-        "peratus_lulus": 94.87,
+        "gps": 2.84,
+        "peratus_lulus": 94.88,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -164,9 +164,9 @@
           },
           {
             "mp": "B. ARAB",
-            "gpmp": 2.25,
-            "peratus_a": 41.11,
-            "peratus_lulus": 96.67
+            "gpmp": 2.24,
+            "peratus_a": 41.44,
+            "peratus_lulus": 96.69
           },
           {
             "mp": "RBT",
@@ -218,7 +218,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.85
+            "gps": 2.84
           }
         ],
         "pbd_tahap": [
@@ -246,7 +246,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 1059,
+          "rekod": 1060,
           "luar_main": 0
         }
       },
