@@ -153,8 +153,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.84,
-        "peratus_lulus": 94.72,
+        "gps": 2.85,
+        "peratus_lulus": 94.75,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -169,16 +169,16 @@
             "peratus_lulus": 96.15
           },
           {
-            "mp": "PEND. ISLAM",
-            "gpmp": 2.3,
-            "peratus_a": 32.18,
-            "peratus_lulus": 100
-          },
-          {
             "mp": "RBT",
             "gpmp": 2.38,
             "peratus_a": 32.08,
             "peratus_lulus": 100
+          },
+          {
+            "mp": "PEND. ISLAM",
+            "gpmp": 2.42,
+            "peratus_a": 31.16,
+            "peratus_lulus": 99.5
           },
           {
             "mp": "B. MELAYU",
@@ -218,25 +218,25 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.84
+            "gps": 2.85
           }
         ],
         "pbd_tahap": [
           {
             "tahap": "TP2",
-            "bilangan": 4
+            "bilangan": 16
           },
           {
             "tahap": "TP3",
-            "bilangan": 25
+            "bilangan": 33
           },
           {
             "tahap": "TP4",
-            "bilangan": 41
+            "bilangan": 43
           },
           {
             "tahap": "TP5",
-            "bilangan": 41
+            "bilangan": 47
           },
           {
             "tahap": "TP6",
@@ -246,7 +246,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 1007,
+          "rekod": 1035,
           "luar_main": 0
         }
       },
