@@ -109,7 +109,7 @@
           },
           {
             "bulan": "Sep",
-            "murid": 0
+            "murid": 89.5
           }
         ],
         "ikut_kelas": [
@@ -150,7 +150,21 @@
             "peratus": 90.2
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-09-07",
+          "dikemaskini": "07:46",
+          "hadir": 17,
+          "tidak_hadir": 2,
+          "ditanda": 19,
+          "peratus": 89.5,
+          "ikut_kelas": [
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 2,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
         "gps": 2.84,
