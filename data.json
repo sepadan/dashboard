@@ -154,7 +154,7 @@
       },
       "akademik": {
         "gps": 2.85,
-        "peratus_lulus": 94.75,
+        "peratus_lulus": 94.87,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -164,9 +164,9 @@
           },
           {
             "mp": "B. ARAB",
-            "gpmp": 2.19,
-            "peratus_a": 42.31,
-            "peratus_lulus": 96.15
+            "gpmp": 2.25,
+            "peratus_a": 41.11,
+            "peratus_lulus": 96.67
           },
           {
             "mp": "RBT",
@@ -246,7 +246,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 1035,
+          "rekod": 1059,
           "luar_main": 0
         }
       },
