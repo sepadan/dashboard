@@ -645,9 +645,16 @@ Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan 
 
     Sementara itu tab `rmt` (`BIL / NAMA MURID / KELAS / STATUS RMT / IC`) memegang **223 murid merentas 9 kelas**, sepadan dengan enrolmen `data.json`. Jadi senarai penuh sekolah wujud — tetapi bukan dalam tab yang HADIR baca sebagai sumber murid.
 
-    **Ini perlu disahkan pemilik sebelum apa-apa kod ditulis.** Kemungkinan paling munasabah ialah `main` pernah ditimpa oleh satu upload CSV separa dalam mod `sync`, yang menggantikan senarai penuh (`hadirUploadMuridCsv_` mod `sync` menggantikan, mod `merge` mengekalkan). Kalau benar, Tetapan Murid HADIR kini hanya menyenaraikan 33 murid daripada 223, dan carta kepimpinan bukan lagi keutamaan pertama — memulihkan `main` yang keutamaan.
+    **Disahkan pemilik 6 September 2026** melalui tangkapan skrin tab `main` (gid=0): baris 7-39, 33 murid, `KETUA KELAS` tunggal pada baris 31. Jadi sumber murid yang dibaca HADIR memang memegang satu kelas sahaja, bukan 223.
 
-    Semakan pemilik: buka Tetapan Murid dalam HADIR — berapa murid disenaraikan? 33 atau 223?
+    Murid yang hilang itu **bukan** diarkibkan: tab `arkib_murid` hanya mengandungi 5 rekod. Senarai penuh 223 wujud dalam `rmt`, dan kehadiran harian sembilan kelas wujud dalam `kehadiran` serta tab kelas — jadi operasi harian tidak terjejas dan tiada sesiapa perasan. Yang terjejas ialah apa-apa yang membaca `main`: senarai Tetapan Murid HADIR, dan penyelarasan murid ke AKSI/SEMAK.
+
+    Punca paling munasabah kekal satu upload CSV separa dalam mod `sync`, yang menggantikan senarai penuh (`hadirUploadMuridCsv_`: `sync` menggantikan, `merge` mengekalkan). Belum disahkan.
+
+    **Tab `dash_kepimpinan` memang wujud**, dengan tajuk `JAWATAN | MURID` dan sifar baris data. Jadi penerangan asal isu ini betul: ia direka sebagai input manual HEM. Ada dua jalan, dan yang pertama boleh dibuat hari ini tanpa kod:
+
+      1. **Isi `dash_kepimpinan` terus** — empat baris jawatan dan bilangannya. Carta terus hidup. Kosnya kemas kini manual setiap kali bilangan berubah.
+      2. **Jana daripada `JAWATAN MURID` dalam `main`** — perlukan perubahan `Dashboard.gs` DAN `main` dipulihkan kepada 223 murid dahulu. Tersekat dua kali selagi `main` belum betul.
 
 34. ~~Kehadiran September `data.json` kekal 0~~ — **bukan pepijat.** Disahkan oleh pemilik 6 September 2026: **1–4 September ialah cuti sekolah**, jadi tiada kehadiran untuk direkod dan `{"bulan": "Sep", "murid": 0}` memang betul. Angka itu akan terisi sendiri apabila persekolahan bermula semula.
 
