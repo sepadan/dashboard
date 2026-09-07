@@ -152,7 +152,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-07",
-          "dikemaskini": "13:16",
+          "dikemaskini": "13:46",
           "hadir": 209,
           "tidak_hadir": 14,
           "ditanda": 223,
@@ -203,7 +203,7 @@
       },
       "akademik": {
         "gps": 2.84,
-        "peratus_lulus": 94.74,
+        "peratus_lulus": 94.75,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -213,9 +213,9 @@
           },
           {
             "mp": "B. ARAB",
-            "gpmp": 2.24,
-            "peratus_a": 41,
-            "peratus_lulus": 97
+            "gpmp": 2.27,
+            "peratus_a": 40.39,
+            "peratus_lulus": 97.04
           },
           {
             "mp": "RBT",
