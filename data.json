@@ -152,7 +152,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-07",
-          "dikemaskini": "13:46",
+          "dikemaskini": "20:16",
           "hadir": 209,
           "tidak_hadir": 14,
           "ditanda": 223,
@@ -202,8 +202,8 @@
         }
       },
       "akademik": {
-        "gps": 2.84,
-        "peratus_lulus": 94.75,
+        "gps": 2.85,
+        "peratus_lulus": 94.79,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -255,9 +255,9 @@
           },
           {
             "mp": "SAINS",
-            "gpmp": 3.45,
-            "peratus_a": 18.39,
-            "peratus_lulus": 90.8
+            "gpmp": 3.41,
+            "peratus_a": 15.92,
+            "peratus_lulus": 91.54
           }
         ],
         "trend_gps": [
@@ -267,7 +267,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.84
+            "gps": 2.85
           }
         ],
         "pbd_tahap": [
