@@ -109,13 +109,13 @@
           },
           {
             "bulan": "Sep",
-            "murid": 92.2
+            "murid": 91.6
           }
         ],
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 88.5
+            "peratus": 88.4
           },
           {
             "kelas": "2 BIJAK",
@@ -127,7 +127,7 @@
           },
           {
             "kelas": "3 BIJAK",
-            "peratus": 93.5
+            "peratus": 93.6
           },
           {
             "kelas": "4 BIJAK",
@@ -139,7 +139,7 @@
           },
           {
             "kelas": "5 CERDIK",
-            "peratus": 87.9
+            "peratus": 88
           },
           {
             "kelas": "6 BIJAK",
@@ -147,10 +147,54 @@
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 90.2
+            "peratus": 90.1
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-09-09",
+          "dikemaskini": "07:46",
+          "hadir": 181,
+          "tidak_hadir": 19,
+          "ditanda": 200,
+          "peratus": 90.5,
+          "ikut_kelas": [
+            {
+              "kelas": "1 BIJAK",
+              "tidak_hadir": 4,
+              "ditanda": 28
+            },
+            {
+              "kelas": "2 CERDIK",
+              "tidak_hadir": 2,
+              "ditanda": 24
+            },
+            {
+              "kelas": "3 BIJAK",
+              "tidak_hadir": 1,
+              "ditanda": 29
+            },
+            {
+              "kelas": "5 BIJAK",
+              "tidak_hadir": 2,
+              "ditanda": 21
+            },
+            {
+              "kelas": "5 CERDIK",
+              "tidak_hadir": 2,
+              "ditanda": 19
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 5,
+              "ditanda": 28
+            },
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 3,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
         "gps": 2.9,
