@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-09-09"
+    "dikemaskini": "2026-09-10"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -150,60 +150,11 @@
             "peratus": 90.1
           }
         ],
-        "hari_ini": {
-          "tarikh": "2026-09-09",
-          "dikemaskini": "23:46",
-          "hadir": 201,
-          "tidak_hadir": 22,
-          "ditanda": 223,
-          "peratus": 90.1,
-          "ikut_kelas": [
-            {
-              "kelas": "1 BIJAK",
-              "tidak_hadir": 4,
-              "ditanda": 28
-            },
-            {
-              "kelas": "2 BIJAK",
-              "tidak_hadir": 3,
-              "ditanda": 23
-            },
-            {
-              "kelas": "2 CERDIK",
-              "tidak_hadir": 2,
-              "ditanda": 24
-            },
-            {
-              "kelas": "3 BIJAK",
-              "tidak_hadir": 1,
-              "ditanda": 29
-            },
-            {
-              "kelas": "5 BIJAK",
-              "tidak_hadir": 2,
-              "ditanda": 21
-            },
-            {
-              "kelas": "5 CERDIK",
-              "tidak_hadir": 2,
-              "ditanda": 19
-            },
-            {
-              "kelas": "6 BIJAK",
-              "tidak_hadir": 5,
-              "ditanda": 28
-            },
-            {
-              "kelas": "PRASEKOLAH",
-              "tidak_hadir": 3,
-              "ditanda": 19
-            }
-          ]
-        }
+        "hari_ini": null
       },
       "akademik": {
-        "gps": 2.92,
-        "peratus_lulus": 93.75,
+        "gps": 2.96,
+        "peratus_lulus": 92.95,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -236,16 +187,16 @@
             "peratus_lulus": 98
           },
           {
-            "mp": "MATEMATIK",
-            "gpmp": 3.1,
-            "peratus_a": 19.87,
-            "peratus_lulus": 86.09
-          },
-          {
             "mp": "RBT",
             "gpmp": 3.25,
             "peratus_a": 20.99,
             "peratus_lulus": 92.59
+          },
+          {
+            "mp": "MATEMATIK",
+            "gpmp": 3.39,
+            "peratus_a": 16.39,
+            "peratus_lulus": 81.42
           },
           {
             "mp": "B. INGGERIS",
@@ -267,7 +218,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.92
+            "gps": 2.96
           }
         ],
         "pbd_tahap": [
@@ -295,7 +246,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 1354,
+          "rekod": 1386,
           "luar_main": 0
         }
       },
