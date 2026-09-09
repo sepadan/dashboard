@@ -152,7 +152,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-09",
-          "dikemaskini": "09:46",
+          "dikemaskini": "11:16",
           "hadir": 201,
           "tidak_hadir": 22,
           "ditanda": 223,
@@ -249,9 +249,9 @@
           },
           {
             "mp": "B. INGGERIS",
-            "gpmp": 3.41,
-            "peratus_a": 19.31,
-            "peratus_lulus": 88.61
+            "gpmp": 3.4,
+            "peratus_a": 19.7,
+            "peratus_lulus": 88.67
           },
           {
             "mp": "SAINS",
