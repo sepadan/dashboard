@@ -152,7 +152,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-09",
-          "dikemaskini": "11:16",
+          "dikemaskini": "23:46",
           "hadir": 201,
           "tidak_hadir": 22,
           "ditanda": 223,
@@ -202,8 +202,8 @@
         }
       },
       "akademik": {
-        "gps": 2.9,
-        "peratus_lulus": 94.25,
+        "gps": 2.92,
+        "peratus_lulus": 93.75,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -230,16 +230,16 @@
             "peratus_lulus": 96.06
           },
           {
-            "mp": "MATEMATIK",
-            "gpmp": 2.95,
-            "peratus_a": 21.54,
-            "peratus_lulus": 90
-          },
-          {
             "mp": "SEJARAH",
             "gpmp": 3.06,
             "peratus_a": 5,
             "peratus_lulus": 98
+          },
+          {
+            "mp": "MATEMATIK",
+            "gpmp": 3.1,
+            "peratus_a": 19.87,
+            "peratus_lulus": 86.09
           },
           {
             "mp": "RBT",
@@ -267,7 +267,7 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.9
+            "gps": 2.92
           }
         ],
         "pbd_tahap": [
@@ -295,7 +295,7 @@
         "sumber_semak": {
           "peperiksaan": "PENTAKSIRAN SUMATIF 3",
           "murid": 204,
-          "rekod": 1333,
+          "rekod": 1354,
           "luar_main": 0
         }
       },
