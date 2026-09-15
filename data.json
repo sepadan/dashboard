@@ -109,7 +109,7 @@
           },
           {
             "bulan": "Sep",
-            "murid": 88.1
+            "murid": 88
           }
         ],
         "ikut_kelas": [
@@ -152,11 +152,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-15",
-          "dikemaskini": "07:46",
-          "hadir": 202,
-          "tidak_hadir": 21,
+          "dikemaskini": "10:46",
+          "hadir": 201,
+          "tidak_hadir": 22,
           "ditanda": 223,
-          "peratus": 90.6,
+          "peratus": 90.1,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
@@ -190,7 +190,7 @@
             },
             {
               "kelas": "6 BIJAK",
-              "tidak_hadir": 4,
+              "tidak_hadir": 5,
               "ditanda": 28
             },
             {
