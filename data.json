@@ -43,14 +43,14 @@
           },
           {
             "tahun": "Tahun 6",
-            "lelaki": 19,
+            "lelaki": 20,
             "perempuan": 9
           }
         ],
         "ikut_kaum": [
           {
             "kaum": "Melayu",
-            "bilangan": 212
+            "bilangan": 213
           },
           {
             "kaum": "Orang Asli (Semenanjung)",
@@ -152,12 +152,17 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-18",
-          "dikemaskini": "09:16",
-          "hadir": 112,
-          "tidak_hadir": 31,
-          "ditanda": 143,
-          "peratus": 78.3,
+          "dikemaskini": "09:46",
+          "hadir": 137,
+          "tidak_hadir": 34,
+          "ditanda": 171,
+          "peratus": 80.1,
           "ikut_kelas": [
+            {
+              "kelas": "1 BIJAK",
+              "tidak_hadir": 3,
+              "ditanda": 28
+            },
             {
               "kelas": "2 CERDIK",
               "tidak_hadir": 1,
@@ -294,7 +299,7 @@
         "bantuan": [
           {
             "jenis": "Rancangan Makanan Tambahan (RMT)",
-            "murid": 33
+            "murid": 34
           }
         ],
         "profil_murid": [
@@ -307,8 +312,8 @@
             "bilangan": 9
           },
           {
-            "perkara": "Keluarga B40 (drp 220 rekod pendapatan)",
-            "bilangan": 175
+            "perkara": "Keluarga B40 (drp 221 rekod pendapatan)",
+            "bilangan": 176
           },
           {
             "perkara": "Bukan warganegara",
@@ -317,7 +322,7 @@
         ]
       },
       "kokurikulum": {
-        "peratus_penyertaan": 100,
+        "peratus_penyertaan": 99.23,
         "ikut_bidang": [
           {
             "bidang": "Unit Beruniform",
@@ -382,7 +387,7 @@
           "luar_main": 5,
           "rumah_sukan": 204,
           "bukan_layak": 0,
-          "layak": 129
+          "layak": 130
         }
       }
     }
