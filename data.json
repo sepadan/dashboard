@@ -109,7 +109,7 @@
           },
           {
             "bulan": "Sep",
-            "murid": 87.9
+            "murid": 87.2
           }
         ],
         "ikut_kelas": [
@@ -123,7 +123,7 @@
           },
           {
             "kelas": "2 CERDIK",
-            "peratus": 91.9
+            "peratus": 92
           },
           {
             "kelas": "3 BIJAK",
@@ -131,19 +131,19 @@
           },
           {
             "kelas": "4 BIJAK",
-            "peratus": 94.6
+            "peratus": 94.4
           },
           {
             "kelas": "5 BIJAK",
-            "peratus": 92.4
+            "peratus": 92.3
           },
           {
             "kelas": "5 CERDIK",
-            "peratus": 87.6
+            "peratus": 87.4
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 91.2
+            "peratus": 91.1
           },
           {
             "kelas": "PRASEKOLAH",
@@ -152,12 +152,37 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-18",
-          "dikemaskini": "08:16",
-          "hadir": 17,
-          "tidak_hadir": 2,
-          "ditanda": 19,
-          "peratus": 89.5,
+          "dikemaskini": "09:16",
+          "hadir": 112,
+          "tidak_hadir": 31,
+          "ditanda": 143,
+          "peratus": 78.3,
           "ikut_kelas": [
+            {
+              "kelas": "2 CERDIK",
+              "tidak_hadir": 1,
+              "ditanda": 24
+            },
+            {
+              "kelas": "4 BIJAK",
+              "tidak_hadir": 8,
+              "ditanda": 32
+            },
+            {
+              "kelas": "5 BIJAK",
+              "tidak_hadir": 5,
+              "ditanda": 21
+            },
+            {
+              "kelas": "5 CERDIK",
+              "tidak_hadir": 6,
+              "ditanda": 19
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 9,
+              "ditanda": 28
+            },
             {
               "kelas": "PRASEKOLAH",
               "tidak_hadir": 2,
