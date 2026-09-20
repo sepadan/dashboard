@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-09-19"
+    "dikemaskini": "2026-09-20"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -255,7 +255,7 @@
         "bantuan": [
           {
             "jenis": "Rancangan Makanan Tambahan (RMT)",
-            "murid": 34
+            "murid": 33
           }
         ],
         "profil_murid": [
