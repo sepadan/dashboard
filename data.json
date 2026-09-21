@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-09-20"
+    "dikemaskini": "2026-09-21"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -109,48 +109,102 @@
           },
           {
             "bulan": "Sep",
-            "murid": 87.1
+            "murid": 86.7
           }
         ],
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 88
+            "peratus": 87.9
           },
           {
             "kelas": "2 BIJAK",
-            "peratus": 94.1
+            "peratus": 94
           },
           {
             "kelas": "2 CERDIK",
-            "peratus": 92
+            "peratus": 91.9
           },
           {
             "kelas": "3 BIJAK",
-            "peratus": 93.2
+            "peratus": 93.1
           },
           {
             "kelas": "4 BIJAK",
-            "peratus": 94.4
+            "peratus": 94.3
           },
           {
             "kelas": "5 BIJAK",
-            "peratus": 92.3
+            "peratus": 92.2
           },
           {
             "kelas": "5 CERDIK",
-            "peratus": 87.4
+            "peratus": 87.3
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 91.1
+            "peratus": 91
           },
           {
             "kelas": "PRASEKOLAH",
             "peratus": 90.1
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-09-21",
+          "dikemaskini": "08:16",
+          "hadir": 186,
+          "tidak_hadir": 38,
+          "ditanda": 224,
+          "peratus": 83,
+          "ikut_kelas": [
+            {
+              "kelas": "1 BIJAK",
+              "tidak_hadir": 5,
+              "ditanda": 28
+            },
+            {
+              "kelas": "2 BIJAK",
+              "tidak_hadir": 4,
+              "ditanda": 23
+            },
+            {
+              "kelas": "2 CERDIK",
+              "tidak_hadir": 3,
+              "ditanda": 24
+            },
+            {
+              "kelas": "3 BIJAK",
+              "tidak_hadir": 6,
+              "ditanda": 29
+            },
+            {
+              "kelas": "4 BIJAK",
+              "tidak_hadir": 6,
+              "ditanda": 32
+            },
+            {
+              "kelas": "5 BIJAK",
+              "tidak_hadir": 4,
+              "ditanda": 21
+            },
+            {
+              "kelas": "5 CERDIK",
+              "tidak_hadir": 6,
+              "ditanda": 19
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 3,
+              "ditanda": 29
+            },
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 1,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
         "gps": 2.99,
