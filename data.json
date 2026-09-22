@@ -115,11 +115,11 @@
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 87.9
+            "peratus": 88
           },
           {
             "kelas": "2 BIJAK",
-            "peratus": 94
+            "peratus": 93.9
           },
           {
             "kelas": "2 CERDIK",
@@ -127,7 +127,7 @@
           },
           {
             "kelas": "3 BIJAK",
-            "peratus": 93.1
+            "peratus": 92.9
           },
           {
             "kelas": "4 BIJAK",
@@ -135,7 +135,7 @@
           },
           {
             "kelas": "5 BIJAK",
-            "peratus": 92.2
+            "peratus": 92.1
           },
           {
             "kelas": "5 CERDIK",
@@ -143,14 +143,63 @@
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 91
+            "peratus": 91.1
           },
           {
             "kelas": "PRASEKOLAH",
             "peratus": 90.1
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-09-22",
+          "dikemaskini": "08:16",
+          "hadir": 165,
+          "tidak_hadir": 27,
+          "ditanda": 192,
+          "peratus": 85.9,
+          "ikut_kelas": [
+            {
+              "kelas": "1 BIJAK",
+              "tidak_hadir": 2,
+              "ditanda": 28
+            },
+            {
+              "kelas": "2 BIJAK",
+              "tidak_hadir": 4,
+              "ditanda": 23
+            },
+            {
+              "kelas": "2 CERDIK",
+              "tidak_hadir": 4,
+              "ditanda": 24
+            },
+            {
+              "kelas": "3 BIJAK",
+              "tidak_hadir": 8,
+              "ditanda": 29
+            },
+            {
+              "kelas": "5 BIJAK",
+              "tidak_hadir": 3,
+              "ditanda": 21
+            },
+            {
+              "kelas": "5 CERDIK",
+              "tidak_hadir": 1,
+              "ditanda": 19
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 2,
+              "ditanda": 29
+            },
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 3,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
         "gps": 2.99,
