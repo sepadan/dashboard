@@ -123,7 +123,7 @@
           },
           {
             "kelas": "2 CERDIK",
-            "peratus": 91.7
+            "peratus": 91.6
           },
           {
             "kelas": "3 BIJAK",
@@ -152,11 +152,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-28",
-          "dikemaskini": "08:46",
-          "hadir": 179,
-          "tidak_hadir": 21,
-          "ditanda": 200,
-          "peratus": 89.5,
+          "dikemaskini": "09:16",
+          "hadir": 199,
+          "tidak_hadir": 25,
+          "ditanda": 224,
+          "peratus": 88.8,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
@@ -167,6 +167,11 @@
               "kelas": "2 BIJAK",
               "tidak_hadir": 1,
               "ditanda": 23
+            },
+            {
+              "kelas": "2 CERDIK",
+              "tidak_hadir": 4,
+              "ditanda": 24
             },
             {
               "kelas": "3 BIJAK",
