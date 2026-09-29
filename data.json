@@ -139,7 +139,7 @@
           },
           {
             "kelas": "5 CERDIK",
-            "peratus": 87.1
+            "peratus": 86.9
           },
           {
             "kelas": "6 BIJAK",
@@ -147,10 +147,34 @@
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 89.9
+            "peratus": 90
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-09-30",
+          "dikemaskini": "07:46",
+          "hadir": 80,
+          "tidak_hadir": 10,
+          "ditanda": 90,
+          "peratus": 88.9,
+          "ikut_kelas": [
+            {
+              "kelas": "2 BIJAK",
+              "tidak_hadir": 1,
+              "ditanda": 23
+            },
+            {
+              "kelas": "3 BIJAK",
+              "tidak_hadir": 4,
+              "ditanda": 29
+            },
+            {
+              "kelas": "5 CERDIK",
+              "tidak_hadir": 5,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
         "gps": 2.99,
