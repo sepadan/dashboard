@@ -152,7 +152,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-09-30",
-          "dikemaskini": "11:16",
+          "dikemaskini": "13:16",
           "hadir": 147,
           "tidak_hadir": 17,
           "ditanda": 164,
@@ -356,13 +356,18 @@
           }
         ],
         "perjumpaan": {
-          "bil": 1,
+          "bil": 2,
           "purata_kehadiran": null,
-          "kelab_aktif": 1,
-          "laporan_belum": 0,
+          "kelab_aktif": 2,
+          "laporan_belum": 1,
           "ikut_kelab": [
             {
               "kelab": "Kadet Remaja Sekolah",
+              "perjumpaan": 1,
+              "peratus_hadir": null
+            },
+            {
+              "kelab": "STEM",
               "perjumpaan": 1,
               "peratus_hadir": null
             }
