@@ -109,7 +109,7 @@
           },
           {
             "bulan": "Sep",
-            "murid": 86.8
+            "murid": 86.9
           },
           {
             "bulan": "Okt",
@@ -156,7 +156,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-10-01",
-          "dikemaskini": "09:46",
+          "dikemaskini": "10:46",
           "hadir": 202,
           "tidak_hadir": 22,
           "ditanda": 224,
