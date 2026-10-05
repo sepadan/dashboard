@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-10-03"
+    "dikemaskini": "2026-10-05"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -113,7 +113,7 @@
           },
           {
             "bulan": "Okt",
-            "murid": 89.5
+            "murid": 89.2
           }
         ],
         "ikut_kelas": [
@@ -154,7 +154,21 @@
             "peratus": 90
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-10-05",
+          "dikemaskini": "08:16",
+          "hadir": 16,
+          "tidak_hadir": 3,
+          "ditanda": 19,
+          "peratus": 84.2,
+          "ikut_kelas": [
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 3,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
         "gps": 2.99,
