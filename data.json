@@ -156,11 +156,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-10-07",
-          "dikemaskini": "08:16",
-          "hadir": 91,
-          "tidak_hadir": 9,
-          "ditanda": 100,
-          "peratus": 91,
+          "dikemaskini": "11:16",
+          "hadir": 108,
+          "tidak_hadir": 11,
+          "ditanda": 119,
+          "peratus": 90.8,
           "ikut_kelas": [
             {
               "kelas": "2 BIJAK",
@@ -171,6 +171,11 @@
               "kelas": "3 BIJAK",
               "tidak_hadir": 2,
               "ditanda": 29
+            },
+            {
+              "kelas": "5 CERDIK",
+              "tidak_hadir": 2,
+              "ditanda": 19
             },
             {
               "kelas": "6 BIJAK",
