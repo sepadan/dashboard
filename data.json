@@ -113,21 +113,21 @@
           },
           {
             "bulan": "Okt",
-            "murid": 84.4
+            "murid": 78.6
           }
         ],
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 87.8
+            "peratus": 87.3
           },
           {
             "kelas": "2 BIJAK",
-            "peratus": 93.8
+            "peratus": 93.1
           },
           {
             "kelas": "2 CERDIK",
-            "peratus": 91.6
+            "peratus": 90.9
           },
           {
             "kelas": "3 BIJAK",
@@ -139,7 +139,7 @@
           },
           {
             "kelas": "5 BIJAK",
-            "peratus": 92
+            "peratus": 91.4
           },
           {
             "kelas": "5 CERDIK",
@@ -151,26 +151,41 @@
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 90
+            "peratus": 90.1
           }
         ],
         "hari_ini": {
           "tarikh": "2026-10-08",
-          "dikemaskini": "12:16",
-          "hadir": 20,
-          "tidak_hadir": 88,
-          "ditanda": 108,
-          "peratus": 18.5,
+          "dikemaskini": "12:46",
+          "hadir": 23,
+          "tidak_hadir": 172,
+          "ditanda": 195,
+          "peratus": 11.8,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
-              "tidak_hadir": 8,
+              "tidak_hadir": 24,
               "ditanda": 28
+            },
+            {
+              "kelas": "2 BIJAK",
+              "tidak_hadir": 23,
+              "ditanda": 23
+            },
+            {
+              "kelas": "2 CERDIK",
+              "tidak_hadir": 24,
+              "ditanda": 24
             },
             {
               "kelas": "4 BIJAK",
               "tidak_hadir": 32,
               "ditanda": 32
+            },
+            {
+              "kelas": "5 BIJAK",
+              "tidak_hadir": 21,
+              "ditanda": 21
             },
             {
               "kelas": "5 CERDIK",
