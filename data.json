@@ -113,25 +113,25 @@
           },
           {
             "bulan": "Okt",
-            "murid": 82.4
+            "murid": 84
           }
         ],
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 88.1
+            "peratus": 88.2
           },
           {
             "kelas": "2 BIJAK",
-            "peratus": 93.8
+            "peratus": 93.9
           },
           {
             "kelas": "2 CERDIK",
-            "peratus": 90.9
+            "peratus": 91
           },
           {
             "kelas": "3 BIJAK",
-            "peratus": 91.9
+            "peratus": 92
           },
           {
             "kelas": "4 BIJAK",
@@ -147,7 +147,7 @@
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 90.3
+            "peratus": 90.4
           },
           {
             "kelas": "PRASEKOLAH",
@@ -156,10 +156,10 @@
         ],
         "hari_ini": {
           "tarikh": "2026-10-12",
-          "dikemaskini": "09:46",
-          "hadir": 70,
+          "dikemaskini": "10:16",
+          "hadir": 224,
           "tidak_hadir": 0,
-          "ditanda": 70,
+          "ditanda": 224,
           "peratus": 100,
           "ikut_kelas": []
         }
