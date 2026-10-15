@@ -113,13 +113,13 @@
           },
           {
             "bulan": "Okt",
-            "murid": 87
+            "murid": 87.2
           }
         ],
         "ikut_kelas": [
           {
             "kelas": "1 BIJAK",
-            "peratus": 88.3
+            "peratus": 88.4
           },
           {
             "kelas": "2 BIJAK",
@@ -156,10 +156,10 @@
         ],
         "hari_ini": {
           "tarikh": "2026-10-15",
-          "dikemaskini": "07:16",
-          "hadir": 32,
+          "dikemaskini": "08:16",
+          "hadir": 60,
           "tidak_hadir": 0,
-          "ditanda": 32,
+          "ditanda": 60,
           "peratus": 100,
           "ikut_kelas": []
         }
