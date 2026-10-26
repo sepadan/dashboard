@@ -113,7 +113,7 @@
           },
           {
             "bulan": "Okt",
-            "murid": 92.4
+            "murid": 92.5
           }
         ],
         "ikut_kelas": [
@@ -147,7 +147,7 @@
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 90.9
+            "peratus": 91
           },
           {
             "kelas": "PRASEKOLAH",
@@ -156,10 +156,10 @@
         ],
         "hari_ini": {
           "tarikh": "2026-10-26",
-          "dikemaskini": "07:46",
-          "hadir": 81,
+          "dikemaskini": "08:16",
+          "hadir": 110,
           "tidak_hadir": 0,
-          "ditanda": 81,
+          "ditanda": 110,
           "peratus": 100,
           "ikut_kelas": []
         }
