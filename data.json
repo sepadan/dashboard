@@ -156,12 +156,18 @@
         ],
         "hari_ini": {
           "tarikh": "2026-10-26",
-          "dikemaskini": "08:16",
-          "hadir": 110,
-          "tidak_hadir": 0,
-          "ditanda": 110,
-          "peratus": 100,
-          "ikut_kelas": []
+          "dikemaskini": "09:16",
+          "hadir": 127,
+          "tidak_hadir": 2,
+          "ditanda": 129,
+          "peratus": 98.4,
+          "ikut_kelas": [
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 2,
+              "ditanda": 19
+            }
+          ]
         }
       },
       "akademik": {
