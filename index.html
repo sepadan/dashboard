@@ -704,8 +704,22 @@ const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(
 const sum = (a,f)=> a.reduce((t,x)=>t+(f?f(x):x),0);
 
 let DATA = DATA_TERBINA;
-let STATE = { sesi:null, tab:'ringkasan', density:'all' };
+
+let STATE = { sesi:null, tab:'ringkasan', density:'all', tarikhKehadiran:null, bulanKehadiran:null };
 const REG = [];              // pendaftaran carta untuk render semula
+
+function bersihkanKad(container){
+  if(!container) return;
+  for(let i = REG.length - 1; i >= 0; i--){
+    if(container.contains && container.contains(REG[i].col)){
+      if(REG[i].observer && typeof REG[i].observer.disconnect === 'function'){
+        REG[i].observer.disconnect();
+      }
+      REG.splice(i, 1);
+    }
+  }
+}
+
 let CARTA_SKALA = 1;         // pembesar tinggi carta (mod TV guna >1)
 
 function tail(arr){ return STATE.density==='all' ? arr : arr.slice(-parseInt(STATE.density,10)); }
@@ -815,7 +829,7 @@ function drawColumn(node, cfg){
   svg.addEventListener('pointermove', e=>{
     const t = e.target.closest('.hit'); if(!t) return;
     const i = +t.dataset.i;
-    let html = `<div class="t">${esc(cfg.labels[i])}</div>`;
+    let html = (typeof cfg.tipCustom === 'function') ? cfg.tipCustom(i) : ('<div class="t">' + esc(cfg.labels[i]) + '</div>');
     cfg.series.forEach((s,si)=> html += tipRow(cols[si], s.name, cfg.fmt(s.values[i])));
     if(cfg.stacked && cfg.series.length>1) html += tipRow(null,'Jumlah', cfg.fmt(sum(cfg.series,s=>s.values[i])));
     showTip(html, e.clientX, e.clientY);
@@ -934,8 +948,8 @@ function drawLine(node, cfg){
     const t = e.target.closest('.hit'); if(!t) return;
     const i = +t.dataset.i;
     ch.setAttribute('x1', X(i)); ch.setAttribute('x2', X(i)); ch.setAttribute('opacity','1');
-    let html = `<div class="t">${esc(cfg.labels[i])}</div>`;
-    cfg.series.forEach((s,si)=>{
+    let html = (typeof cfg.tipCustom === 'function') ? cfg.tipCustom(i) : ('<div class="t">' + esc(cfg.labels[i]) + '</div>');
+    if(!cfg.tipCustom) cfg.series.forEach((s,si)=>{
       const v = s.values[i];
       html += tipRow(cols[si], s.name, (v==null || !isFinite(v)) ? '—' : cfg.fmt(v));
     });
@@ -1182,9 +1196,177 @@ function secAkademik(sec){
     note:'Bilangan murid mengikut tahap penguasaan.', cfg: cfgPbd});
 }
 
-function secKehadiran(sec){
+/* ============================ KEHADIRAN HARIAN & BULANAN ============================ */
+const NAMA_BULAN_PENDEK = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogos','Sep','Okt','Nov','Dis'];
+const NAMA_BULAN_PENUH = ['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember'];
+
+function formatTarikhPaparan(tarikhStr){
+  if(!tarikhStr || typeof tarikhStr !== 'string') return '';
+  const bahagian = tarikhStr.split('-');
+  if(bahagian.length === 2){
+    const y = bahagian[0], m = parseInt(bahagian[1], 10);
+    if(m >= 1 && m <= 12) return `${NAMA_BULAN_PENUH[m-1]} ${y}`;
+  } else if(bahagian.length === 3){
+    const y = bahagian[0], m = parseInt(bahagian[1], 10), d = parseInt(bahagian[2], 10);
+    if(m >= 1 && m <= 12 && !isNaN(d)) return `${d} ${NAMA_BULAN_PENDEK[m-1]} ${y}`;
+  }
+  return tarikhStr;
+}
+
+function dapatkanSenaraiHarian(kehadiran){
+  if(!kehadiran || !Array.isArray(kehadiran.harian)) return [];
+  return kehadiran.harian.slice().sort((a,b)=> String(a.tarikh||'').localeCompare(String(b.tarikh||'')));
+}
+
+function dapatkanTarikhTersedia(harian){
+  return (harian || []).map(r => r.tarikh).filter(Boolean);
+}
+
+function dapatkanBulanTersedia(harian){
+  const set = new Set();
+  (harian || []).forEach(r => {
+    if(r.tarikh && r.tarikh.length >= 7){
+      set.add(r.tarikh.slice(0, 7));
+    }
+  });
+  return Array.from(set).sort();
+}
+
+function pilihRekodHarian(harian, tarikhPilihan){
+  if(!harian || !harian.length) return null;
+  if(tarikhPilihan){
+    const temu = harian.find(r => r.tarikh === tarikhPilihan);
+    if(temu) return temu;
+  }
+  return harian[harian.length - 1];
+}
+
+function pilihTarikhTerkiniBulan(harian, bulanPilihan){
+  if(!harian || !harian.length) return null;
+  if(bulanPilihan){
+    const dalamBulan = harian.filter(r => r.tarikh && r.tarikh.startsWith(bulanPilihan));
+    if(dalamBulan.length) return dalamBulan[dalamBulan.length - 1].tarikh;
+  }
+  return harian[harian.length - 1].tarikh;
+}
+
+function analisisHarian(rekod){
+  if(!rekod) return { amaran: null, boleh100: true, ketidakhadiranTertinggi: [], teksKetidakhadiran: '', kelengkapan: null, teksKelengkapan: '' };
+
+  const belumDitanda = rekod.belum_ditanda || 0;
+  const ditanda = rekod.ditanda || 0;
+  const jumlah = rekod.jumlah || (ditanda + belumDitanda) || 0;
+  const kelengkapanPct = jumlah > 0 ? (ditanda / jumlah * 100) : null;
+
+  let amaran = null;
+  let boleh100 = true;
+  if(belumDitanda > 0){
+    boleh100 = false;
+    const pctBelum = jumlah > 0 ? nf1.format(belumDitanda / jumlah * 100) + '%' : `${belumDitanda} murid`;
+    amaran = `Kehadiran belum lengkap: ${fmtInt(belumDitanda)} murid (${pctBelum}) belum ditanda. ` +
+      `Peratus kehadiran belum muktamad dan tidak boleh dirumuskan sebagai 100% selagi pengisian kelas belum selesai.`;
+  }
+
+  const kelasAbsen = (rekod.ikut_kelas || [])
+    .filter(k => (k.tidak_hadir || 0) > 0)
+    .sort((a,b) => (b.tidak_hadir || 0) - (a.tidak_hadir || 0));
+
+  let teksKetidakhadiran = '';
+  if(kelasAbsen.length > 0){
+    const senarai = kelasAbsen.slice(0, 3).map(k => `${k.kelas} (${fmtInt(k.tidak_hadir)} tidak hadir)`).join(', ');
+    teksKetidakhadiran = `Ketidakhadiran tertinggi: ${senarai}.`;
+  } else if(ditanda > 0){
+    teksKetidakhadiran = `Tiada ketidakhadiran direkodkan dalam kalangan kelas yang sudah ditanda.`;
+  } else {
+    teksKetidakhadiran = `Belum ada kelas yang ditanda.`;
+  }
+
+  const teksKelengkapan = jumlah > 0
+    ? `${fmtInt(ditanda)} daripada ${fmtInt(jumlah)} murid (${nf1.format(kelengkapanPct)}%) selesai ditanda.`
+    : `${fmtInt(ditanda)} murid selesai ditanda.`;
+
+  return {
+    amaran,
+    boleh100,
+    ketidakhadiranTertinggi: kelasAbsen.map(k=>({ kelas: k.kelas, tidak_hadir: k.tidak_hadir })),
+    teksKetidakhadiran,
+    kelengkapan: kelengkapanPct,
+    teksKelengkapan
+  };
+}
+
+function cfgTrendHarian(harian, bulanPilihan){
+  const rows = (harian || []).filter(r => r.tarikh && r.tarikh.startsWith(bulanPilihan));
+  const series = [{
+    name: 'Kehadiran (%)',
+    varName: '--s1',
+    values: rows.map(r => (typeof r.peratus === 'number' && isFinite(r.peratus)) ? r.peratus : null)
+  }];
+  const vals = rows.map(r => r.peratus).filter(v => typeof v === 'number' && isFinite(v));
+  const yMin = vals.length ? Math.max(0, Math.floor((Math.min(...vals) - 2) / 2) * 2) : 80;
+
+  return {
+    labels: rows.map(r => r.tarikh.slice(8, 10)),
+    series,
+    fmt: fmtPct,
+    tickFmt: v => v + '%',
+    yMin,
+    yMax: 100,
+    height: 260,
+    tipCustom: (i) => {
+      const r = rows[i];
+      if(!r) return '';
+      let html = `<div class="t">${esc(formatTarikhPaparan(r.tarikh))}</div>`;
+      html += tipRow(cssVar('--s1'), 'Kehadiran', r.peratus != null ? fmtPct(r.peratus) : '—');
+      const kelengkapan = (r.jumlah > 0 && r.ditanda != null)
+        ? `${fmtInt(r.ditanda)}/${fmtInt(r.jumlah)} (${nf1.format(r.ditanda/r.jumlah*100)}%)`
+        : `${fmtInt(r.ditanda || 0)} ditanda`;
+      html += tipRow(null, 'Kelengkapan', kelengkapan);
+      if((r.tidak_hadir || 0) > 0){
+        html += tipRow(cssVar('--s2'), 'Tidak hadir', fmtInt(r.tidak_hadir));
+      }
+      if((r.belum_ditanda || 0) > 0){
+        html += tipRow(cssVar('--warn'), 'Belum ditanda', fmtInt(r.belum_ditanda));
+      }
+      return html;
+    },
+    tableHead: ['Tarikh', 'Hadir', 'Tidak hadir', 'Ditanda', 'Belum ditanda', 'Jumlah', 'Kehadiran (%)', 'Kelengkapan (%)'],
+    tableRows: () => rows.map(r => {
+      const kelPct = (r.jumlah && r.ditanda != null) ? nf1.format(r.ditanda / r.jumlah * 100) + '%' : '—';
+      return [
+        formatTarikhPaparan(r.tarikh),
+        fmtInt(r.hadir || 0),
+        fmtInt(r.tidak_hadir || 0),
+        fmtInt(r.ditanda || 0),
+        fmtInt(r.belum_ditanda || 0),
+        fmtInt(r.jumlah || 0),
+        r.peratus != null ? nf1.format(r.peratus) + '%' : '—',
+        kelPct
+      ];
+    })
+  };
+}
+
+function cfgPecahanKelasHarian(rekod){
+  const rows = (rekod?.ikut_kelas || []).slice();
+  return {
+    type: 'table',
+    tableHead: ['Kelas', 'Hadir', 'Tidak hadir', 'Ditanda', 'Belum ditanda', 'Jumlah murid', 'Kehadiran (%)'],
+    tableRows: () => rows.map(k => [
+      k.kelas || '—',
+      fmtInt(k.hadir || 0),
+      fmtInt(k.tidak_hadir || 0),
+      fmtInt(k.ditanda || 0),
+      fmtInt(k.belum_ditanda || 0),
+      fmtInt(k.jumlah || 0),
+      k.peratus != null ? nf1.format(k.peratus) + '%' : '—'
+    ])
+  };
+}
+
+function renderKehadiranHariIniLama(sec){
   /*
-     Kehadiran hari ini. Bilangan sahaja — tiada nama murid.
+     Kehadiran hari ini (format sandaran). Bilangan sahaja — tiada nama murid.
      data.json berada dalam repo awam; senarai nama kanak-kanak yang tidak
      hadir tidak boleh disiarkan. Guru melihat namanya dalam Telegram dan
      spreadsheet.
@@ -1193,28 +1375,192 @@ function secKehadiran(sec){
   if(hi){
     const tiles = document.createElement('div'); tiles.className='tiles'; sec.appendChild(tiles);
     const jumlah = jumlahMurid(S());
-    tile(tiles,{lab:'Tidak hadir hari ini', val:fmtInt(hi.tidak_hadir),
-      delta:null, deltaLab: hi.dikemaskini ? `dikemaskini ${esc(hi.dikemaskini)}` : ''});
-    tile(tiles,{lab:'Hadir hari ini', val:fmtInt(hi.hadir)});
+    const labelTarikh = hi.tarikh ? formatTarikhPaparan(hi.tarikh) : (hi.dikemaskini || '');
+    const labTidakHadir = hi.tarikh ? `Tidak hadir (${labelTarikh})` : 'Tidak hadir hari ini';
+    const labHadir = hi.tarikh ? `Hadir (${labelTarikh})` : 'Hadir hari ini';
+    const labPeratus = hi.tarikh ? `Peratus kehadiran (${labelTarikh})` : 'Peratus kehadiran hari ini';
+
+    tile(tiles,{lab: labTidakHadir, val:fmtInt(hi.tidak_hadir),
+      delta:null, deltaLab: hi.dikemaskini ? `dikemaskini ${hi.dikemaskini}` : (hi.tarikh ? `rekod ${labelTarikh}` : '')});
+    tile(tiles,{lab: labHadir, val:fmtInt(hi.hadir)});
     const kHi = nilaiKpi(hi.peratus, v=>nf1.format(v), '%');
-    tile(tiles,{lab:'Peratus kehadiran hari ini', val:kHi.val, unit:kHi.unit});
+    tile(tiles,{lab: labPeratus, val:kHi.val, unit:kHi.unit});
     tile(tiles,{lab:'Sudah ditanda', val:fmtInt(hi.ditanda),
       delta:null, deltaLab: jumlah ? `daripada ${fmtInt(jumlah)} murid` : ''});
+
+    if((hi.ikut_kelas || []).length){
+      const g = document.createElement('div'); g.className='grid'; sec.appendChild(g);
+      const tajukTidakHadir = hi.tarikh ? `Ketidakhadiran mengikut kelas (${labelTarikh})` : 'Ketidakhadiran hari ini mengikut kelas';
+      addCard(g,{title: tajukTidakHadir, col:'col-12', type:'barh',
+        note:'Bilangan murid tidak hadir. Kelas tanpa ketidakhadiran tidak disenaraikan.',
+        cfg: cfgTidakHadirHariIni});
+    }
   } else {
     const nota = document.createElement('div');
     nota.className = 'card';
     nota.innerHTML = '<header><div><h2>Kehadiran hari ini</h2></div></header>' +
-      '<div class="empty">Belum ditanda untuk hari ini.<br>' +
+      '<div class="empty">Belum ditanda untuk sesi ini.<br>' +
       'Angka akan muncul sebaik guru menyimpan kehadiran melalui HADIR atau bot Telegram.</div>';
     sec.appendChild(nota);
   }
+}
+
+function renderKehadiranHarian(sec, harian){
+  if(!STATE.tarikhKehadiran || !harian.some(r=>r.tarikh===STATE.tarikhKehadiran)){
+    STATE.tarikhKehadiran = harian[harian.length - 1].tarikh;
+  }
+  const bulanTersedia = dapatkanBulanTersedia(harian);
+  const bulanSemasa = STATE.tarikhKehadiran.slice(0, 7);
+  if(STATE.bulanKehadiran !== bulanSemasa){
+    STATE.bulanKehadiran = bulanSemasa;
+  }
+
+  const bar = document.createElement('div');
+  bar.className = 'filters filters-harian';
+  bar.style.marginBottom = '14px';
+  bar.innerHTML = `
+    <label class="field"><span>Tarikh analisis</span>
+      <select id="selTarikhKehadiran">
+        ${harian.slice().reverse().map(r => `<option value="${esc(r.tarikh)}"${r.tarikh===STATE.tarikhKehadiran?' selected':''}>${esc(formatTarikhPaparan(r.tarikh))}</option>`).join('')}
+      </select>
+    </label>
+    <label class="field"><span>Bulan analisis</span>
+      <select id="selBulanKehadiran">
+        ${bulanTersedia.slice().reverse().map(b => `<option value="${esc(b)}"${b===STATE.bulanKehadiran?' selected':''}>${esc(formatTarikhPaparan(b))}</option>`).join('')}
+      </select>
+    </label>
+    <div class="spacer"></div>
+    <div class="stamp" id="harianStamp">Tarikh rekod: ${esc(formatTarikhPaparan(STATE.tarikhKehadiran))}</div>
+  `;
+  sec.appendChild(bar);
+
+  const wadah = document.createElement('div');
+  wadah.className = 'wadah-harian';
+  sec.appendChild(wadah);
+
+  function lukisWadah(){
+    bersihkanKad(wadah);
+    wadah.innerHTML = '';
+    const rekod = pilihRekodHarian(harian, STATE.tarikhKehadiran);
+    if(!rekod) return;
+
+    const stampEl = $('#harianStamp', bar);
+    if(stampEl) stampEl.textContent = 'Tarikh rekod: ' + formatTarikhPaparan(rekod.tarikh);
+
+    const tiles = document.createElement('div');
+    tiles.className = 'tiles';
+    wadah.appendChild(tiles);
+
+    const jum = rekod.jumlah || (rekod.ditanda + rekod.belum_ditanda) || 0;
+    const kHi = nilaiKpi(rekod.peratus, v=>nf1.format(v), '%');
+    tile(tiles, { lab: 'Peratus kehadiran (ditanda)', val: kHi.val, unit: kHi.unit });
+    tile(tiles, { lab: 'Hadir', val: fmtInt(rekod.hadir || 0) });
+    tile(tiles, { lab: 'Tidak hadir', val: fmtInt(rekod.tidak_hadir || 0) });
+    tile(tiles, {
+      lab: 'Sudah ditanda',
+      val: fmtInt(rekod.ditanda || 0),
+      delta: null,
+      deltaLab: jum ? `daripada ${fmtInt(jum)} murid` : ''
+    });
+
+    const kelengkapanPct = jum > 0 ? (rekod.ditanda / jum * 100) : null;
+    const kKel = nilaiKpi(kelengkapanPct, v=>nf1.format(v), '%');
+    tile(tiles, {
+      lab: 'Kelengkapan ditanda',
+      val: kKel.val,
+      unit: kKel.unit,
+      delta: null,
+      deltaLab: rekod.belum_ditanda > 0 ? `${fmtInt(rekod.belum_ditanda)} murid belum selesai` : (jum > 0 ? 'Lengkap sepenuhnya' : 'Tiada rekod murid layak')
+    });
+
+    const analisis = analisisHarian(rekod);
+    const kadAnalisis = document.createElement('div');
+    kadAnalisis.className = 'card col-12';
+    kadAnalisis.style.marginBottom = '14px';
+
+    let isiAnalisis = `<header><div><h2>Analisis kehadiran harian (${esc(formatTarikhPaparan(rekod.tarikh))})</h2></div></header>`;
+    if(analisis.amaran){
+      isiAnalisis += `<div style="background:rgba(250,178,25,.12);border-left:4px solid var(--warn);padding:10px 14px;border-radius:var(--r-sm);margin:10px 0;font-size:13px;line-height:1.45;color:var(--ink);">
+        <b>⚠️ Amaran Pengisian:</b> ${esc(analisis.amaran)}
+      </div>`;
+    }
+    isiAnalisis += `<div style="font-size:13px;line-height:1.6;color:var(--ink2);margin-top:6px;">
+      <div>• <b>Kelengkapan rekod:</b> ${esc(analisis.teksKelengkapan)}</div>
+      <div>• <b>Corak kehadiran:</b> ${esc(analisis.teksKetidakhadiran)}</div>
+    </div>`;
+    isiAnalisis += '<p class="note">Analisis berdasarkan rekod yang masih tersedia dalam sumber. Rekod murid yang telah dipadam tidak dapat dibina semula. Peratus kehadiran dikira daripada murid yang sudah ditanda.</p>';
+    kadAnalisis.innerHTML = isiAnalisis;
+    wadah.appendChild(kadAnalisis);
+
+    const gHarian = document.createElement('div');
+    gHarian.className = 'grid';
+    gHarian.style.marginBottom = '14px';
+    wadah.appendChild(gHarian);
+
+    const tajukTrend = `Trend kehadiran harian (${formatTarikhPaparan(STATE.bulanKehadiran)})`;
+    const cardTrend = addCard(gHarian, {
+      title: tajukTrend,
+      col: 'col-12',
+      type: 'line',
+      note: 'Peratus kehadiran murid setiap hari bagi bulan ini (menunjukkan semua tarikh bulan terpilih). Jurang pada garis menandakan tiada rekod ditanda. Peratus berdasarkan murid yang sudah ditanda.',
+      cfg: () => cfgTrendHarian(harian, STATE.bulanKehadiran)
+    });
+
+    const tajukPecahan = `Pecahan kehadiran mengikut kelas (${formatTarikhPaparan(rekod.tarikh)})`;
+    const cardPecahan = addCard(gHarian, {
+      title: tajukPecahan,
+      col: 'col-12',
+      type: 'table',
+      note: 'Jadual pecahan semua kelas pada tarikh analisis terpilih termasuk murid belum ditanda dan peratusan kehadiran.',
+      cfg: () => cfgPecahanKelasHarian(rekod)
+    });
+
+    paintCard(cardTrend);
+    paintCard(cardPecahan);
+  }
+
+  lukisWadah();
+
+  const selT = $('#selTarikhKehadiran', bar);
+  const selB = $('#selBulanKehadiran', bar);
+
+  if(selT){
+    selT.addEventListener('change', e=>{
+      const tPilih = e.target.value;
+      STATE.tarikhKehadiran = tPilih;
+      const bSepadan = tPilih.slice(0, 7);
+      if(STATE.bulanKehadiran !== bSepadan){
+        STATE.bulanKehadiran = bSepadan;
+        if(selB) selB.value = bSepadan;
+      }
+      lukisWadah();
+    });
+  }
+
+  if(selB){
+    selB.addEventListener('change', e=>{
+      const bPilih = e.target.value;
+      STATE.bulanKehadiran = bPilih;
+      const tPalingKini = pilihTarikhTerkiniBulan(harian, bPilih);
+      STATE.tarikhKehadiran = tPalingKini;
+      if(selT) selT.value = tPalingKini;
+      lukisWadah();
+    });
+  }
+}
+
+function secKehadiran(sec){
+  const harian = dapatkanSenaraiHarian(S().kehadiran);
+  if(harian.length > 0){
+    renderKehadiranHarian(sec, harian);
+  } else {
+    const notaHarian = document.createElement('div'); notaHarian.className='card';
+    notaHarian.innerHTML='<header><h2>Analisis kehadiran harian</h2></header><p class="note">Sejarah harian belum tersedia untuk sesi ini. Pilihan tarikh, trend dan pecahan semua kelas akan dipaparkan apabila penjana menerbitkan rekod harian. Ringkasan sedia ada di bawah bukan sejarah harian lengkap.</p>';
+    sec.appendChild(notaHarian);
+    renderKehadiranHariIniLama(sec);
+  }
 
   const g = document.createElement('div'); g.className='grid'; sec.appendChild(g);
-  if(hi && (hi.ikut_kelas || []).length){
-    addCard(g,{title:'Ketidakhadiran hari ini mengikut kelas', col:'col-12', type:'barh',
-      note:'Bilangan murid tidak hadir hari ini. Kelas tanpa ketidakhadiran tidak disenaraikan.',
-      cfg: cfgTidakHadirHariIni});
-  }
   addCard(g,{title:'Kehadiran bulanan', col:'col-12', type:'line',
     note:'Peratus kehadiran purata murid dan guru mengikut bulan.', cfg: cfgKehadiranBulanan});
   addCard(g,{title:'Kehadiran mengikut kelas', col:'col-12', type:'dot',
@@ -1631,7 +1977,12 @@ function tvBinaSlaid(){
        pertama akan hilang dari Mod TV.
     */
     let tunggu = null;                       // sub-tajuk yang menunggu barisan tile
-    [...sec.children].forEach(anak=>{
+    const senaraiAnak = [];
+    [...sec.children].forEach(a=>{
+      if(a.classList.contains('wadah-harian')) senaraiAnak.push(...a.children);
+      else senaraiAnak.push(a);
+    });
+    senaraiAnak.forEach(anak=>{
       if(anak.classList.contains('subtajuk')){ tunggu = anak; return; }
 
       if(anak.classList.contains('tiles')){

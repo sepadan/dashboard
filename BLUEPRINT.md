@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 5.7 · 30 Ogos 2026**
+**Versi 5.8 · 27 Oktober 2026**
 
 Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
@@ -521,7 +521,7 @@ sekolah { nama, kod, daerah, singkatan, dikemaskini }
 sesi_semasa
 sesi.<tahun>
   enrolmen    { ikut_tahun[], ikut_kaum[], guru, staf_sokongan, kelas }
-  kehadiran   { bulanan[], ikut_kelas[], hari_ini }
+  kehadiran   { bulanan[], ikut_kelas[], hari_ini, harian[] }
   akademik    { gps, peratus_lulus, mata_pelajaran[], trend_gps[],
                 pbd_tahap[], sumber_semak }
   hem         { kepimpinan[], bantuan[], profil_murid[] }
@@ -532,6 +532,35 @@ sesi.<tahun>
 Objek `sumber_semak` dan `sumber_aksi` ialah **metadata diagnostik** — bukan untuk dipaparkan. Ia merekod dari mana angka datang dan berapa rekod ditinggalkan.
 
 Menambah sesi baharu = menambah satu kunci di bawah `sesi`. Tiada perubahan kod diperlukan; penapis Sesi dan perbandingan "berbanding sesi lepas" berfungsi sendiri.
+
+#### Analisis harian
+
+`harian[]` mengandungi `tarikh` ISO, `hadir`, `tidak_hadir`, `ditanda`,
+`belum_ditanda`, `jumlah`, `peratus` (null jika belum ditanda), dan `ikut_kelas[]`
+dengan medan bilangan yang sama serta `kelas`. Semua kelas yang mempunyai rekod
+layak disertakan, termasuk kelas tanpa ketidakhadiran. `peratus` ialah hadir/ditanda;
+rekod separa ditanda mesti dilabel, bukan ditafsir sebagai kehadiran penuh.
+`jumlah = ditanda + belum_ditanda`, bukan enrolmen sesi semasa secara andaian.
+
+Tarikh diambil daripada tajuk tab `kehadiran`, disahkan mengikut tahun sesi,
+disusun menaik dan tarikh masa hadapan dikecualikan. Sel 1 termasuk PDPR dikira
+hadir; 0 tidak hadir; kosong/nilai tidak dikenali belum ditanda; `—`/`-` dikecualikan.
+Kelayakan merujuk tempoh arkib pada tarikh rekod. Lajur kosong tidak dianggap cuti
+atau sifar kehadiran: ia kekal sebagai belum ditanda, tanpa mereka kalendar sekolah.
+
+**Had liputan:** analisis menggunakan rekod yang masih ada dalam tab sumber.
+`buangBarisArkibLuput_` boleh membuang baris murid keluar selepas bulan berakhir;
+rekod yang telah dipadam tidak boleh dibina semula daripada agregat bulanan.
+Paparan mesti menyatakan batas ini. Sesi sejarah tanpa `harian` kekal memaparkan
+keadaan kosong yang jelas; tiada sejarah atau kelas rekaan daripada `hari_ini`.
+
+Kod tambahan terjejak dalam `apps-script/AnalisisHarian.js` dan pengganti fungsi
+`apps-script/KiraKehadiran.js`. Semasa penerbitan, **ganti** fungsi `kiraKehadiran_`
+dalam `Dashboard.js`, tambah `AnalisisHarian.js`; jangan muat naik `KiraKehadiran.js`
+sebagai fail berasingan kerana fungsi berganda menyebabkan susunan tidak menentu.
+Fail lain projek KEHADIRAN serta deployment web HADIR tidak diubah. Pemicu data
+menggunakan HEAD Apps Script; tunggu output `harian` sebenar sebelum mengisytiharkan
+analisis produksi lengkap. `index.html` kekal milik git, `data.json` milik penjana.
 
 ### 4.3 Fungsi awam `Dashboard.gs`
 
@@ -674,6 +703,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 5.8 | 27 Oktober 2026 | Tambah analisis kehadiran harian: pemilih tarikh/bulan, trend dan semua kelas, beza belum ditanda dengan tidak hadir, agregat tanpa PII serta nota had liputan sejarah. Penjana harian dan fungsi integrasi dijejak bersama ujian; benarkan medan tarikh hari_ini sedia ada dalam kontrak yang sebelumnya menyebabkan suite gagal. |
 | 5.7 | 30 Ogos 2026 | Catat isu #31: pembaikan audit repo untuk integriti SEMAK, status guru/XSS AKSI dan had login HADIR telah diuji tempatan tetapi belum diterbitkan ke Apps Script/GitHub Pages produksi. Audit Dashboard kini menguatkuasakan allowlist skema penuh lima domain bagi setiap sesi, jenis nilai agregat, larangan medan luar kontrak/senarai individu, serta IC/MyKad 12 digit termasuk format bersengkang atau berjarak |
 | 5.6 | 29 Ogos 2026 | Isu #30 ditutup: senarai aktif guru kini boleh ditetapkan dari HADIR, AKSI atau SEMAK. Tambah/edit ialah merge; nyahaktif/sync penuh menghantar snapshot aktif melalui kunci pusat HADIR. Rekod tiada ditanda tidak aktif tanpa memadam kata laluan, tugasan atau sejarah. Versi paparan/cache HADIR v1.9.0, AKSI v1.5.0, SEMAK v1.2.0; Apps Script 110/11/61 |
 | 5.5 | 28 Ogos 2026 | Isu #29 ditutup: pengguna mengesahkan SEMAK memegang senarai guru paling baharu. HADIR v1.8.2 menjadikan SEMAK sumber migrasi awal dan AKSI sandaran sahaja; data domain serta kata laluan kekal tempatan |

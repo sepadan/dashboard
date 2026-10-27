@@ -70,6 +70,24 @@ Jumlah murid **tidak** dimasukkan secara manual — ia dikira daripada `ikut_tah
 
 `murid`, `guru`, `peratus` = peratusan (0–100), boleh perpuluhan.
 
+### 2.3b Kehadiran harian
+
+Penjana kini menambah `kehadiran.harian[]`, disusun mengikut `tarikh` ISO.
+Setiap hari dan setiap elemen `ikut_kelas[]` mengandungi `hadir`, `tidak_hadir`,
+`ditanda`, `belum_ditanda`, `jumlah` dan `peratus`. Rekod kelas turut ada
+`kelas`; rekod sekolah turut ada `tarikh` dan `ikut_kelas`.
+
+`hadir + tidak_hadir = ditanda`, dan `ditanda + belum_ditanda = jumlah`.
+`peratus = hadir / ditanda × 100`, dibundarkan satu perpuluhan; jika belum
+ada tanda, nilainya `null`, bukan sifar. Semua kelas disertakan, termasuk
+kelas tanpa ketidakhadiran atau belum ditanda. Hanya bilangan diterbitkan.
+
+Tab Kehadiran menyediakan pilihan tarikh/bulan, status kelengkapan, trend
+harian dan jadual kelas. Analisis berdasarkan rekod yang masih ada pada
+sumber, bukan pembinaan semula rekod yang sudah dipadam. Jangan ubah
+`data.json` secara manual — fail itu milik penjana Apps Script. Lihat
+`apps-script/README.md` untuk cara memasang sumber penjana.
+
 ### 2.4 `akademik`
 
 ```json

@@ -70,12 +70,32 @@ function validateDashboard(candidate) {
     rows(sesi.enrolmen.ikut_tahun, `${p}.enrolmen.ikut_tahun`, { tahun: 'string', lelaki: 'number', perempuan: 'number' });
     rows(sesi.enrolmen.ikut_kaum, `${p}.enrolmen.ikut_kaum`, { kaum: 'string', bilangan: 'number' });
     ['guru', 'staf_sokongan', 'kelas'].forEach(k => scalar(sesi.enrolmen[k], `${p}.enrolmen.${k}`, 'number'));
-    keys(sesi.kehadiran, `${p}.kehadiran`, ['bulanan', 'ikut_kelas', 'hari_ini']);
+    keys(sesi.kehadiran, `${p}.kehadiran`, ['bulanan', 'ikut_kelas', 'hari_ini', 'harian'], ['bulanan', 'ikut_kelas', 'hari_ini']);
+    if ('harian' in sesi.kehadiran) {
+      assert.ok(Array.isArray(sesi.kehadiran.harian), 'harian mesti tatasusunan');
+      let sebelumnya = '';
+      for (const h of sesi.kehadiran.harian) {
+        keys(h, `${p}.kehadiran.harian[]`, ['tarikh','hadir','tidak_hadir','ditanda','belum_ditanda','jumlah','peratus','ikut_kelas']);
+        assert.match(h.tarikh, /^\d{4}-\d{2}-\d{2}$/);
+        assert.ok(h.tarikh > sebelumnya, 'tarikh harian mesti unik dan teratur'); sebelumnya=h.tarikh;
+        const sahBil = r => {
+          for (const k of ['hadir','tidak_hadir','ditanda','belum_ditanda','jumlah']) assert.ok(Number.isInteger(r[k]) && r[k]>=0, `${k} mesti bilangan bukan negatif`);
+          assert.equal(r.hadir+r.tidak_hadir,r.ditanda);
+          assert.equal(r.ditanda+r.belum_ditanda,r.jumlah);
+          assert.equal(r.peratus,r.ditanda ? Math.round(r.hadir/r.ditanda*1000)/10 : null);
+        };
+        sahBil(h);
+        rows(h.ikut_kelas, `${p}.kehadiran.harian[].ikut_kelas`, {kelas:'string',hadir:'number',tidak_hadir:'number',ditanda:'number',belum_ditanda:'number',jumlah:'number',peratus:'number?'});
+        h.ikut_kelas.forEach(sahBil);
+        assert.equal(new Set(h.ikut_kelas.map(r=>r.kelas)).size,h.ikut_kelas.length);
+        for (const k of ['hadir','tidak_hadir','ditanda','belum_ditanda','jumlah']) assert.equal(h.ikut_kelas.reduce((n,r)=>n+r[k],0),h[k]);
+      }
+    }
     rows(sesi.kehadiran.bulanan, `${p}.kehadiran.bulanan`, { bulan: 'string', murid: 'number', guru: 'number' }, ['bulan', 'murid']);
     rows(sesi.kehadiran.ikut_kelas, `${p}.kehadiran.ikut_kelas`, { kelas: 'string', peratus: 'number' });
     if (sesi.kehadiran.hari_ini !== null) {
       const hi = sesi.kehadiran.hari_ini;
-      keys(hi, `${p}.kehadiran.hari_ini`, ['tidak_hadir', 'hadir', 'peratus', 'ditanda', 'dikemaskini', 'ikut_kelas'],
+      keys(hi, `${p}.kehadiran.hari_ini`, ['tarikh', 'tidak_hadir', 'hadir', 'peratus', 'ditanda', 'dikemaskini', 'ikut_kelas'],
         ['tidak_hadir', 'hadir', 'peratus', 'ditanda']);
       ['tidak_hadir', 'hadir', 'peratus', 'ditanda'].forEach(k => scalar(hi[k], `${p}.kehadiran.hari_ini.${k}`, 'number'));
       if ('dikemaskini' in hi) scalar(hi.dikemaskini, `${p}.kehadiran.hari_ini.dikemaskini`, 'string');
@@ -122,6 +142,21 @@ const icBerformat = clone(); icBerformat.sekolah.kod = '120101-01-1234';
 assert.throws(() => validateDashboard(icBerformat), /IC\/MyKad/, 'IC bersengkang mesti dikesan');
 const icTanpaPemisah = clone(); icTanpaPemisah.sekolah.kod = '120101011234';
 assert.throws(() => validateDashboard(icTanpaPemisah), /IC\/MyKad/, 'IC 12 digit tanpa pemisah mesti dikesan');
+
+const fixtureHarian = structuredClone(data);
+const kh = fixtureHarian.sesi[fixtureHarian.sesi_semasa].kehadiran;
+const kelas = {kelas:'UJIAN',hadir:1,tidak_hadir:0,ditanda:1,belum_ditanda:1,jumlah:2,peratus:100};
+kh.harian=[{...kelas,tarikh:'2026-10-27',ikut_kelas:[kelas]}];
+delete kh.harian[0].kelas;
+assert.doesNotThrow(()=>validateDashboard(fixtureHarian));
+for (const [key,value] of [['nama','MURID'],['ic','000000000001']]) {
+  const bad=structuredClone(fixtureHarian);
+  bad.sesi[bad.sesi_semasa].kehadiran.harian[0].ikut_kelas[0][key]=value;
+  assert.throws(()=>validateDashboard(bad));
+}
+const salahJumlah=structuredClone(fixtureHarian);
+salahJumlah.sesi[salahJumlah.sesi_semasa].kehadiran.harian[0].jumlah++;
+assert.throws(()=>validateDashboard(salahJumlah));
 
 const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
   .map(match => match[1].trim())
