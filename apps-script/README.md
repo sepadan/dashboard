@@ -42,6 +42,7 @@ PIN, kata laluan atau token boleh masuk output.
 ## Checkpoint 27 Oktober 2026
 
 HEAD dibaca semula dan sepadan selepas hanya fungsi integrasi diubah dan modul
-agregat ditambah. Versi **128** disimpan; deployment web HADIR kekal **126**.
-Pengesahan fungsi pengagregat tempatan lulus. Pengesahan output sebenar dan laman
-produksi direkod dalam laporan pelepasan selepas pemicu menerbitkan sejarah.
+agregat ditambah. Versi awal **127** ialah checkpoint integrasi; versi akhir
+**128** menyertakan pengendalian murid tanpa kelas. Deployment web HADIR kekal
+**126**. Pemicu pada 11:47 menerbitkan data sebenar, dan laman produksi disahkan
+pada telefon serta desktop. Lihat `../docs/RELEASE-2026-10-27-HARIAN.md`.
