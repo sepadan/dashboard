@@ -113,7 +113,7 @@
           },
           {
             "bulan": "Okt",
-            "murid": 92.9
+            "murid": 93
           }
         ],
         "ikut_kelas": [
@@ -147,11 +147,11 @@
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 91
+            "peratus": 91.1
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 90.1
+            "peratus": 90.2
           }
         ],
         "harian": [
@@ -17729,12 +17729,12 @@
           },
           {
             "tarikh": "2026-10-28",
-            "hadir": 71,
-            "tidak_hadir": 7,
-            "ditanda": 78,
-            "belum_ditanda": 146,
+            "hadir": 141,
+            "tidak_hadir": 8,
+            "ditanda": 149,
+            "belum_ditanda": 75,
             "jumlah": 224,
-            "peratus": 91,
+            "peratus": 94.6,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
@@ -17747,12 +17747,12 @@
               },
               {
                 "kelas": "2 BIJAK",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 23,
+                "hadir": 22,
+                "tidak_hadir": 1,
+                "ditanda": 23,
+                "belum_ditanda": 0,
                 "jumlah": 23,
-                "peratus": null
+                "peratus": 95.7
               },
               {
                 "kelas": "2 CERDIK",
@@ -17801,33 +17801,38 @@
               },
               {
                 "kelas": "6 BIJAK",
-                "hadir": 0,
+                "hadir": 29,
                 "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 29,
+                "ditanda": 29,
+                "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": null
+                "peratus": 100
               },
               {
                 "kelas": "PRASEKOLAH",
-                "hadir": 0,
+                "hadir": 19,
                 "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 19,
+                "ditanda": 19,
+                "belum_ditanda": 0,
                 "jumlah": 19,
-                "peratus": null
+                "peratus": 100
               }
             ]
           }
         ],
         "hari_ini": {
           "tarikh": "2026-10-28",
-          "dikemaskini": "07:46",
-          "hadir": 71,
-          "tidak_hadir": 7,
-          "ditanda": 78,
-          "peratus": 91,
+          "dikemaskini": "08:16",
+          "hadir": 141,
+          "tidak_hadir": 8,
+          "ditanda": 149,
+          "peratus": 94.6,
           "ikut_kelas": [
+            {
+              "kelas": "2 BIJAK",
+              "tidak_hadir": 1,
+              "ditanda": 23
+            },
             {
               "kelas": "3 BIJAK",
               "tidak_hadir": 7,
