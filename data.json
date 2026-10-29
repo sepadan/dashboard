@@ -17821,12 +17821,12 @@
           },
           {
             "tarikh": "2026-10-29",
-            "hadir": 129,
-            "tidak_hadir": 15,
-            "ditanda": 144,
-            "belum_ditanda": 80,
+            "hadir": 176,
+            "tidak_hadir": 16,
+            "ditanda": 192,
+            "belum_ditanda": 32,
             "jumlah": 224,
-            "peratus": 89.6,
+            "peratus": 91.7,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
@@ -17884,21 +17884,21 @@
               },
               {
                 "kelas": "5 CERDIK",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 19,
+                "hadir": 18,
+                "tidak_hadir": 1,
+                "ditanda": 19,
+                "belum_ditanda": 0,
                 "jumlah": 19,
-                "peratus": null
+                "peratus": 94.7
               },
               {
                 "kelas": "6 BIJAK",
-                "hadir": 0,
+                "hadir": 29,
                 "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 29,
+                "ditanda": 29,
+                "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": null
+                "peratus": 100
               },
               {
                 "kelas": "PRASEKOLAH",
@@ -17914,11 +17914,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-10-29",
-          "dikemaskini": "08:16",
-          "hadir": 129,
-          "tidak_hadir": 15,
-          "ditanda": 144,
-          "peratus": 89.6,
+          "dikemaskini": "10:16",
+          "hadir": 176,
+          "tidak_hadir": 16,
+          "ditanda": 192,
+          "peratus": 91.7,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
@@ -17939,6 +17939,11 @@
               "kelas": "3 BIJAK",
               "tidak_hadir": 6,
               "ditanda": 29
+            },
+            {
+              "kelas": "5 CERDIK",
+              "tidak_hadir": 1,
+              "ditanda": 19
             },
             {
               "kelas": "PRASEKOLAH",
