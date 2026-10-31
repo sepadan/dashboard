@@ -18007,14 +18007,20 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 3.03,
-        "peratus_lulus": 100,
+        "gps": 3.39,
+        "peratus_lulus": 95.83,
         "mata_pelajaran": [
           {
             "mp": "SEJARAH",
             "gpmp": 3.03,
             "peratus_a": 6.25,
             "peratus_lulus": 100
+          },
+          {
+            "mp": "B. INGGERIS",
+            "gpmp": 3.68,
+            "peratus_a": 10,
+            "peratus_lulus": 92.5
           }
         ],
         "trend_gps": [
@@ -18028,14 +18034,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 3.03
+            "gps": 3.39
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
-          "murid": 32,
-          "rekod": 32,
+          "murid": 72,
+          "rekod": 72,
           "luar_main": 0
         }
       },
