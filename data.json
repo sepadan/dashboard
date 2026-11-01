@@ -18007,8 +18007,8 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.62,
-        "peratus_lulus": 97.01,
+        "gps": 2.6,
+        "peratus_lulus": 97.33,
         "mata_pelajaran": [
           {
             "mp": "RBT",
@@ -18030,9 +18030,9 @@
           },
           {
             "mp": "PEND. ISLAM",
-            "gpmp": 2.41,
-            "peratus_a": 29.63,
-            "peratus_lulus": 96.3
+            "gpmp": 2.42,
+            "peratus_a": 27.12,
+            "peratus_lulus": 98.31
           },
           {
             "mp": "SEJARAH",
@@ -18058,14 +18058,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.62
+            "gps": 2.6
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 268,
+          "rekod": 300,
           "luar_main": 0
         }
       },
