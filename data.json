@@ -18008,7 +18008,7 @@
       },
       "akademik": {
         "gps": 2.62,
-        "peratus_lulus": 96.65,
+        "peratus_lulus": 97.01,
         "mata_pelajaran": [
           {
             "mp": "RBT",
@@ -18036,8 +18036,8 @@
           },
           {
             "mp": "SEJARAH",
-            "gpmp": 3.03,
-            "peratus_a": 6.25,
+            "gpmp": 2.85,
+            "peratus_a": 16.39,
             "peratus_lulus": 100
           },
           {
@@ -18065,7 +18065,7 @@
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 239,
+          "rekod": 268,
           "luar_main": 0
         }
       },
