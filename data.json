@@ -18007,13 +18007,19 @@
         "hari_ini": null
       },
       "akademik": {
-        "gps": 2.86,
-        "peratus_lulus": 96.67,
+        "gps": 2.69,
+        "peratus_lulus": 97.16,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
             "gpmp": 1.62,
             "peratus_a": 61.9,
+            "peratus_lulus": 100
+          },
+          {
+            "mp": "B. MELAYU",
+            "gpmp": 1.71,
+            "peratus_a": 47.62,
             "peratus_lulus": 100
           },
           {
@@ -18046,14 +18052,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.86
+            "gps": 2.69
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 99,
-          "rekod": 120,
+          "rekod": 141,
           "luar_main": 0
         }
       },
