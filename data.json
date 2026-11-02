@@ -18102,7 +18102,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-02",
-          "dikemaskini": "11:46",
+          "dikemaskini": "12:17",
           "hadir": 199,
           "tidak_hadir": 25,
           "ditanda": 224,
@@ -18157,13 +18157,19 @@
         }
       },
       "akademik": {
-        "gps": 2.8,
-        "peratus_lulus": 96.22,
+        "gps": 2.69,
+        "peratus_lulus": 96.63,
         "mata_pelajaran": [
           {
             "mp": "PJPK",
-            "gpmp": 1.54,
-            "peratus_a": 78.57,
+            "gpmp": 1.7,
+            "peratus_a": 60,
+            "peratus_lulus": 100
+          },
+          {
+            "mp": "PSV",
+            "gpmp": 1.76,
+            "peratus_a": 51.72,
             "peratus_lulus": 100
           },
           {
@@ -18226,14 +18232,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.8
+            "gps": 2.69
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 502,
+          "rekod": 563,
           "luar_main": 0
         }
       },
