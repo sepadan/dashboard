@@ -18102,7 +18102,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-02",
-          "dikemaskini": "09:47",
+          "dikemaskini": "10:16",
           "hadir": 199,
           "tidak_hadir": 25,
           "ditanda": 224,
@@ -18157,8 +18157,8 @@
         }
       },
       "akademik": {
-        "gps": 2.62,
-        "peratus_lulus": 97.77,
+        "gps": 2.64,
+        "peratus_lulus": 97.67,
         "mata_pelajaran": [
           {
             "mp": "B. ARAB",
@@ -18167,16 +18167,16 @@
             "peratus_lulus": 100
           },
           {
-            "mp": "B. MELAYU",
-            "gpmp": 1.98,
-            "peratus_a": 30,
-            "peratus_lulus": 100
-          },
-          {
             "mp": "RBT",
             "gpmp": 2.18,
             "peratus_a": 32,
             "peratus_lulus": 100
+          },
+          {
+            "mp": "B. MELAYU",
+            "gpmp": 2.33,
+            "peratus_a": 23.19,
+            "peratus_lulus": 98.55
           },
           {
             "mp": "PEND. ISLAM",
@@ -18214,14 +18214,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.62
+            "gps": 2.64
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 358,
+          "rekod": 387,
           "luar_main": 0
         }
       },
