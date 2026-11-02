@@ -18104,7 +18104,7 @@
       },
       "akademik": {
         "gps": 2.72,
-        "peratus_lulus": 95.43,
+        "peratus_lulus": 95.44,
         "mata_pelajaran": [
           {
             "mp": "PJPK",
@@ -18128,6 +18128,12 @@
             "mp": "B. MELAYU",
             "gpmp": 1.99,
             "peratus_a": 31.88,
+            "peratus_lulus": 100
+          },
+          {
+            "mp": "P. MORAL",
+            "gpmp": 2,
+            "peratus_a": 0,
             "peratus_lulus": 100
           },
           {
@@ -18185,7 +18191,7 @@
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 635,
+          "rekod": 636,
           "luar_main": 0
         }
       },
