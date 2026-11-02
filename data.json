@@ -18102,7 +18102,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-02",
-          "dikemaskini": "10:46",
+          "dikemaskini": "11:16",
           "hadir": 199,
           "tidak_hadir": 25,
           "ditanda": 224,
@@ -18157,9 +18157,15 @@
         }
       },
       "akademik": {
-        "gps": 2.58,
-        "peratus_lulus": 97.93,
+        "gps": 2.67,
+        "peratus_lulus": 98.1,
         "mata_pelajaran": [
+          {
+            "mp": "PJPK",
+            "gpmp": 1.54,
+            "peratus_a": 78.57,
+            "peratus_lulus": 100
+          },
           {
             "mp": "B. ARAB",
             "gpmp": 1.96,
@@ -18185,16 +18191,16 @@
             "peratus_lulus": 98.31
           },
           {
-            "mp": "SAINS",
-            "gpmp": 2.83,
-            "peratus_a": 17.24,
+            "mp": "SEJARAH",
+            "gpmp": 2.98,
+            "peratus_a": 13.75,
             "peratus_lulus": 100
           },
           {
-            "mp": "SEJARAH",
-            "gpmp": 2.85,
-            "peratus_a": 16.39,
-            "peratus_lulus": 100
+            "mp": "SAINS",
+            "gpmp": 3.51,
+            "peratus_a": 5.88,
+            "peratus_lulus": 98.53
           },
           {
             "mp": "B. INGGERIS",
@@ -18210,18 +18216,18 @@
           },
           {
             "penilaian": "PENTAKSIRAN SUMATIF 3",
-            "gps": 2.99
+            "gps": 3
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.58
+            "gps": 2.67
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 387,
+          "rekod": 473,
           "luar_main": 0
         }
       },
