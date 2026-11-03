@@ -117,7 +117,7 @@
           },
           {
             "bulan": "Nov",
-            "murid": 88.2
+            "murid": 87.9
           }
         ],
         "ikut_kelas": [
@@ -18101,21 +18101,21 @@
           },
           {
             "tarikh": "2026-11-03",
-            "hadir": 196,
-            "tidak_hadir": 28,
+            "hadir": 195,
+            "tidak_hadir": 29,
             "ditanda": 224,
             "belum_ditanda": 0,
             "jumlah": 224,
-            "peratus": 87.5,
+            "peratus": 87.1,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
-                "hadir": 24,
-                "tidak_hadir": 4,
+                "hadir": 23,
+                "tidak_hadir": 5,
                 "ditanda": 28,
                 "belum_ditanda": 0,
                 "jumlah": 28,
-                "peratus": 85.7
+                "peratus": 82.1
               },
               {
                 "kelas": "2 BIJAK",
@@ -18194,15 +18194,15 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-03",
-          "dikemaskini": "08:46",
-          "hadir": 196,
-          "tidak_hadir": 28,
+          "dikemaskini": "10:46",
+          "hadir": 195,
+          "tidak_hadir": 29,
           "ditanda": 224,
-          "peratus": 87.5,
+          "peratus": 87.1,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
-              "tidak_hadir": 4,
+              "tidak_hadir": 5,
               "ditanda": 28
             },
             {
@@ -18249,8 +18249,8 @@
         }
       },
       "akademik": {
-        "gps": 2.72,
-        "peratus_lulus": 95.44,
+        "gps": 2.69,
+        "peratus_lulus": 95.66,
         "mata_pelajaran": [
           {
             "mp": "PJPK",
@@ -18284,8 +18284,8 @@
           },
           {
             "mp": "RBT",
-            "gpmp": 2.18,
-            "peratus_a": 32,
+            "gpmp": 2.17,
+            "peratus_a": 28.05,
             "peratus_lulus": 100
           },
           {
@@ -18330,14 +18330,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.72
+            "gps": 2.69
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 636,
+          "rekod": 668,
           "luar_main": 0
         }
       },
