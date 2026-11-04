@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-11-04"
+    "dikemaskini": "2026-11-05"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -18284,55 +18284,11 @@
             ]
           }
         ],
-        "hari_ini": {
-          "tarikh": "2026-11-04",
-          "dikemaskini": "20:16",
-          "hadir": 206,
-          "tidak_hadir": 17,
-          "ditanda": 223,
-          "peratus": 92.4,
-          "ikut_kelas": [
-            {
-              "kelas": "1 BIJAK",
-              "tidak_hadir": 2,
-              "ditanda": 28
-            },
-            {
-              "kelas": "2 BIJAK",
-              "tidak_hadir": 2,
-              "ditanda": 23
-            },
-            {
-              "kelas": "2 CERDIK",
-              "tidak_hadir": 2,
-              "ditanda": 24
-            },
-            {
-              "kelas": "3 BIJAK",
-              "tidak_hadir": 2,
-              "ditanda": 28
-            },
-            {
-              "kelas": "4 BIJAK",
-              "tidak_hadir": 4,
-              "ditanda": 32
-            },
-            {
-              "kelas": "5 BIJAK",
-              "tidak_hadir": 4,
-              "ditanda": 21
-            },
-            {
-              "kelas": "PRASEKOLAH",
-              "tidak_hadir": 1,
-              "ditanda": 19
-            }
-          ]
-        }
+        "hari_ini": null
       },
       "akademik": {
-        "gps": 2.7,
-        "peratus_lulus": 96.52,
+        "gps": 2.69,
+        "peratus_lulus": 96.6,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -18355,7 +18311,7 @@
           {
             "mp": "RBT",
             "gpmp": 2.17,
-            "peratus_a": 28.05,
+            "peratus_a": 25.74,
             "peratus_lulus": 100
           },
           {
@@ -18412,14 +18368,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.7
+            "gps": 2.69
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 863,
+          "rekod": 882,
           "luar_main": 0
         }
       },
