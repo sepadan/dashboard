@@ -18286,7 +18286,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-04",
-          "dikemaskini": "12:46",
+          "dikemaskini": "14:16",
           "hadir": 206,
           "tidak_hadir": 17,
           "ditanda": 223,
@@ -18331,8 +18331,8 @@
         }
       },
       "akademik": {
-        "gps": 2.73,
-        "peratus_lulus": 96.21,
+        "gps": 2.71,
+        "peratus_lulus": 96.39,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -18341,15 +18341,15 @@
             "peratus_lulus": 100
           },
           {
-            "mp": "PSV",
-            "gpmp": 1.82,
-            "peratus_a": 45.9,
-            "peratus_lulus": 100
-          },
-          {
             "mp": "B. MELAYU",
             "gpmp": 1.99,
             "peratus_a": 31.88,
+            "peratus_lulus": 100
+          },
+          {
+            "mp": "PSV",
+            "gpmp": 2.01,
+            "peratus_a": 33.66,
             "peratus_lulus": 100
           },
           {
@@ -18412,14 +18412,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.73
+            "gps": 2.71
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 791,
+          "rekod": 831,
           "luar_main": 0
         }
       },
