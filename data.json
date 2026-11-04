@@ -117,7 +117,7 @@
           },
           {
             "bulan": "Nov",
-            "murid": 88.8
+            "murid": 89.4
           }
         ],
         "ikut_kelas": [
@@ -155,7 +155,7 @@
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 90.1
+            "peratus": 90.2
           }
         ],
         "harian": [
@@ -18193,12 +18193,12 @@
           },
           {
             "tarikh": "2026-11-04",
-            "hadir": 160,
-            "tidak_hadir": 16,
-            "ditanda": 176,
-            "belum_ditanda": 48,
+            "hadir": 207,
+            "tidak_hadir": 17,
+            "ditanda": 224,
+            "belum_ditanda": 0,
             "jumlah": 224,
-            "peratus": 90.9,
+            "peratus": 92.4,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
@@ -18265,32 +18265,32 @@
               },
               {
                 "kelas": "6 BIJAK",
-                "hadir": 0,
+                "hadir": 29,
                 "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 29,
+                "ditanda": 29,
+                "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": null
+                "peratus": 100
               },
               {
                 "kelas": "PRASEKOLAH",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 19,
+                "hadir": 18,
+                "tidak_hadir": 1,
+                "ditanda": 19,
+                "belum_ditanda": 0,
                 "jumlah": 19,
-                "peratus": null
+                "peratus": 94.7
               }
             ]
           }
         ],
         "hari_ini": {
           "tarikh": "2026-11-04",
-          "dikemaskini": "08:16",
-          "hadir": 160,
-          "tidak_hadir": 16,
-          "ditanda": 176,
-          "peratus": 90.9,
+          "dikemaskini": "09:16",
+          "hadir": 207,
+          "tidak_hadir": 17,
+          "ditanda": 224,
+          "peratus": 92.4,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
@@ -18321,6 +18321,11 @@
               "kelas": "5 BIJAK",
               "tidak_hadir": 4,
               "ditanda": 21
+            },
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 1,
+              "ditanda": 19
             }
           ]
         }
