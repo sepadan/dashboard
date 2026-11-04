@@ -135,7 +135,7 @@
           },
           {
             "kelas": "3 BIJAK",
-            "peratus": 92.4
+            "peratus": 92.3
           },
           {
             "kelas": "4 BIJAK",
@@ -18193,10 +18193,10 @@
           },
           {
             "tarikh": "2026-11-04",
-            "hadir": 207,
+            "hadir": 206,
             "tidak_hadir": 17,
-            "ditanda": 224,
-            "belum_ditanda": 0,
+            "ditanda": 223,
+            "belum_ditanda": 1,
             "jumlah": 224,
             "peratus": 92.4,
             "ikut_kelas": [
@@ -18229,12 +18229,12 @@
               },
               {
                 "kelas": "3 BIJAK",
-                "hadir": 27,
+                "hadir": 26,
                 "tidak_hadir": 2,
-                "ditanda": 29,
-                "belum_ditanda": 0,
+                "ditanda": 28,
+                "belum_ditanda": 1,
                 "jumlah": 29,
-                "peratus": 93.1
+                "peratus": 92.9
               },
               {
                 "kelas": "4 BIJAK",
@@ -18286,10 +18286,10 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-04",
-          "dikemaskini": "10:16",
-          "hadir": 207,
+          "dikemaskini": "11:46",
+          "hadir": 206,
           "tidak_hadir": 17,
-          "ditanda": 224,
+          "ditanda": 223,
           "peratus": 92.4,
           "ikut_kelas": [
             {
@@ -18310,7 +18310,7 @@
             {
               "kelas": "3 BIJAK",
               "tidak_hadir": 2,
-              "ditanda": 29
+              "ditanda": 28
             },
             {
               "kelas": "4 BIJAK",
@@ -18331,8 +18331,8 @@
         }
       },
       "akademik": {
-        "gps": 2.73,
-        "peratus_lulus": 96.2,
+        "gps": 2.74,
+        "peratus_lulus": 96.21,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -18366,8 +18366,8 @@
           },
           {
             "mp": "PJPK",
-            "gpmp": 2.3,
-            "peratus_a": 37.37,
+            "gpmp": 2.34,
+            "peratus_a": 36.63,
             "peratus_lulus": 100
           },
           {
@@ -18412,14 +18412,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.73
+            "gps": 2.74
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 789,
+          "rekod": 791,
           "luar_main": 0
         }
       },
