@@ -18286,7 +18286,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-04",
-          "dikemaskini": "09:46",
+          "dikemaskini": "10:16",
           "hadir": 207,
           "tidak_hadir": 17,
           "ditanda": 224,
@@ -18331,8 +18331,8 @@
         }
       },
       "akademik": {
-        "gps": 2.72,
-        "peratus_lulus": 96.02,
+        "gps": 2.73,
+        "peratus_lulus": 96.2,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -18344,12 +18344,6 @@
             "mp": "PSV",
             "gpmp": 1.82,
             "peratus_a": 45.9,
-            "peratus_lulus": 100
-          },
-          {
-            "mp": "B. ARAB",
-            "gpmp": 1.96,
-            "peratus_a": 52,
             "peratus_lulus": 100
           },
           {
@@ -18365,6 +18359,12 @@
             "peratus_lulus": 100
           },
           {
+            "mp": "B. ARAB",
+            "gpmp": 2.2,
+            "peratus_a": 42.03,
+            "peratus_lulus": 100
+          },
+          {
             "mp": "PJPK",
             "gpmp": 2.3,
             "peratus_a": 37.37,
@@ -18372,9 +18372,9 @@
           },
           {
             "mp": "PEND. ISLAM",
-            "gpmp": 2.5,
-            "peratus_a": 23.08,
-            "peratus_lulus": 98.72
+            "gpmp": 2.36,
+            "peratus_a": 25.25,
+            "peratus_lulus": 98.99
           },
           {
             "mp": "SEJARAH",
@@ -18396,9 +18396,9 @@
           },
           {
             "mp": "MATEMATIK",
-            "gpmp": 5.06,
+            "gpmp": 4.71,
             "peratus_a": 0,
-            "peratus_lulus": 58.33
+            "peratus_lulus": 69.57
           }
         ],
         "trend_gps": [
@@ -18412,14 +18412,14 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.72
+            "gps": 2.73
           }
         ],
         "pbd_tahap": [],
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 728,
+          "rekod": 789,
           "luar_main": 0
         }
       },
