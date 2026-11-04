@@ -18286,7 +18286,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-04",
-          "dikemaskini": "11:46",
+          "dikemaskini": "12:46",
           "hadir": 206,
           "tidak_hadir": 17,
           "ditanda": 223,
@@ -18331,7 +18331,7 @@
         }
       },
       "akademik": {
-        "gps": 2.74,
+        "gps": 2.73,
         "peratus_lulus": 96.21,
         "mata_pelajaran": [
           {
@@ -18360,7 +18360,7 @@
           },
           {
             "mp": "B. ARAB",
-            "gpmp": 2.2,
+            "gpmp": 2.19,
             "peratus_a": 42.03,
             "peratus_lulus": 100
           },
@@ -18412,7 +18412,7 @@
           },
           {
             "penilaian": "UJIAN AKHIR SESI AKADEMIK",
-            "gps": 2.74
+            "gps": 2.73
           }
         ],
         "pbd_tahap": [],
