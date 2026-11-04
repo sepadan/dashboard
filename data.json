@@ -18286,7 +18286,7 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-04",
-          "dikemaskini": "09:16",
+          "dikemaskini": "09:46",
           "hadir": 207,
           "tidak_hadir": 17,
           "ditanda": 224,
@@ -18332,7 +18332,7 @@
       },
       "akademik": {
         "gps": 2.72,
-        "peratus_lulus": 95.91,
+        "peratus_lulus": 96.02,
         "mata_pelajaran": [
           {
             "mp": "P. MORAL",
@@ -18372,9 +18372,9 @@
           },
           {
             "mp": "PEND. ISLAM",
-            "gpmp": 2.42,
-            "peratus_a": 27.12,
-            "peratus_lulus": 98.31
+            "gpmp": 2.5,
+            "peratus_a": 23.08,
+            "peratus_lulus": 98.72
           },
           {
             "mp": "SEJARAH",
@@ -18419,7 +18419,7 @@
         "sumber_semak": {
           "peperiksaan": "UJIAN AKHIR SESI AKADEMIK",
           "murid": 101,
-          "rekod": 709,
+          "rekod": 728,
           "luar_main": 0
         }
       },
