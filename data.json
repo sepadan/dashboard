@@ -117,7 +117,7 @@
           },
           {
             "bulan": "Nov",
-            "murid": 89.8
+            "murid": 89.7
           }
         ],
         "ikut_kelas": [
@@ -18377,12 +18377,12 @@
           },
           {
             "tarikh": "2026-11-06",
-            "hadir": 178,
-            "tidak_hadir": 18,
+            "hadir": 177,
+            "tidak_hadir": 19,
             "ditanda": 196,
             "belum_ditanda": 28,
             "jumlah": 224,
-            "peratus": 90.8,
+            "peratus": 90.3,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
@@ -18413,12 +18413,12 @@
               },
               {
                 "kelas": "3 BIJAK",
-                "hadir": 26,
-                "tidak_hadir": 3,
+                "hadir": 25,
+                "tidak_hadir": 4,
                 "ditanda": 29,
                 "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": 89.7
+                "peratus": 86.2
               },
               {
                 "kelas": "4 BIJAK",
@@ -18470,11 +18470,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-06",
-          "dikemaskini": "08:16",
-          "hadir": 178,
-          "tidak_hadir": 18,
+          "dikemaskini": "08:46",
+          "hadir": 177,
+          "tidak_hadir": 19,
           "ditanda": 196,
-          "peratus": 90.8,
+          "peratus": 90.3,
           "ikut_kelas": [
             {
               "kelas": "2 BIJAK",
@@ -18488,7 +18488,7 @@
             },
             {
               "kelas": "3 BIJAK",
-              "tidak_hadir": 3,
+              "tidak_hadir": 4,
               "ditanda": 29
             },
             {
