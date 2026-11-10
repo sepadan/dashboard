@@ -4,7 +4,7 @@
     "kod": "JBA5054",
     "daerah": "Pagoh, Johor",
     "singkatan": "SP",
-    "dikemaskini": "2026-11-07"
+    "dikemaskini": "2026-11-11"
   },
   "sesi_semasa": "2026",
   "sesi": {
@@ -117,7 +117,7 @@
           },
           {
             "bulan": "Nov",
-            "murid": 90
+            "murid": 89.7
           }
         ],
         "ikut_kelas": [
@@ -139,7 +139,7 @@
           },
           {
             "kelas": "4 BIJAK",
-            "peratus": 93.9
+            "peratus": 93.8
           },
           {
             "kelas": "5 BIJAK",
@@ -155,7 +155,7 @@
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 90.3
+            "peratus": 90.2
           }
         ],
         "harian": [
@@ -18466,9 +18466,120 @@
                 "peratus": 94.7
               }
             ]
+          },
+          {
+            "tarikh": "2026-11-11",
+            "hadir": 42,
+            "tidak_hadir": 9,
+            "ditanda": 51,
+            "belum_ditanda": 173,
+            "jumlah": 224,
+            "peratus": 82.4,
+            "ikut_kelas": [
+              {
+                "kelas": "1 BIJAK",
+                "hadir": 0,
+                "tidak_hadir": 0,
+                "ditanda": 0,
+                "belum_ditanda": 28,
+                "jumlah": 28,
+                "peratus": null
+              },
+              {
+                "kelas": "2 BIJAK",
+                "hadir": 0,
+                "tidak_hadir": 0,
+                "ditanda": 0,
+                "belum_ditanda": 23,
+                "jumlah": 23,
+                "peratus": null
+              },
+              {
+                "kelas": "2 CERDIK",
+                "hadir": 0,
+                "tidak_hadir": 0,
+                "ditanda": 0,
+                "belum_ditanda": 24,
+                "jumlah": 24,
+                "peratus": null
+              },
+              {
+                "kelas": "3 BIJAK",
+                "hadir": 0,
+                "tidak_hadir": 0,
+                "ditanda": 0,
+                "belum_ditanda": 29,
+                "jumlah": 29,
+                "peratus": null
+              },
+              {
+                "kelas": "4 BIJAK",
+                "hadir": 27,
+                "tidak_hadir": 5,
+                "ditanda": 32,
+                "belum_ditanda": 0,
+                "jumlah": 32,
+                "peratus": 84.4
+              },
+              {
+                "kelas": "5 BIJAK",
+                "hadir": 0,
+                "tidak_hadir": 0,
+                "ditanda": 0,
+                "belum_ditanda": 21,
+                "jumlah": 21,
+                "peratus": null
+              },
+              {
+                "kelas": "5 CERDIK",
+                "hadir": 0,
+                "tidak_hadir": 0,
+                "ditanda": 0,
+                "belum_ditanda": 19,
+                "jumlah": 19,
+                "peratus": null
+              },
+              {
+                "kelas": "6 BIJAK",
+                "hadir": 0,
+                "tidak_hadir": 0,
+                "ditanda": 0,
+                "belum_ditanda": 29,
+                "jumlah": 29,
+                "peratus": null
+              },
+              {
+                "kelas": "PRASEKOLAH",
+                "hadir": 15,
+                "tidak_hadir": 4,
+                "ditanda": 19,
+                "belum_ditanda": 0,
+                "jumlah": 19,
+                "peratus": 78.9
+              }
+            ]
           }
         ],
-        "hari_ini": null
+        "hari_ini": {
+          "tarikh": "2026-11-11",
+          "dikemaskini": "07:46",
+          "hadir": 42,
+          "tidak_hadir": 9,
+          "ditanda": 51,
+          "peratus": 82.4,
+          "ikut_kelas": [
+            {
+              "kelas": "4 BIJAK",
+              "tidak_hadir": 5,
+              "ditanda": 32
+            },
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 4,
+              "ditanda": 19
+            }
+          ]
+        }
       },
       "akademik": {
         "gps": 2.69,
