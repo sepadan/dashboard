@@ -117,7 +117,7 @@
           },
           {
             "bulan": "Nov",
-            "murid": 89.7
+            "murid": 89.3
           }
         ],
         "ikut_kelas": [
@@ -135,7 +135,7 @@
           },
           {
             "kelas": "3 BIJAK",
-            "peratus": 92.3
+            "peratus": 92.2
           },
           {
             "kelas": "4 BIJAK",
@@ -18469,12 +18469,12 @@
           },
           {
             "tarikh": "2026-11-11",
-            "hadir": 128,
-            "tidak_hadir": 19,
-            "ditanda": 147,
-            "belum_ditanda": 77,
+            "hadir": 150,
+            "tidak_hadir": 26,
+            "ditanda": 176,
+            "belum_ditanda": 48,
             "jumlah": 224,
-            "peratus": 87.1,
+            "peratus": 85.2,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
@@ -18505,12 +18505,12 @@
               },
               {
                 "kelas": "3 BIJAK",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 29,
+                "hadir": 22,
+                "tidak_hadir": 7,
+                "ditanda": 29,
+                "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": null
+                "peratus": 75.9
               },
               {
                 "kelas": "4 BIJAK",
@@ -18562,11 +18562,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-11",
-          "dikemaskini": "08:46",
-          "hadir": 128,
-          "tidak_hadir": 19,
-          "ditanda": 147,
-          "peratus": 87.1,
+          "dikemaskini": "09:46",
+          "hadir": 150,
+          "tidak_hadir": 26,
+          "ditanda": 176,
+          "peratus": 85.2,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
@@ -18582,6 +18582,11 @@
               "kelas": "2 CERDIK",
               "tidak_hadir": 3,
               "ditanda": 24
+            },
+            {
+              "kelas": "3 BIJAK",
+              "tidak_hadir": 7,
+              "ditanda": 29
             },
             {
               "kelas": "4 BIJAK",
