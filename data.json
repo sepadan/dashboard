@@ -18469,12 +18469,12 @@
           },
           {
             "tarikh": "2026-11-11",
-            "hadir": 166,
-            "tidak_hadir": 29,
-            "ditanda": 195,
-            "belum_ditanda": 29,
+            "hadir": 192,
+            "tidak_hadir": 32,
+            "ditanda": 224,
+            "belum_ditanda": 0,
             "jumlah": 224,
-            "peratus": 85.1,
+            "peratus": 85.7,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
@@ -18541,12 +18541,12 @@
               },
               {
                 "kelas": "6 BIJAK",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 29,
+                "hadir": 26,
+                "tidak_hadir": 3,
+                "ditanda": 29,
+                "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": null
+                "peratus": 89.7
               },
               {
                 "kelas": "PRASEKOLAH",
@@ -18562,11 +18562,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-11",
-          "dikemaskini": "10:16",
-          "hadir": 166,
-          "tidak_hadir": 29,
-          "ditanda": 195,
-          "peratus": 85.1,
+          "dikemaskini": "10:46",
+          "hadir": 192,
+          "tidak_hadir": 32,
+          "ditanda": 224,
+          "peratus": 85.7,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
@@ -18602,6 +18602,11 @@
               "kelas": "5 CERDIK",
               "tidak_hadir": 3,
               "ditanda": 19
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 3,
+              "ditanda": 29
             },
             {
               "kelas": "PRASEKOLAH",
