@@ -117,7 +117,7 @@
           },
           {
             "bulan": "Nov",
-            "murid": 89.8
+            "murid": 89.7
           }
         ],
         "ikut_kelas": [
@@ -151,7 +151,7 @@
           },
           {
             "kelas": "6 BIJAK",
-            "peratus": 91.2
+            "peratus": 91.1
           },
           {
             "kelas": "PRASEKOLAH",
@@ -18745,12 +18745,12 @@
           },
           {
             "tarikh": "2026-11-16",
-            "hadir": 159,
-            "tidak_hadir": 17,
-            "ditanda": 176,
-            "belum_ditanda": 48,
+            "hadir": 182,
+            "tidak_hadir": 23,
+            "ditanda": 205,
+            "belum_ditanda": 19,
             "jumlah": 224,
-            "peratus": 90.3,
+            "peratus": 88.8,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
@@ -18817,12 +18817,12 @@
               },
               {
                 "kelas": "6 BIJAK",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 29,
+                "hadir": 23,
+                "tidak_hadir": 6,
+                "ditanda": 29,
+                "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": null
+                "peratus": 79.3
               },
               {
                 "kelas": "PRASEKOLAH",
@@ -18838,11 +18838,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-16",
-          "dikemaskini": "08:46",
-          "hadir": 159,
-          "tidak_hadir": 17,
-          "ditanda": 176,
-          "peratus": 90.3,
+          "dikemaskini": "09:46",
+          "hadir": 182,
+          "tidak_hadir": 23,
+          "ditanda": 205,
+          "peratus": 88.8,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
@@ -18878,6 +18878,11 @@
               "kelas": "5 CERDIK",
               "tidak_hadir": 3,
               "ditanda": 19
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 6,
+              "ditanda": 29
             }
           ]
         }
