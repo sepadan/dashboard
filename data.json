@@ -18837,12 +18837,12 @@
           },
           {
             "tarikh": "2026-11-17",
-            "hadir": 209,
-            "tidak_hadir": 15,
+            "hadir": 210,
+            "tidak_hadir": 14,
             "ditanda": 224,
             "belum_ditanda": 0,
             "jumlah": 224,
-            "peratus": 93.3,
+            "peratus": 93.8,
             "ikut_kelas": [
               {
                 "kelas": "1 BIJAK",
@@ -18882,12 +18882,12 @@
               },
               {
                 "kelas": "4 BIJAK",
-                "hadir": 29,
-                "tidak_hadir": 3,
+                "hadir": 30,
+                "tidak_hadir": 2,
                 "ditanda": 32,
                 "belum_ditanda": 0,
                 "jumlah": 32,
-                "peratus": 90.6
+                "peratus": 93.8
               },
               {
                 "kelas": "5 BIJAK",
@@ -18930,11 +18930,11 @@
         ],
         "hari_ini": {
           "tarikh": "2026-11-17",
-          "dikemaskini": "07:46",
-          "hadir": 209,
-          "tidak_hadir": 15,
+          "dikemaskini": "10:16",
+          "hadir": 210,
+          "tidak_hadir": 14,
           "ditanda": 224,
-          "peratus": 93.3,
+          "peratus": 93.8,
           "ikut_kelas": [
             {
               "kelas": "1 BIJAK",
@@ -18948,7 +18948,7 @@
             },
             {
               "kelas": "4 BIJAK",
-              "tidak_hadir": 3,
+              "tidak_hadir": 2,
               "ditanda": 32
             },
             {
