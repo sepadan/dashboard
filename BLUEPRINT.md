@@ -1,6 +1,6 @@
 # Blueprint Ekosistem Data SK Paya Redan
 
-**Versi 5.8 · 27 Oktober 2026**
+**Versi 5.9 · 24 November 2026**
 
 Dokumen ini ialah **hab dokumentasi** ekosistem. Ia ditulis supaya sesiapa — manusia atau AI — boleh meneruskan kerja tanpa perlu membaca sejarah perbualan.
 
@@ -317,6 +317,8 @@ secara paksa supaya markah yang sedang ditaip tidak hilang.
 Satu fail HTML, tiada kebergantungan luar, carta SVG ditulis tangan. Berfungsi luar talian jika `data.json` dimuat secara manual.
 
 Enam tab: Ringkasan · Enrolmen · Kehadiran · Akademik · HEM · Kokurikulum.
+
+**Halaman tambahan `dialog-matematik/index.html`** (`https://sepadan.github.io/dashboard/dialog-matematik/`) — slaid Dialog Prestasi Matematik 2026: menu utama, rumusan PBD, UASA, Matematik berbanding subjek lain, jurang PBD–UASA, kategori lemah/sederhana/cemerlang, ringkasan setiap kelas dan cadangan. Ia **petikan statik** daripada PDF PBD akhir tahun (8 kelas, 205 murid) dan laporan UASA Tahun 4–6, bukan dijana daripada `data.json`. Data terbenam ialah **agregat sahaja**; purata bagi kumpulan kurang 3 murid disembunyikan supaya markah individu tidak boleh disimpulkan. Senarai dan profil murid wujud dalam versi dalaman guru sahaja (artifak peribadi), tidak dalam repo ini.
 Ditambah **Mod TV** (slaid automatik satu skrin penuh, 15–16 muka, tukar setiap 18 saat) dan **Laporan ringkas** 2 muka A4 untuk cetakan.
 
 ---
@@ -630,6 +632,8 @@ Dalam repo `sistem-kehadiran-sepadan`, dijalankan dengan Node tanpa menyentuh Go
 | `uji-pasang.js` | `setTetapan_` tidak menindih; tab dinamakan semula, bukan dipadam |
 | `uji-dashboard-gs.js` · `uji-penuh.js` · `uji-upload.js` | Hujung ke hujung |
 
+Dalam repo ini (`node tests/<fail>.cjs`): `stability.test.cjs`, `daily-ui.test.cjs`, `daily-backend.test.cjs` dan `dialog-matematik.test.cjs` — yang terakhir menyemak halaman Dialog Matematik tiada IC 12 digit, tiada penanda nama (BIN/BINTI), hanya medan agregat dalam allowlist, dan purata kumpulan kecil disembunyikan.
+
 Dashboard diuji dengan Playwright: setiap slaid Mod TV muat satu skrin tanpa skrol, pada 1920×1080, 1366×768, 1280×720, potret, mod gelap, dan data kosong.
 
 **Jalankan semua sebelum menghantar sebarang perubahan.**
@@ -683,6 +687,7 @@ Isu yang sudah selesai dikekalkan dengan coretan dan sebab — supaya sesi akan 
 31. **Pembaikan audit kestabilan 30 Ogos belum diterbitkan ke produksi** — branch audit menambah kunci dan semakan semula atomik dalam SEMAK, menolak login guru AKSI yang sudah tidak aktif, melolos teks dinamik AKSI untuk menutup stored XSS, dan mengehadkan cubaan PIN admin HADIR. Suite tempatan lulus dan `data.json` Dashboard kekal agregat tanpa IC 12 digit. Tindakan operasi: semak/merge repo, terbitkan Apps Script pada URL sedia ada dan naikkan aset PWA yang berkaitan; jangan anggap produksi telah berubah sebelum deployment disahkan
 20. **HADIR v1.6.3 diterbitkan; pengesahan operasi tulis sebenar masih perlu** — repo `sepadan/hadir` mempunyai PWA satu muka, Semak Kehadiran sebagai muka depan, kad kelas penuh yang membuka pengisian, ikon HADIR, guru tanpa login, login admin dalam menu, simpanan kehadiran kelompok, pengurusan murid, Tetapan Murid RMT/jawatan dan sync API AKSI/SEMAK. Semakan kembali ke hari semasa setiap kali dibuka; tarikh terdahulu boleh diedit selepas amaran dan disimpan kepada tarikh dipilih. Backend Apps Script versi 104 menggunakan cache pelayan 60 saat tanpa kerja tulis pada `init`; frontend memaparkan salinan data hari ini dalam 0.265–0.446 saat pada lima muatan produksi berturut-turut dan menyegarkan data di latar. Laluan tarikh lama dan aset/cache v1.6.3 sudah disahkan di produksi secara baca sahaja. Baki pengguna: simpan satu kelas sebenar dan jalankan satu sync penuh apabila bersedia, kerana ujian tersebut memang akan mengubah data sekolah
 21. ~~Kehadiran hari ini kosong walaupun sudah ditanda~~ — **punca dikenal pasti 24 Ogos 2026.** Tajuk tab sebenar ialah `24/08`, tetapi penjana membandingkannya dengan teks `24/8`. `kehadiranHariIni_()` dibaiki supaya menerima `D/M`, `DD/MM` dan tarikh yang turut mempunyai tahun. Mesej kosong Dashboard turut menyebut HADIR dan bot Telegram. Penjana perlu dijalankan semula untuk menggantikan `hari_ini: null` dalam `data.json` awam
+32. **Markah UASA Matematik Tahun 4 Bijak 2026 tercatat “Tidak Ditaksir”** — dikesan semasa menyediakan Dialog Prestasi Matematik (24 November 2026). Laporan UASA kelas itu (diterbitkan 5 November 2026) tidak membawa markah BM, BI, Matematik dan Sains bagi semua 32 murid, sedangkan subjek lain bermarkah. Halaman dialog menggunakan TP PBD sahaja bagi kelas itu. Tindakan: sahkan sama ada markah belum dimasukkan dalam sistem pentaksiran, kemudian kemas kini halaman jika data dilengkapkan
 
 ---
 
@@ -703,6 +708,7 @@ Dokumen ini dikemas kini oleh AI dan manusia. Supaya ia kekal boleh dipercayai:
 
 | Versi | Tarikh | Perubahan |
 |---|---|---|
+| 5.9 | 24 November 2026 | Tambah halaman awam `dialog-matematik/` — slaid Dialog Prestasi Matematik 2026 (PBD 8 kelas, UASA Tahun 5–6) dengan menu utama dan ringkasan setiap kelas. Agregat sahaja mengikut peraturan 3.1: tiada nama, IC, markah individu, markah tertinggi/terendah, atau purata kumpulan < 3 murid. Ujian baharu `tests/dialog-matematik.test.cjs`. Isu #32 dibuka: UASA Matematik Tahun 4 Bijak “Tidak Ditaksir”. |
 | 5.8 | 27 Oktober 2026 | Tambah analisis kehadiran harian: pemilih tarikh/bulan, trend dan semua kelas, beza belum ditanda dengan tidak hadir, agregat tanpa PII serta nota had liputan sejarah. Penjana harian dan fungsi integrasi dijejak bersama ujian; benarkan medan tarikh hari_ini sedia ada dalam kontrak yang sebelumnya menyebabkan suite gagal. HEAD/checkpoint 128 disahkan; pemicu menerbitkan 191 tarikh dan 9 kelas, Pages dan ujian produksi telefon/desktop lulus. Laporan: docs/RELEASE-2026-10-27-HARIAN.md. |
 | 5.7 | 30 Ogos 2026 | Catat isu #31: pembaikan audit repo untuk integriti SEMAK, status guru/XSS AKSI dan had login HADIR telah diuji tempatan tetapi belum diterbitkan ke Apps Script/GitHub Pages produksi. Audit Dashboard kini menguatkuasakan allowlist skema penuh lima domain bagi setiap sesi, jenis nilai agregat, larangan medan luar kontrak/senarai individu, serta IC/MyKad 12 digit termasuk format bersengkang atau berjarak |
 | 5.6 | 29 Ogos 2026 | Isu #30 ditutup: senarai aktif guru kini boleh ditetapkan dari HADIR, AKSI atau SEMAK. Tambah/edit ialah merge; nyahaktif/sync penuh menghantar snapshot aktif melalui kunci pusat HADIR. Rekod tiada ditanda tidak aktif tanpa memadam kata laluan, tugasan atau sejarah. Versi paparan/cache HADIR v1.9.0, AKSI v1.5.0, SEMAK v1.2.0; Apps Script 110/11/61 |
