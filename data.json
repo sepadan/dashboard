@@ -143,11 +143,11 @@
           },
           {
             "kelas": "5 BIJAK",
-            "peratus": 92
+            "peratus": 92.1
           },
           {
             "kelas": "5 CERDIK",
-            "peratus": 86.8
+            "peratus": 86.9
           },
           {
             "kelas": "6 BIJAK",
@@ -155,7 +155,7 @@
           },
           {
             "kelas": "PRASEKOLAH",
-            "peratus": 90.1
+            "peratus": 89.9
           }
         ],
         "harian": [
@@ -19481,10 +19481,10 @@
           },
           {
             "tarikh": "2026-11-25",
-            "hadir": 96,
-            "tidak_hadir": 11,
-            "ditanda": 107,
-            "belum_ditanda": 117,
+            "hadir": 201,
+            "tidak_hadir": 23,
+            "ditanda": 224,
+            "belum_ditanda": 0,
             "jumlah": 224,
             "peratus": 89.7,
             "ikut_kelas": [
@@ -19517,12 +19517,12 @@
               },
               {
                 "kelas": "3 BIJAK",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 29,
+                "hadir": 27,
+                "tidak_hadir": 2,
+                "ditanda": 29,
+                "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": null
+                "peratus": 93.1
               },
               {
                 "kelas": "4 BIJAK",
@@ -19535,49 +19535,49 @@
               },
               {
                 "kelas": "5 BIJAK",
-                "hadir": 0,
+                "hadir": 21,
                 "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 21,
+                "ditanda": 21,
+                "belum_ditanda": 0,
                 "jumlah": 21,
-                "peratus": null
+                "peratus": 100
               },
               {
                 "kelas": "5 CERDIK",
-                "hadir": 0,
+                "hadir": 19,
                 "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 19,
+                "ditanda": 19,
+                "belum_ditanda": 0,
                 "jumlah": 19,
-                "peratus": null
+                "peratus": 100
               },
               {
                 "kelas": "6 BIJAK",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 29,
+                "hadir": 27,
+                "tidak_hadir": 2,
+                "ditanda": 29,
+                "belum_ditanda": 0,
                 "jumlah": 29,
-                "peratus": null
+                "peratus": 93.1
               },
               {
                 "kelas": "PRASEKOLAH",
-                "hadir": 0,
-                "tidak_hadir": 0,
-                "ditanda": 0,
-                "belum_ditanda": 19,
+                "hadir": 11,
+                "tidak_hadir": 8,
+                "ditanda": 19,
+                "belum_ditanda": 0,
                 "jumlah": 19,
-                "peratus": null
+                "peratus": 57.9
               }
             ]
           }
         ],
         "hari_ini": {
           "tarikh": "2026-11-25",
-          "dikemaskini": "08:16",
-          "hadir": 96,
-          "tidak_hadir": 11,
-          "ditanda": 107,
+          "dikemaskini": "08:46",
+          "hadir": 201,
+          "tidak_hadir": 23,
+          "ditanda": 224,
           "peratus": 89.7,
           "ikut_kelas": [
             {
@@ -19596,9 +19596,24 @@
               "ditanda": 24
             },
             {
+              "kelas": "3 BIJAK",
+              "tidak_hadir": 2,
+              "ditanda": 29
+            },
+            {
               "kelas": "4 BIJAK",
               "tidak_hadir": 5,
               "ditanda": 32
+            },
+            {
+              "kelas": "6 BIJAK",
+              "tidak_hadir": 2,
+              "ditanda": 29
+            },
+            {
+              "kelas": "PRASEKOLAH",
+              "tidak_hadir": 8,
+              "ditanda": 19
             }
           ]
         }
